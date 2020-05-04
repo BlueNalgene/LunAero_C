@@ -115,9 +115,8 @@ static gboolean refresh_text_boxes(gpointer data) {
 	g_snprintf(msg, sizeof msg, "Shutter Speed: %d\nISO: %d", 
 		*(int *)*(int *)val_ptr.SHUTTER_VALaddr, 
 		*(int *)*(int *)val_ptr.ISO_VALaddr);
-    
-    gtk_label_set_text(GTK_LABEL(text_status), msg);
-    
+	gtk_label_set_text(GTK_LABEL(text_status), msg);
+	
     return TRUE;
 }
 
@@ -171,7 +170,9 @@ static void mot_up () {
 	printf("moving up\n");
 	digitalWrite(APIN1, LOW);
 	digitalWrite(APIN2, HIGH);
-	DUTY_A = DUTY;
+	if (*(int *)*(int *)val_ptr.RUN_MODEaddr == 0) {
+		DUTY_A = DUTY;
+	}
 	softPwmWrite(APINP, DUTY_A);
 }
 
@@ -179,7 +180,9 @@ static void mot_down () {
 	printf("moving down\n");
 	digitalWrite(APIN1, HIGH);
 	digitalWrite(APIN2, LOW);
-	DUTY_A = DUTY;
+	if (*(int *)*(int *)val_ptr.RUN_MODEaddr == 0) {
+		DUTY_A = DUTY;
+	}
 	softPwmWrite(APINP, DUTY_A);
 }
 
@@ -187,7 +190,9 @@ static void mot_left() {
 	printf("moving left\n");
 	digitalWrite(BPIN1, LOW);
 	digitalWrite(BPIN2, HIGH);
-	DUTY_B = DUTY;
+	if (*(int *)*(int *)val_ptr.RUN_MODEaddr == 0) {
+		DUTY_B = DUTY;
+	}
 	softPwmWrite(BPINP, DUTY_B);
 	if (OLD_DIR == 2) {
 		loose_wheel();
@@ -199,7 +204,9 @@ static void mot_right() {
 	printf("moving right\n");
 	digitalWrite(BPIN1, HIGH);
 	digitalWrite(BPIN2, LOW);
-	DUTY_B = DUTY;
+	if (*(int *)*(int *)val_ptr.RUN_MODEaddr == 0) {
+		DUTY_B = DUTY;
+	}
 	softPwmWrite(BPINP, DUTY_B);
 	if (OLD_DIR == 1) {
 		loose_wheel();
@@ -234,13 +241,13 @@ static void speed_up(int motor) {
 		if (DUTY_A < 20) {
 			DUTY_A = 20;
 		} else if (DUTY_A < 100) {
-			DUTY_A = DUTY_A + 1;
+			DUTY_A = DUTY_A + 5;
 		}
 	} else if (motor == 2) {
 		if (DUTY_B < 20) {
 			DUTY_B = 20;
 		} else if (DUTY_B < 100) {
-			DUTY_B = DUTY_B + 1;
+			DUTY_B = DUTY_B + 5;
 		}
 	}
 }
@@ -640,7 +647,7 @@ static gboolean abort_check(gpointer data) {
 	if (*(int *)*(int *)val_ptr.ABORTaddr == 1) {
 		gtk_widget_destroy(data);
 	}
-    
+	
     return TRUE;
 }
 
@@ -1021,6 +1028,10 @@ int main (int argc, char **argv) {
 				// This counter is required to prevent race condition zombies.
 				usleep(500000);
 			}
+			
+			// Set duty cycles to low end once automatic mode is started
+			DUTY_A = 20;
+			DUTY_B = 20;
 			
 			// This usleep counter is not temporally stable due to the forced mmap check every sec.
 			// Empirically, appears to capture 1.66s of video/1000000 usleep microseconds.
