@@ -172,6 +172,8 @@ static void mot_up () {
 	digitalWrite(APIN2, HIGH);
 	if (*(int *)*(int *)val_ptr.RUN_MODEaddr == 0) {
 		DUTY_A = DUTY;
+	} else {
+		speed_up(1);
 	}
 	softPwmWrite(APINP, DUTY_A);
 }
@@ -182,6 +184,8 @@ static void mot_down () {
 	digitalWrite(APIN2, LOW);
 	if (*(int *)*(int *)val_ptr.RUN_MODEaddr == 0) {
 		DUTY_A = DUTY;
+	} else {
+		speed_up(1);
 	}
 	softPwmWrite(APINP, DUTY_A);
 }
@@ -192,6 +196,8 @@ static void mot_left() {
 	digitalWrite(BPIN2, HIGH);
 	if (*(int *)*(int *)val_ptr.RUN_MODEaddr == 0) {
 		DUTY_B = DUTY;
+	} else {
+		speed_up(2);
 	}
 	softPwmWrite(BPINP, DUTY_B);
 	if (OLD_DIR == 2) {
@@ -206,6 +212,8 @@ static void mot_right() {
 	digitalWrite(BPIN2, LOW);
 	if (*(int *)*(int *)val_ptr.RUN_MODEaddr == 0) {
 		DUTY_B = DUTY;
+	} else {
+		speed_up(2);
 	}
 	softPwmWrite(BPINP, DUTY_B);
 	if (OLD_DIR == 1) {
@@ -849,10 +857,8 @@ static int frame_centroid (int lost_counter) {
 		// If not or near both edges, use centroid
 		if ((top_edge >= w_thresh) & (bottom_edge < w_thresh)) {
 			mot_down();
-			speed_up(1);
 		} else if ((bottom_edge >= w_thresh) & (top_edge < w_thresh)) {
 			mot_up();
-			speed_up(1);
 		} else {
 			if (abs((sumy/cnt)-(WORK_HEIGHT/4)) > ((WORK_HEIGHT/4)*0.05)) {
 				if (((sumy/cnt)-(WORK_HEIGHT/4)) > 0) {
@@ -860,7 +866,6 @@ static int frame_centroid (int lost_counter) {
 				} else {
 					mot_up();
 				}
-				speed_up(1);
 			} else {
 				mot_stop(1);
 			}
@@ -868,10 +873,8 @@ static int frame_centroid (int lost_counter) {
 		
 		if ((left_edge >= h_thresh) & (right_edge < h_thresh)) {
 			mot_right();
-			speed_up(1);
 		} else if ((left_edge <= h_thresh) & (right_edge > h_thresh)) {
 			mot_left();
-			speed_up(1);
 		} else {
 			if (abs((sumx/cnt)-(WORK_WIDTH/4)) > ((WORK_WIDTH/4)*0.2)) {
 				if (((sumx/cnt)-(WORK_WIDTH/4)) > 0) {
@@ -879,7 +882,6 @@ static int frame_centroid (int lost_counter) {
 				} else {
 					mot_left();
 				}
-				speed_up(2);
 			} else {
 				mot_stop(2);
 			}
