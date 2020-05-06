@@ -94,7 +94,7 @@ static void mot_left();
 static void mot_right();
 static void mot_stop(int direct);
 static gboolean key_event(GtkWidget *widget, GdkEventKey *event);
-static void loose_wheel();
+static void loose_wheel(int wheel_dir);
 static void current_frame();
 static int frame_centroid(int lost_counter);
 static void camera_start();
@@ -201,7 +201,7 @@ static void mot_left() {
 	}
 	softPwmWrite(BPINP, DUTY_B);
 	if (OLD_DIR == 2) {
-		loose_wheel();
+		loose_wheel(1);
 	}
 	OLD_DIR = 1;
 }
@@ -217,12 +217,12 @@ static void mot_right() {
 	}
 	softPwmWrite(BPINP, DUTY_B);
 	if (OLD_DIR == 1) {
-		loose_wheel();
+		loose_wheel(2);
 	}
 	OLD_DIR = 2;
 }
 
-static void loose_wheel() {
+static void loose_wheel(int wheel_dir) {
 	/* When changing the left right motion direction, we need to
 	 * compensate for some wiggle in the gear.  This is a hardware
 	 * correction.
@@ -232,6 +232,14 @@ static void loose_wheel() {
 		
 		old_duty = DUTY_B;
 		DUTY_B = DUTY;
+		if (wheel_dir == 1) {
+			digitalWrite(BPIN1, LOW);
+			digitalWrite(BPIN2, HIGH);
+		} else {
+			digitalWrite(BPIN1, HIGH);
+			digitalWrite(BPIN2, LOW);
+		}
+		softPwmWrite(BPINP, DUTY_B);
 		usleep(3000000);
 		DUTY_B = old_duty;
 	}
