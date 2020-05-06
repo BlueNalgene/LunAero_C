@@ -98,7 +98,7 @@ static void loose_wheel();
 static void current_frame();
 static int frame_centroid(int lost_counter);
 static void camera_start();
-static void speed_up();
+static void speed_up(int motor);
 static void shutter_up();
 static void shutter_down();
 static void shutter_up_up();
