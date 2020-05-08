@@ -65,6 +65,8 @@ char DEFAULT_FILEPATH[] = "/media/pi/MOON1/";
 int OLD_DIR = 0;
 int DUTY_A = 100;
 int DUTY_B = 100;
+int OLD_DUTY_A = 0;
+int OLD_DUTY_B = 0;
 char TSBUFF[8];
 
 // Struct of values used when writing labels
@@ -167,6 +169,7 @@ static void mot_stop(int direct) {
 }
 
 static void mot_up () {
+	OLD_DUTY_A = DUTY_A;
 	printf("moving up\n");
 	digitalWrite(APIN1, LOW);
 	digitalWrite(APIN2, HIGH);
@@ -175,10 +178,13 @@ static void mot_up () {
 	} else {
 		speed_up(1);
 	}
-	softPwmWrite(APINP, DUTY_A);
+	if (DUTY_A != OLD_DUTY_A) {
+		softPwmWrite(APINP, DUTY_A);
+	}
 }
 
 static void mot_down () {
+	OLD_DUTY_A = DUTY_A;
 	printf("moving down\n");
 	digitalWrite(APIN1, HIGH);
 	digitalWrite(APIN2, LOW);
@@ -187,10 +193,13 @@ static void mot_down () {
 	} else {
 		speed_up(1);
 	}
-	softPwmWrite(APINP, DUTY_A);
+	if (DUTY_A != OLD_DUTY_A) {
+		softPwmWrite(APINP, DUTY_A);
+	}
 }
 
 static void mot_left() {
+	OLD_DUTY_B = DUTY_B;
 	printf("moving left\n");
 	digitalWrite(BPIN1, LOW);
 	digitalWrite(BPIN2, HIGH);
@@ -199,7 +208,9 @@ static void mot_left() {
 	} else {
 		speed_up(2);
 	}
-	softPwmWrite(BPINP, DUTY_B);
+	if (DUTY_B != OLD_DUTY_B) {
+		softPwmWrite(BPINP, DUTY_B);
+	}
 	if (OLD_DIR == 2) {
 		loose_wheel(1);
 	}
@@ -207,6 +218,7 @@ static void mot_left() {
 }
 
 static void mot_right() {
+	OLD_DUTY_B = DUTY_B;
 	printf("moving right\n");
 	digitalWrite(BPIN1, HIGH);
 	digitalWrite(BPIN2, LOW);
@@ -215,7 +227,9 @@ static void mot_right() {
 	} else {
 		speed_up(2);
 	}
-	softPwmWrite(BPINP, DUTY_B);
+	if (DUTY_B != OLD_DUTY_B) {
+		softPwmWrite(BPINP, DUTY_B);
+	}
 	if (OLD_DIR == 1) {
 		loose_wheel(2);
 	}
