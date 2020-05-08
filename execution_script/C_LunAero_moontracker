@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=C LunAero Moontracker
+Comment=Launcher for the LunAero moontracking program
+Icon=/usr/share/pixmaps/xterm_32x32.xpm
+Exec=/home/pi/Documents/LunAero_C/execution_script/run_save_log.sh
+Type=Application
+Encoding=UTF-8
+Terminal=true
