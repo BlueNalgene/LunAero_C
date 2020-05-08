@@ -1072,7 +1072,7 @@ int main (int argc, char **argv) {
 				// Do this only once.
 				DUTY_A = 20;
 				DUTY_B = 20;
-				switched_moedes = 1;
+				switched_modes = 1;
 			}
 			
 			// This usleep counter is not temporally stable due to the forced mmap check every sec.
