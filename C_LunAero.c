@@ -240,7 +240,7 @@ static void loose_wheel(int wheel_dir) {
 			digitalWrite(BPIN2, LOW);
 		}
 		softPwmWrite(BPINP, DUTY_B);
-		usleep(3000000);
+		usleep(2000000);
 		DUTY_B = old_duty;
 	}
 }
@@ -966,6 +966,7 @@ static gboolean key_event(GtkWidget *widget, GdkEventKey *event) {
 int main (int argc, char **argv) {
 	GtkApplication *app;
 	int status = 0;
+	int switched_modes = 0;
 	
 	// Prep the GPIO
 	gpio_pin_setup();
@@ -1039,9 +1040,13 @@ int main (int argc, char **argv) {
 				usleep(500000);
 			}
 			
-			// Set duty cycles to low end once automatic mode is started
-			DUTY_A = 20;
-			DUTY_B = 20;
+			if (switched_modes == 0) {
+				// Set duty cycles to low end once automatic mode is started
+				// Do this only once.
+				DUTY_A = 20;
+				DUTY_B = 20;
+				switched_moedes = 1;
+			}
 			
 			// This usleep counter is not temporally stable due to the forced mmap check every sec.
 			// Empirically, appears to capture 1.66s of video/1000000 usleep microseconds.
