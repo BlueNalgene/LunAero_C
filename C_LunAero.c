@@ -179,6 +179,7 @@ static void mot_up () {
 		speed_up(1);
 	}
 	if (DUTY_A != OLD_DUTY_A) {
+		printf("setting motor B duty cycle to: %d\n", DUTY_A);
 		softPwmWrite(APINP, DUTY_A);
 	}
 }
@@ -194,6 +195,7 @@ static void mot_down () {
 		speed_up(1);
 	}
 	if (DUTY_A != OLD_DUTY_A) {
+		printf("setting motor B duty cycle to: %d\n", DUTY_A);
 		softPwmWrite(APINP, DUTY_A);
 	}
 }
@@ -209,6 +211,7 @@ static void mot_left() {
 		speed_up(2);
 	}
 	if (DUTY_B != OLD_DUTY_B) {
+		printf("setting motor B duty cycle to: %d\n", DUTY_B);
 		softPwmWrite(BPINP, DUTY_B);
 	}
 	if (OLD_DIR == 2) {
@@ -228,6 +231,7 @@ static void mot_right() {
 		speed_up(2);
 	}
 	if (DUTY_B != OLD_DUTY_B) {
+		printf("setting motor B duty cycle to: %d\n", DUTY_B);
 		softPwmWrite(BPINP, DUTY_B);
 	}
 	if (OLD_DIR == 1) {
@@ -372,6 +376,7 @@ static void first_record() {
 	*(int *)*(int *)val_ptr.RUN_MODEaddr = 1;
 	kill_raspivid();
 	camera_start();
+	printf("-----------------\nRECORDING STARTED\n-----------------\n");
 }
 
 static void reset_record() {
@@ -870,16 +875,20 @@ static int frame_centroid (int lost_counter) {
 	// If nothing is found, return an increment to the moon loss counter
 	if ((sumx == 0) & (sumy == 0)) {
 		lost_counter = lost_counter + 1;
+		printf("lost moon for %d cycles\n", lost_counter);
 	} else {
 		// something was found, reset moon loss counter
 		lost_counter = 0;
+		printf("Moon found centered at (%d, %d)\n", (sumx/cnt), (sumy/cnt));
 		
 		// Check if bright spot is near the edge of the frame
 		// If so, move away from that edge
 		// If not or near both edges, use centroid
 		if ((top_edge >= w_thresh) & (bottom_edge < w_thresh)) {
+			printf("detected light on top edge\n");
 			mot_down();
 		} else if ((bottom_edge >= w_thresh) & (top_edge < w_thresh)) {
+			printf("detected light on bottom edge\n");
 			mot_up();
 		} else {
 			if (abs((sumy/cnt)-(WORK_HEIGHT/4)) > ((WORK_HEIGHT/4)*0.05)) {
@@ -894,8 +903,10 @@ static int frame_centroid (int lost_counter) {
 		}
 		
 		if ((left_edge >= h_thresh) & (right_edge < h_thresh)) {
+			printf("detected light on left edge\n");
 			mot_right();
 		} else if ((left_edge <= h_thresh) & (right_edge > h_thresh)) {
+			printf("detected light on right edge\n");
 			mot_left();
 		} else {
 			if (abs((sumx/cnt)-(WORK_WIDTH/4)) > ((WORK_WIDTH/4)*0.2)) {
@@ -1100,6 +1111,8 @@ int main (int argc, char **argv) {
 	// Doubletap/Mozambique.  We have to make sure we don't leave a zombie process.
 	*ABORT = 1;
 	cleanup();
+	printf("closing program\n");
+	usleep(1000000);
 	
 	return status;
 }
