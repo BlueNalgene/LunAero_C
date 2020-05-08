@@ -860,15 +860,17 @@ static int frame_centroid (int lost_counter) {
 	// Calculate the centroid using sum.
 	int sumx = 0;
 	int sumy = 0;
-	int cnt = 0;
+	int xcnt = 0;
+	int ycnt = 0;
 	for (j=0; j<WORK_WIDTH/2; j++) {
 		for (k=0; k<WORK_HEIGHT/2; k++) {
 			
 			if (matrix[j][k] == checkval) {
 				sumx = sumx + j;
 				sumy = sumy + k;
-				cnt++;
+				ycnt++;
 			}
+		xcnt++;
 		}
 	}
 	
@@ -879,7 +881,7 @@ static int frame_centroid (int lost_counter) {
 	} else {
 		// something was found, reset moon loss counter
 		lost_counter = 0;
-		printf("Moon found centered at (%d, %d)\n", (sumx/cnt), (sumy/cnt));
+		printf("Moon found centered at (%d, %d)\n", (sumx/xcnt), (sumy/ycnt));
 		
 		// Check if bright spot is near the edge of the frame
 		// If so, move away from that edge
@@ -891,8 +893,8 @@ static int frame_centroid (int lost_counter) {
 			printf("detected light on bottom edge\n");
 			mot_up();
 		} else {
-			if (abs((sumy/cnt)-(WORK_HEIGHT/4)) > ((WORK_HEIGHT/4)*0.05)) {
-				if (((sumy/cnt)-(WORK_HEIGHT/4)) > 0) {
+			if (abs((sumy/ycnt)-(WORK_HEIGHT/4)) > ((WORK_HEIGHT/4)*0.05)) {
+				if (((sumy/ycnt)-(WORK_HEIGHT/4)) > 0) {
 					mot_down();
 				} else {
 					mot_up();
@@ -909,8 +911,8 @@ static int frame_centroid (int lost_counter) {
 			printf("detected light on right edge\n");
 			mot_left();
 		} else {
-			if (abs((sumx/cnt)-(WORK_WIDTH/4)) > ((WORK_WIDTH/4)*0.2)) {
-				if (((sumx/cnt)-(WORK_WIDTH/4)) > 0) {
+			if (abs((sumx/xcnt)-(WORK_WIDTH/4)) > ((WORK_WIDTH/4)*0.2)) {
+				if (((sumx/xcnt)-(WORK_WIDTH/4)) > 0) {
 					mot_right();
 				} else {
 					mot_left();
