@@ -305,8 +305,8 @@ static void gpio_pin_setup () {
 		}
 	}
 	// create soft PWM
-	softPwmCreate(APINP, DUTY_A, DUTY);
-	softPwmCreate(BPINP, DUTY_B, DUTY);
+	softPwmCreate(APINP, 0, DUTY);
+	softPwmCreate(BPINP, 0, DUTY);
 }
 
 static void screen_size (int argc, char *argv[]) {
