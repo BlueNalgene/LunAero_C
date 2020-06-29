@@ -123,9 +123,10 @@ static gboolean refresh_text_boxes(gpointer data) {
 }
 
 static void mot_stop(int direct) {
-	printf("stopping\n");
+	
 	// Case Both motors are moving
 	if (direct == 0) {
+		printf("stopping both\n");
 		while ((DUTY_A > 0) | (DUTY_B > 0)) {
 			if (DUTY_A > 10) {
 				DUTY_A = 10;
@@ -148,6 +149,7 @@ static void mot_stop(int direct) {
 	}
 	// Case motor A is moving
 	if (direct == 1) {
+		printf("stopping A\n");
 		while (DUTY_A > 0) {
 			DUTY_A = DUTY_A - 1;
 			softPwmWrite(APINP, DUTY_A);
@@ -158,6 +160,7 @@ static void mot_stop(int direct) {
 	}
 	// Case motor B is moving
 	if (direct == 2) {
+		printf("stopping B\n");
 		while (DUTY_B > 0) {
 			DUTY_B = DUTY_B - 1;
 			softPwmWrite(BPINP, DUTY_B);
@@ -888,10 +891,10 @@ static int frame_centroid (int lost_counter) {
 		// If not or near both edges, use centroid
 		if ((top_edge >= w_thresh) & (bottom_edge < w_thresh)) {
 			printf("detected light on top edge\n");
-			mot_down();
+			mot_up();
 		} else if ((bottom_edge >= w_thresh) & (top_edge < w_thresh)) {
 			printf("detected light on bottom edge\n");
-			mot_up();
+			mot_down();
 		} else {
 			if (abs((sumy/ycnt)-(WORK_HEIGHT/4)) > ((WORK_HEIGHT/4)*0.05)) {
 				if (((sumy/ycnt)-(WORK_HEIGHT/4)) > 0) {
@@ -906,10 +909,10 @@ static int frame_centroid (int lost_counter) {
 		
 		if ((left_edge >= h_thresh) & (right_edge < h_thresh)) {
 			printf("detected light on left edge\n");
-			mot_right();
+			mot_left();
 		} else if ((left_edge <= h_thresh) & (right_edge > h_thresh)) {
 			printf("detected light on right edge\n");
-			mot_left();
+			mot_right();
 		} else {
 			if (abs((sumx/xcnt)-(WORK_WIDTH/4)) > ((WORK_WIDTH/4)*0.2)) {
 				if (((sumx/xcnt)-(WORK_WIDTH/4)) > 0) {
