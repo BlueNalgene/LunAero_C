@@ -59,12 +59,8 @@ void kill_raspivid () {
 	fgets(line, 1024, cmd);
 	pid_t pid = strtoul(line, NULL, 10);
 	pclose(cmd);
-	if (pid) {
-		std::cout << "attempting to kill pid: " << pid << std::endl;
-		system("killall -s INT raspivid");
-	} else {
-		// This else is left in for debug
-		//printf("WARNING: no proc to kill with pid:%d\n", pid);
+	if (kill(pid, SIGINT) != 0) {
+		std::cout << "ERROR: Unable to kill raspivid" << std::endl;
 	}
 }
 

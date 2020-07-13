@@ -12,8 +12,12 @@
 #include <unistd.h>        // provides usleep
 #include "bcm_host.h"      // provides DISPMANX et al.
 #include <assert.h>        // provides assert
+#include <signal.h>        // provides kill signals
+#include <stdlib.h>        // provides system
+#include <stdio.h>         // provides popen
 #include <sys/mman.h>      // provides mmap
 #include <sys/stat.h>      // provides mkdir
+#include <sys/types.h>     // provides kill
 #include <sys/wait.h>      // provides wait
 #include <chrono>          // provides C++ chrono
 #include <ctime>           // provides c time funcitons for chrono usage
