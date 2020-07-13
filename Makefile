@@ -1,7 +1,12 @@
 OBJS=LunAero_Moontracker
-BIN=gcc C_LunAero.c
+#BIN=gcc C_LunAero.c
+BIN=g++ LunAero.cpp
+BIN+=gtk_LunAero.cpp
+BIN+=motors_LunAero.cpp
+BIN+=camera_LunAero.cpp
 
 #CFLAGS+=-Wall -g -O3
+CFLAGS+=-std=c++17
 LDFLAGS+=-L/opt/vc/lib/ -lbcm_host -lm -lwiringPi -lpthread
 LDFLAGS+=`pkg-config --cflags --libs gtk+-3.0`
 #LDFLAGS+=`pkg-config --cflags --libs opencv`
