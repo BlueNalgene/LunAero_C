@@ -155,7 +155,7 @@ int frame_centroid(int lost_cnt) {
 	int w_thresh = WORK_WIDTH/20;
 	int h_thresh = WORK_HEIGHT/20;
 	
-	unsigned char linebreak = 0x0a;
+	//~ unsigned char linebreak = 0x0a;
 	unsigned char c;
 	int i = 0;
 	int j;
@@ -166,9 +166,9 @@ int frame_centroid(int lost_cnt) {
 	
 	// Ignore P6 Header
 	rewind(fp);
-	c = fgetc(fp); //P
-	c = fgetc(fp); //6
-	c = fgetc(fp); //OxOa
+	fgetc(fp); //P
+	fgetc(fp); //6
+	fgetc(fp); //OxOa
 	
 	// Grab the image size from header
 	while (i < 2) {
@@ -186,8 +186,8 @@ int frame_centroid(int lost_cnt) {
 		}
 	}
 	// Ignore netbpm max value (1)
-	c = fgetc(fp); //1
-	c = fgetc(fp); //OxOa
+	fgetc(fp); //1
+	fgetc(fp); //OxOa
 	
 	// Create Matrix
 	int matrix[height][width];
@@ -436,7 +436,7 @@ int main (int argc, char **argv) {
 			// child process of 2
 			// Init app
 			std::cout << "preparing app" << std::endl;
-			int LOST_COUNTER = 0;
+			//~ int LOST_COUNTER = 0;
 			gtk_class::app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE);
 			g_signal_connect(gtk_class::app, "activate", G_CALLBACK (activate), NULL);
 			status = g_application_run(G_APPLICATION(gtk_class::app), argc, argv);

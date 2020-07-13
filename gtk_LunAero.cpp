@@ -301,14 +301,14 @@ void gtk_buttons_preview() {
 	g_signal_connect_swapped (gtk_class::button_record, "clicked", G_CALLBACK (first_record_killer), NULL);
 	
 	// Capture Key Events
-	g_signal_connect(gtk_class::window, "key-release-event", G_CALLBACK(key_event_preview), NULL);
+	gtk_class::key_id = g_signal_connect(gtk_class::window, "key-release-event", G_CALLBACK(key_event_preview), NULL);
 	return;
 }
 
 void gtk_css_preview() {
 	// CSS stylesheet without using CSS
 	//~ std::string css_string = get_css_string();
-	auto provider = gtk_css_provider_new();
+	provider = gtk_css_provider_new();
 	gtk_css_provider_load_from_data (provider, gtk_class::css_string.c_str(), -1, NULL);
 	// Apply CSS style to elements
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::window), 
@@ -340,11 +340,11 @@ void gtk_css_preview() {
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_record),
 		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	// Add fakebuttons to special button class
-	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::fakebutton), "fakebutton");
-	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::fakebutton2), "fakebutton");
-	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::fakebutton3), "fakebutton");
-	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::fakebutton4), "fakebutton");
-	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::fakebutton5), "fakebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton), "fakebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton2), "fakebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton3), "fakebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton4), "fakebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton5), "fakebutton");
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton),
 		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton2),
@@ -475,6 +475,21 @@ gboolean abort_check(_GtkWidget* data) {
 }
 
 void first_record_killer(_GtkWidget* data) {
+	// Remove the old providers for unused buttons
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_up), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_down), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_left), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_right), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_stop), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_camera_command), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up_up), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down_down), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_iso), GTK_STYLE_PROVIDER(provider));
+	gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_record), GTK_STYLE_PROVIDER(provider));
+	
+	// Assign fakebutton context to each
 	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::button_up), "fakebutton");
 	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::button_down), "fakebutton");
 	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::button_left), "fakebutton");
@@ -487,7 +502,24 @@ void first_record_killer(_GtkWidget* data) {
 	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::button_shutter_down_down), "fakebutton");
 	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::button_iso), "fakebutton");
 	gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::button_record), "fakebutton");
+	
+	// Re-add the providers
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_up), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_down), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_left), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_right), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_stop), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_camera_command), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up_up), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down_down), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_iso), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_record), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	
 	gtk_label_set_text(GTK_LABEL(gtk_class::text_shutter), "");
+	g_signal_handler_disconnect(gtk_class::window, gtk_class::key_id);
+	g_signal_connect(gtk_class::window, "key-release-event", G_CALLBACK(key_event_running), NULL);
 	g_timeout_add(50, G_SOURCE_FUNC(g_framecheck), NULL);
 	first_record();
 	*val_ptr.RUN_MODEaddr = 1;

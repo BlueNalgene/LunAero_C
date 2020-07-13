@@ -77,6 +77,7 @@ class gtk_class {
 		inline static GtkWidget *fakebutton5;
     
 		inline static const std::string css_string = get_css_string();
+		inline static gulong key_id;
 	
 
 };

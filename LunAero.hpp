@@ -5,12 +5,14 @@
 // Standard C++ Includes
 #include <string>
 #include <iostream>
+#include <chrono>          // provides C++ chrono
+#include <ctime>           // provides c time funcitons for chrono usage
 //~ #include <sstream>
 
-// Module specific Includes
-#include <time.h>          // provides time
-#include <unistd.h>        // provides usleep
+//Special RPi include
 #include "bcm_host.h"      // provides DISPMANX et al.
+
+// Module specific Includes
 #include <assert.h>        // provides assert
 #include <signal.h>        // provides kill signals
 #include <stdlib.h>        // provides system
@@ -19,8 +21,9 @@
 #include <sys/stat.h>      // provides mkdir
 #include <sys/types.h>     // provides kill
 #include <sys/wait.h>      // provides wait
-#include <chrono>          // provides C++ chrono
-#include <ctime>           // provides c time funcitons for chrono usage
+#include <time.h>          // provides time
+#include <unistd.h>        // provides usleep
+
 
 // User Includes
 #include "gtk_LunAero.hpp"
