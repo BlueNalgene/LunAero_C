@@ -64,6 +64,26 @@ void kill_raspivid () {
 	}
 }
 
+int create_id_file() {
+	std::ofstream idfile;
+	char line[1024];
+	FILE *cmd = popen("cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2", "r");
+	fgets(line, 1024, cmd);
+	pclose(cmd);
+	
+	std::string linestr(line);
+	linestr.erase(std::remove(linestr.begin(), linestr.end(), '\n'), linestr.end());
+	std::string idpath = FILEPATH + "/" + linestr + ".txt";
+	std::cout << "LUID: " << linestr << std::endl;
+	std::cout << "idpath: " << idpath << std::endl;
+	
+	idfile.open(idpath);
+	idfile << "LUID: " << linestr << std::endl;
+	idfile.close();
+	
+	return 0;
+}
+
 void abort_code() {
 	*val_ptr.ABORTaddr = 1;
 }
@@ -345,6 +365,12 @@ int main (int argc, char **argv) {
 	std::cout << "time: " << TSBUFF << std::endl;
 	std::cout << "path: " << FILEPATH << std::endl;
 	
+	// Make ID file
+	if (create_id_file()) {
+		std::cout << "Failed to create ID file" << std::endl;
+	}
+	
+	
 	// Get the screen size now.  Opens and kills an invisible GTK instance.
 	//~ screen_size(argc, argv);
 	
@@ -369,6 +395,7 @@ int main (int argc, char **argv) {
 	val_ptr.STOP_DIRaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
 	val_ptr.DUTY_Aaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
 	val_ptr.DUTY_Baddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
+	val_ptr.SUBSaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
 	
 	// Memory value which tells the program to continue running.
 	val_ptr.ABORTaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
@@ -383,6 +410,7 @@ int main (int argc, char **argv) {
 	*val_ptr.STOP_DIRaddr = 0;
 	*val_ptr.DUTY_Aaddr = 100;
 	*val_ptr.DUTY_Baddr = 100;
+	*val_ptr.SUBSaddr = 0;
 	*val_ptr.ABORTaddr = 0;
 	
 	int pid1 = fork();
@@ -418,7 +446,7 @@ int main (int argc, char **argv) {
 				if (elapsed_seconds > RECORD_DURATION) {
 					std::cout << "refreshing camera" << std::endl;
 					OLD_RECORD_TIME = std::chrono::system_clock::now();
-					reset_record();
+					*val_ptr.SUBSaddr = 2;
 				}
 				// This doesn't have to be super accurate, so only do it every 5 seconds
 				usleep(5000000);
