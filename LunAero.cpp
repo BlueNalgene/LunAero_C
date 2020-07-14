@@ -77,8 +77,16 @@ int create_id_file() {
 	std::cout << "LUID: " << linestr << std::endl;
 	std::cout << "idpath: " << idpath << std::endl;
 	
+	std::string gmt = current_time(1);
+	
 	idfile.open(idpath);
-	idfile << "LUID: " << linestr << std::endl;
+	idfile 
+	<< "LUID: " 
+	<< linestr 
+	<< std::endl
+	<< "UTC : "
+	<< gmt
+	<< std::endl;
 	idfile.close();
 	
 	return 0;
@@ -86,6 +94,26 @@ int create_id_file() {
 
 void abort_code() {
 	*val_ptr.ABORTaddr = 1;
+}
+
+std::string current_time(int gmt) {
+	time_t rawtime;
+	struct tm * timeinfo;
+	char buffer[80];
+
+	time(&rawtime);
+	if (gmt > 0) {
+		timeinfo = gmtime(&rawtime);
+	} else {
+		timeinfo = localtime(&rawtime);
+	}
+
+	strftime(buffer, sizeof(buffer), "%Y%m%d%H%M%S", timeinfo);
+	std::string str(buffer);
+
+	std::cout << str << std::endl;
+	
+	return str;
 }
 
 void current_frame() {
@@ -359,7 +387,7 @@ int main (int argc, char **argv) {
 	
 	
 	// Make folder for stuff
-	TSBUFF = std::to_string((unsigned long)time(NULL));
+	TSBUFF = current_time(0);
 	FILEPATH = DEFAULT_FILEPATH + TSBUFF;
 	mkdir(FILEPATH.c_str(), 0700);
 	std::cout << "time: " << TSBUFF << std::endl;

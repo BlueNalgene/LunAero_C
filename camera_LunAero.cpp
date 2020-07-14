@@ -5,7 +5,7 @@ void camera_start () {
 	// Call preview of camera
 	std::string commandstring;
 	// Get the current unix timestamp as a string
-	TSBUFF = std::to_string((unsigned long)time(NULL));
+	TSBUFF = current_time(0);
 	commandstring = "raspivid -v -t 0 -w 1920 -h 1080 -fps 30 -b 8000000 -ISO " 
 	+ std::to_string(*val_ptr.ISO_VALaddr)
 	+ " -ss " 

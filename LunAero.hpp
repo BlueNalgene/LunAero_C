@@ -85,6 +85,7 @@ void cb_framecheck();
 void cleanup();
 void kill_raspivid();
 void current_frame();
+std::string current_time(int gmt);
 int frame_centroid(int lost_counter);
 void abort_code();
 
