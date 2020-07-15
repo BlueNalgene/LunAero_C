@@ -35,7 +35,7 @@
 // Globally Defined Constants
 #define LOST_THRESH 30
 // Observed duration is 2100s in video, but 1801 in timestamp
-inline std::chrono::duration<double> RECORD_DURATION = (std::chrono::duration<double>) 1800.;
+inline std::chrono::duration<double> RECORD_DURATION = (std::chrono::duration<double>) 30.;
 
 // Global variables (Inline Requires C++17)
 inline int LOST_COUNTER = 0;
