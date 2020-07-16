@@ -54,9 +54,11 @@ void camera_preview() {
 
 void first_record() {
 	kill_raspivid();
+	sem_wait(&LOCK);
 	//~ *val_ptr.RUN_MODEaddr = 1;
 	*val_ptr.DUTY_Aaddr = 20;
 	*val_ptr.DUTY_Baddr = 20;
+	sem_post(&LOCK);
 	camera_start();
 	std::cout << "-----------------\nRECORDING STARTED\n-----------------\n" << std::endl;
 }
@@ -69,55 +71,81 @@ void reset_record() {
 
 void refresh_camera() {
 	kill_raspivid();
+	sem_wait(&LOCK);
 	*val_ptr.REFRESH_CAMaddr = 1;
+	sem_post(&LOCK);
 	camera_preview();
 }
 
 void shutter_up() {
 	if (*val_ptr.SHUTTER_VALaddr < 32901) {
+		sem_wait(&LOCK);
 		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr + 100;
+		sem_post(&LOCK);
 	} else {
+		sem_wait(&LOCK);
 		*val_ptr.SHUTTER_VALaddr = 33000;
+		sem_post(&LOCK);
 	}
 	std::cout << "SHUTTER_VAL: " << *val_ptr.SHUTTER_VALaddr << std::endl;
 }
 
 void shutter_down() {
 	if (*val_ptr.SHUTTER_VALaddr > 110) {
+		sem_wait(&LOCK);
 		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr - 100;
+		sem_post(&LOCK);
 	} else {
+		sem_wait(&LOCK);
 		*val_ptr.SHUTTER_VALaddr = 10;
+		sem_post(&LOCK);
 	}
 	std::cout << "SHUTTER_VAL: " << *val_ptr.SHUTTER_VALaddr << std::endl;
 }
 
 void shutter_up_up() {
 	if (*val_ptr.SHUTTER_VALaddr < 32001) {
+		sem_wait(&LOCK);
 		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr + 1000;
+		sem_post(&LOCK);
 	} else {
+		sem_wait(&LOCK);
 		*val_ptr.SHUTTER_VALaddr = 33000;
+		sem_post(&LOCK);
 	}
 	std::cout << "SHUTTER_VAL: %d\n" << *val_ptr.SHUTTER_VALaddr << std::endl;
 }
 
 void shutter_down_down() {
 	if (*val_ptr.SHUTTER_VALaddr > 1010) {
+		sem_wait(&LOCK);
 		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr - 1000;
+		sem_post(&LOCK);
 	} else {
+		sem_wait(&LOCK);
 		*val_ptr.SHUTTER_VALaddr = 10;
+		sem_post(&LOCK);
 	}
 	std::cout << "SHUTTER_VAL: " << *val_ptr.SHUTTER_VALaddr << std::endl;
 }
 
 void iso_cycle() {
 	if (*val_ptr.ISO_VALaddr == 200) {
+		sem_wait(&LOCK);
 		*val_ptr.ISO_VALaddr = 400;
+		sem_post(&LOCK);
 	} else if (*val_ptr.ISO_VALaddr == 400) {
+		sem_wait(&LOCK);
 		*val_ptr.ISO_VALaddr = 800;
+		sem_post(&LOCK);
 	} else if (*val_ptr.ISO_VALaddr == 800) {
+		sem_wait(&LOCK);
 		*val_ptr.ISO_VALaddr = 100;
+		sem_post(&LOCK);
 	} else if (*val_ptr.ISO_VALaddr == 100) {
+		sem_wait(&LOCK);
 		*val_ptr.ISO_VALaddr = 200;
+		sem_post(&LOCK);
 	}
 	std::cout << "ISO_VAL: " << *val_ptr.ISO_VALaddr << std::endl;
 }

@@ -17,6 +17,7 @@
 // Module specific Includes
 #include <assert.h>        // provides assert
 #include <signal.h>        // provides kill signals
+#include <semaphore.h>     // provides sem_init
 #include <stdlib.h>        // provides system
 #include <stdio.h>         // provides popen
 #include <sys/mman.h>      // provides mmap
@@ -47,6 +48,8 @@ inline std::string FILEPATH;
 inline std::string DEFAULT_FILEPATH = "/media/pi/MOON1/";
 inline std::string TSBUFF;
 inline std::chrono::time_point OLD_RECORD_TIME = std::chrono::system_clock::now();
+
+inline sem_t LOCK;
 
 // Struct of values used when writing labels (Inline Requires C++17)
 inline struct val_addresses {

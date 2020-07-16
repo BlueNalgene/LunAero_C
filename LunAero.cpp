@@ -36,7 +36,9 @@ void cb_framecheck() {
 	current_frame();
 	LOST_COUNTER = frame_centroid(LOST_COUNTER);
 	if (LOST_COUNTER == 30) {
+		sem_wait(&LOCK);
 		*val_ptr.ABORTaddr = 1;
+		sem_post(&LOCK);
 	} else {
 		LOST_COUNTER = 0;
 	}
@@ -50,7 +52,9 @@ void cleanup () {
 }
 
 void kill_raspivid () {
-	*val_ptr.STOP_DIRaddr == 3;
+	sem_wait(&LOCK);
+	*val_ptr.STOP_DIRaddr = 3;
+	sem_post(&LOCK);
 	
 	// HACK - This is a filthy hack to get kill the raspivid instance.
 	// Since fork interactions are hard, we will use this for now.
@@ -93,7 +97,9 @@ int create_id_file() {
 }
 
 void abort_code() {
+	sem_wait(&LOCK);
 	*val_ptr.ABORTaddr = 1;
+	sem_post(&LOCK);
 }
 
 std::string current_time(int gmt) {
@@ -208,8 +214,8 @@ int frame_centroid(int lost_cnt) {
 	int i = 0;
 	int j;
 	int k;
-	int width;
-	int height;
+	int frmwidth;
+	int frmheight;
 	std::string charst = "";
 	
 	// Ignore P6 Header
@@ -225,9 +231,9 @@ int frame_centroid(int lost_cnt) {
 			charst += c;
 		} else {
 			if (i == 0) {
-				width = std::stoi(charst);
+				frmwidth = std::stoi(charst);
 			} else if (i == 1) {
-				height = std::stoi(charst);
+				frmheight = std::stoi(charst);
 			}
 			charst = "";
 			i++;
@@ -238,12 +244,12 @@ int frame_centroid(int lost_cnt) {
 	fgetc(fp); //OxOa
 	
 	// Create Matrix
-	int matrix[height][width];
+	int matrix[frmheight][frmwidth];
 	
 	
 	// Put the pixels in the matrix
-	for (k=0; k<height; k++) {
-		for (j=0; j<width; j++) {
+	for (k=0; k<frmheight; k++) {
+		for (j=0; j<frmwidth; j++) {
 			// RGB has depth of 3 digits
 			i = 0;
 			while (i < 3) {
@@ -262,19 +268,19 @@ int frame_centroid(int lost_cnt) {
 	int left_edge = 0;
 	int right_edge = 0;
 	
-	for (j=0; j<width; j++) {
+	for (j=0; j<frmwidth; j++) {
 		if (matrix[0][j] == checkval) {
 			top_edge++;
 		}
-		if (matrix[height-1][j] == checkval) {
+		if (matrix[frmheight-1][j] == checkval) {
 			bottom_edge++;
 		}
 	}
-	for (k=0; k<height; k++) {
+	for (k=0; k<frmheight; k++) {
 		if (matrix[k][0] == checkval) {
 			left_edge++;
 		}
-		if (matrix[k][width-1] == checkval) {
+		if (matrix[k][frmwidth-1] == checkval) {
 			right_edge++;
 		}
 	}
@@ -285,8 +291,8 @@ int frame_centroid(int lost_cnt) {
 	int sumy = 0;
 	int mcnt = 0;
 	
-	for (k=0; k<height; k++) {
-		for (j=0; j<width; j++) {
+	for (k=0; k<frmheight; k++) {
+		for (j=0; j<frmwidth; j++) {
 			if (matrix[k][j] == checkval) {
 				sumx = sumx + j;
 				sumy = sumy + k;
@@ -332,9 +338,9 @@ int frame_centroid(int lost_cnt) {
 			std::cout << "detected light on bottom edge" << std::endl;
 			mot_down_command();
 		} else {
-			if (abs((sumy/mcnt)-(height/2)) > ((height/2)*0.2)) {
-				std::cout << "M_y = " << (sumy/mcnt)-(height/2) << std::endl;
-				if (((sumy/mcnt)-(height/2)) > 0) {
+			if (abs((sumy/mcnt)-(frmheight/2)) > ((frmheight/2)*0.2)) {
+				std::cout << "M_y = " << (sumy/mcnt)-(frmheight/2) << std::endl;
+				if (((sumy/mcnt)-(frmheight/2)) > 0) {
 					std::cout << "centroid moving to down" << std::endl;
 					mot_down_command();
 				} else {
@@ -342,7 +348,9 @@ int frame_centroid(int lost_cnt) {
 					mot_up_command();
 				}
 			} else {
+				sem_wait(&LOCK);
 				*val_ptr.STOP_DIRaddr = 2;
+				sem_post(&LOCK);
 			}
 		}
 		
@@ -353,9 +361,9 @@ int frame_centroid(int lost_cnt) {
 			std::cout << "detected light on right edge" << std::endl;
 			mot_right_command();
 		} else {
-			if (abs((sumx/mcnt)-(width/2)) > ((width/2)*0.4)) {
-				std::cout << "M_x = " << (sumx/mcnt)-(width/2) << std::endl;
-				if (((sumx/mcnt)-(width/2)) > 0) {
+			if (abs((sumx/mcnt)-(frmwidth/2)) > ((frmwidth/2)*0.4)) {
+				std::cout << "M_x = " << (sumx/mcnt)-(frmwidth/2) << std::endl;
+				if (((sumx/mcnt)-(frmwidth/2)) > 0) {
 					std::cout << "centroid moving to right" << std::endl;
 					mot_right_command();
 				} else {
@@ -365,9 +373,13 @@ int frame_centroid(int lost_cnt) {
 			} else {
 				// In the case we already need to stop one direction, stop both
 				if (*val_ptr.STOP_DIRaddr == 2) {
+					sem_wait(&LOCK);
 					*val_ptr.STOP_DIRaddr = 3;
+					sem_post(&LOCK);
 				} else {
+					sem_wait(&LOCK);
 					*val_ptr.STOP_DIRaddr = 1;
+					sem_post(&LOCK);
 				}
 			}
 		}
@@ -381,8 +393,10 @@ int main (int argc, char **argv) {
 	system("xset -dpms");
 	system("xset s off");
 	
-	//~ GtkApplication *app;
 	int status = 0;
+	
+	// init SUBS semaphore
+	sem_init(&LOCK, 1, 1);
 	
 	
 	
@@ -473,8 +487,10 @@ int main (int argc, char **argv) {
 				std::chrono::duration<double> elapsed_seconds = current_time-OLD_RECORD_TIME;
 				if (elapsed_seconds > RECORD_DURATION) {
 					std::cout << "refreshing camera" << std::endl;
+					sem_wait(&LOCK);
 					OLD_RECORD_TIME = std::chrono::system_clock::now();
 					*val_ptr.SUBSaddr = 2;
+					sem_post(&LOCK);
 				}
 				// This doesn't have to be super accurate, so only do it every 5 seconds
 				usleep(5000000);

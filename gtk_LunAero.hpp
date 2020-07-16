@@ -12,11 +12,6 @@
 // User Includes
 #include "LunAero.hpp"
 
-// Global GTK widgets
-static GtkWidget *fakebutton;
-static GtkWidget *text_status;
-static GtkCssProvider *provider;
-
 // Declare Functions
 void screen_size();
 void activate(GtkApplication *app, gpointer user_data);
@@ -40,6 +35,8 @@ class gtk_class {
 		inline static GtkApplication *app;
 		// Main Window
 		inline static GtkWidget *window;
+		// CSS provider
+		inline static GtkCssProvider *provider;
 		// Grids
 		inline static GtkWidget *grid;
 		inline static GtkWidget *dirgrid;

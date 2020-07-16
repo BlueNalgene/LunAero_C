@@ -225,7 +225,9 @@ void mot_stop_command() {
 	} else {
 		std::cout << "mot stop auto" << std::endl;
 	}
+	sem_wait(&LOCK);
 	*val_ptr.STOP_DIRaddr = 3;
+	sem_post(&LOCK);
 }
 
 void mot_up_command() {
@@ -235,11 +237,17 @@ void mot_up_command() {
 		std::cout << "mot up auto" << std::endl;
 	}
 	if (*val_ptr.STOP_DIRaddr == 3) {
+		sem_wait(&LOCK);
 		*val_ptr.STOP_DIRaddr = 1;
+		sem_post(&LOCK);
 	} else if (*val_ptr.STOP_DIRaddr == 2) {
+		sem_wait(&LOCK);
 		*val_ptr.STOP_DIRaddr = 0;
+		sem_post(&LOCK);
 	}
+	sem_wait(&LOCK);
 	*val_ptr.VERT_DIRaddr = 1;
+	sem_post(&LOCK);
 }
 
 void mot_down_command() {
@@ -249,11 +257,17 @@ void mot_down_command() {
 		std::cout << "mot down auto" << std::endl;
 	}
 	if (*val_ptr.STOP_DIRaddr == 3) {
+		sem_wait(&LOCK);
 		*val_ptr.STOP_DIRaddr = 1;
+		sem_post(&LOCK);
 	} else if (*val_ptr.STOP_DIRaddr == 2) {
+		sem_wait(&LOCK);
 		*val_ptr.STOP_DIRaddr = 0;
+		sem_post(&LOCK);
 	}
+	sem_wait(&LOCK);
 	*val_ptr.VERT_DIRaddr = 2;
+	sem_post(&LOCK);
 }
 
 void mot_left_command() {
@@ -263,11 +277,17 @@ void mot_left_command() {
 		std::cout << "mot left auto" << std::endl;
 	}
 	if (*val_ptr.STOP_DIRaddr == 3) {
+		sem_wait(&LOCK);
 		*val_ptr.STOP_DIRaddr = 2;
+		sem_post(&LOCK);
 	} else if (*val_ptr.STOP_DIRaddr == 1) {
+		sem_wait(&LOCK);
 		*val_ptr.STOP_DIRaddr = 0;
+		sem_post(&LOCK);
 	}
+	sem_wait(&LOCK);
 	*val_ptr.HORZ_DIRaddr = 1;
+	sem_post(&LOCK);
 }
 
 void mot_right_command() {
@@ -277,11 +297,17 @@ void mot_right_command() {
 		std::cout << "mot right auto" << std::endl;
 	}
 	if (*val_ptr.STOP_DIRaddr == 3) {
+		sem_wait(&LOCK);
 		*val_ptr.STOP_DIRaddr = 2;
+		sem_post(&LOCK);
 	} else if (*val_ptr.STOP_DIRaddr == 1) {
+		sem_wait(&LOCK);
 		*val_ptr.STOP_DIRaddr = 0;
+		sem_post(&LOCK);
 	}
+	sem_wait(&LOCK);
 	*val_ptr.HORZ_DIRaddr = 2;
+	sem_post(&LOCK);
 }
 
 void gtk_buttons_preview() {
@@ -308,11 +334,11 @@ void gtk_buttons_preview() {
 void gtk_css_preview() {
 	// CSS stylesheet without using CSS
 	//~ std::string css_string = get_css_string();
-	provider = gtk_css_provider_new();
-	gtk_css_provider_load_from_data (provider, gtk_class::css_string.c_str(), -1, NULL);
+	gtk_class::provider = gtk_css_provider_new();
+	gtk_css_provider_load_from_data(gtk_class::provider, gtk_class::css_string.c_str(), -1, NULL);
 	// Apply CSS style to window
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::window), 
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	// Apply activebutton class to buttons
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::exit_button), "activebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_up), "activebutton");
@@ -328,31 +354,31 @@ void gtk_css_preview() {
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_iso), "activebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_record), "activebutton");
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::exit_button), 
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_up),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_down),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_left),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_right),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_stop),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_camera_command),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up_up),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down_down),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_iso),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_record),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	// Add fakebuttons to special button class
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton), "fakebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton2), "fakebutton");
@@ -360,15 +386,15 @@ void gtk_css_preview() {
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton4), "fakebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton5), "fakebutton");
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton2),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton3),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton4),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton5),
-		GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	return;
 }
 
@@ -462,7 +488,9 @@ gboolean key_event_running(GtkWidget *widget, GdkEventKey *event) {
 	gchar* val = gdk_keyval_name (event->keyval);
 
 	if (strcmp(val, "q") == 0) {
+		sem_wait(&LOCK);
 		*val_ptr.ABORTaddr = 1;
+		sem_post(&LOCK);
 	} else {
 		std::cout << "keyval: \"" << val << "\" not used here\n" << std::endl;
 	}
@@ -492,36 +520,22 @@ gboolean abort_check(GtkWidget* data) {
 void first_record_killer(GtkWidget* data) {
 	
 	
-GList   *listrunner;
-gint    *value;
+	//~ GList   *listrunner;
+	//~ gint    *value;
 	
-	listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up)));
-	while (listrunner) {
-		value = (gint *)listrunner->data;
-		printf("first %d\n", *value);
-		listrunner = g_list_next(listrunner);
-	}
-	//~ std::cout << "button_up context: " << *g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up))) << std::endl;
+	//~ listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up)));
+	//~ while (listrunner) {
+		//~ value = (gint *)listrunner->data;
+		//~ printf("first %d\n", *value);
+		//~ listrunner = g_list_next(listrunner);
+	//~ }
 
 	gtk_style_context_remove_class(gtk_widget_get_style_context(gtk_class::button_up), "activebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_up), "fakebutton");
-
-	// Remove the old providers for unused buttons
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_up), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_down), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_left), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_right), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_stop), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_camera_command), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up_up), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down_down), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_iso), GTK_STYLE_PROVIDER(provider));
-	//~ gtk_style_context_remove_provider(gtk_widget_get_style_context(gtk_class::button_record), GTK_STYLE_PROVIDER(provider));
+gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_up), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	
-	// Assign fakebutton context to each
-	//~ gtk_style_context_add_class (gtk_widget_get_style_context (gtk_class::button_up), "fakebutton");
+	
+	//~ // Assign fakebutton context to each
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_down), "fakebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_left), "fakebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_right), "fakebutton");
@@ -534,68 +548,69 @@ gint    *value;
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_iso), "fakebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_record), "fakebutton");
 	
-	// Re-add the providers
-	//~ gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_up), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_down), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_left), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_right), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_stop), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_camera_command), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up_up), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down_down), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_iso), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_record), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	//~ // Re-add the providers
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_down), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_left), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_right), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_stop), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_camera_command), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_up_up), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_shutter_down_down), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_iso), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_record), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	
 	gtk_label_set_text(GTK_LABEL(gtk_class::text_shutter), "");
 	g_signal_handler_disconnect(gtk_class::window, gtk_class::key_id);
 	g_signal_connect(gtk_class::window, "key-release-event", G_CALLBACK(key_event_running), NULL);
 	g_timeout_add(50, G_SOURCE_FUNC(g_framecheck), NULL);
 	
+	gtk_widget_queue_draw(gtk_class::window);
+	
 	//~ GdkScreen *screen = gdk_screen_get_default();
 	//~ gtk_style_context_reset_widgets(screen);
 	
 	
-	listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up)));
-	while (listrunner) {
-		value = (gint *)listrunner->data;
-		printf("second %d\n", *value);
-		listrunner = g_list_next(listrunner);
-	}
+	//~ listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up)));
+	//~ while (listrunner) {
+		//~ value = (gint *)listrunner->data;
+		//~ printf("second %d\n", *value);
+		//~ listrunner = g_list_next(listrunner);
+	//~ }
 	
-	listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_down)));
-	while (listrunner) {
-		value = (gint *)listrunner->data;
-		printf("down %d\n", *value);
-		listrunner = g_list_next(listrunner);
-	}
+	//~ listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_down)));
+	//~ while (listrunner) {
+		//~ value = (gint *)listrunner->data;
+		//~ printf("down %d\n", *value);
+		//~ listrunner = g_list_next(listrunner);
+	//~ }
 	
-	listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_left)));
-	while (listrunner) {
-		value = (gint *)listrunner->data;
-		printf("left %d\n", *value);
-		listrunner = g_list_next(listrunner);
-	}
+	//~ listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_left)));
+	//~ while (listrunner) {
+		//~ value = (gint *)listrunner->data;
+		//~ printf("left %d\n", *value);
+		//~ listrunner = g_list_next(listrunner);
+	//~ }
 	
-	std::cout << "button_up context: " << g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up))) << std::endl;
-	std::cout << "button_down context: " << g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_down))) << std::endl;
-	std::cout << "button_down_down context: " << g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_left))) << std::endl;
+	//~ std::cout << "button_up context: " << g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up))) << std::endl;
+	//~ std::cout << "button_down context: " << g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_down))) << std::endl;
+	//~ std::cout << "button_down_down context: " << g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_left))) << std::endl;
 	
 	first_record();
+	sem_wait(&LOCK);
 	*val_ptr.RUN_MODEaddr = 1;
+	sem_post(&LOCK);
 }
 
 gboolean cb_subsequent(GtkWidget* data) {
-	if (*val_ptr.SUBSaddr > 0) {
-		if (*val_ptr.SUBSaddr == 1) {
-			first_record_killer(data);
-		} else if (*val_ptr.SUBSaddr == 2) {
-			g_timeout_add(50, G_SOURCE_FUNC(g_framecheck), NULL);
+	if (*val_ptr.SUBSaddr == 2) {
+			std::cout << "cb sub 2 " << std::endl;
+			//~ g_timeout_add(50, G_SOURCE_FUNC(g_framecheck), NULL);
 			reset_record();
-		}
-		*val_ptr.SUBSaddr = 0;
+			sem_wait(&LOCK);
+			*val_ptr.SUBSaddr = 0;
+			sem_post(&LOCK);
 	}
-	
 	return TRUE;
 }

@@ -4,18 +4,28 @@ void motor_handler() {
 	// Handle stopping
 	if (*val_ptr.STOP_DIRaddr == 3) {
 		//~ std::cout << "stopping both motors" << std::endl;
+		sem_wait(&LOCK);
 		*val_ptr.HORZ_DIRaddr = 0;
 		*val_ptr.VERT_DIRaddr = 0;
+		sem_post(&LOCK);
 		while ((*val_ptr.DUTY_Aaddr > 0) || (*val_ptr.DUTY_Baddr > 0)) {
 			if (*val_ptr.DUTY_Aaddr > 10) {
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Aaddr = 10;
+				sem_post(&LOCK);
 			} else {
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Aaddr = *val_ptr.DUTY_Aaddr - 1;
+				sem_post(&LOCK);
 			}
 			if (*val_ptr.DUTY_Baddr > 10) {
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Baddr = 10;
+				sem_post(&LOCK);
 			} else {
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Baddr = *val_ptr.DUTY_Baddr - 1;
+				sem_post(&LOCK);
 			}
 			softPwmWrite(APINP, *val_ptr.DUTY_Aaddr);
 			softPwmWrite(BPINP, *val_ptr.DUTY_Baddr);
@@ -30,10 +40,14 @@ void motor_handler() {
 		// When stopped, reset code
 		//~ val_ptr.STOP_DIRaddr = 0;
 	} else if (*val_ptr.STOP_DIRaddr == 2) {
+		sem_wait(&LOCK);
 		*val_ptr.VERT_DIRaddr = 0;
+		sem_post(&LOCK);
 		//~ std::cout << "stopping vertical motor (A)" << std::endl;
 		while (*val_ptr.DUTY_Aaddr > 0) {
+			sem_wait(&LOCK);
 			*val_ptr.DUTY_Aaddr = *val_ptr.DUTY_Aaddr - 1;
+			sem_post(&LOCK);
 			softPwmWrite(APINP, *val_ptr.DUTY_Aaddr);
 			usleep(10);
 		}
@@ -43,10 +57,14 @@ void motor_handler() {
 		// When stopped, reset code
 		//~ val_ptr.STOP_DIRaddr = 0;
 	} else if (*val_ptr.STOP_DIRaddr == 1) {
+		sem_wait(&LOCK);
 		*val_ptr.HORZ_DIRaddr = 0;
+		sem_post(&LOCK);
 		//~ std::cout << "stopping horizontal motor (B)" << std::endl;
 		while (*val_ptr.DUTY_Baddr > 0) {
+			sem_wait(&LOCK);
 			*val_ptr.DUTY_Baddr = *val_ptr.DUTY_Baddr - 1;
+			sem_post(&LOCK);
 			softPwmWrite(BPINP, *val_ptr.DUTY_Baddr);
 			usleep(10);
 		}
@@ -57,7 +75,9 @@ void motor_handler() {
 		//~ val_ptr.STOP_DIRaddr = 0;
 	}
 	if (*val_ptr.STOP_DIRaddr > 0) {
+		sem_wait(&LOCK);
 		*val_ptr.STOP_DIRaddr = 0;
+		sem_post(&LOCK);
 	}
 	// Handle Vertical Motion
 	if (*val_ptr.VERT_DIRaddr > 0) {
@@ -68,7 +88,9 @@ void motor_handler() {
 			digitalWrite(APIN1, LOW);
 			digitalWrite(APIN2, HIGH);
 			if (*val_ptr.RUN_MODEaddr == 0) {
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Aaddr = DUTY;
+				sem_post(&LOCK);
 			} else {
 				speed_up(1);
 			}
@@ -83,7 +105,9 @@ void motor_handler() {
 			digitalWrite(APIN1, HIGH);
 			digitalWrite(APIN2, LOW);
 			if (*val_ptr.RUN_MODEaddr == 0) {
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Aaddr = DUTY;
+				sem_post(&LOCK);
 			} else {
 				speed_up(1);
 			}
@@ -102,7 +126,9 @@ void motor_handler() {
 			digitalWrite(BPIN1, LOW);
 			digitalWrite(BPIN2, HIGH);
 			if (*val_ptr.RUN_MODEaddr == 0) {
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Baddr = DUTY;
+				sem_post(&LOCK);
 			} else {
 				speed_up(2);
 			}
@@ -114,9 +140,13 @@ void motor_handler() {
 				// Loose Wheel protocol
 				auto current_time = std::chrono::system_clock::now();
 				std::chrono::duration<double> elapsed_seconds = current_time-OLD_LOOSE_WHEEL_TIME;
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Baddr = DUTY;
+				sem_post(&LOCK);
 				if (elapsed_seconds > LOOSE_WHEEL_DURATION) {
+					sem_wait(&LOCK);
 					*val_ptr.DUTY_Baddr = MIN_DUTY;
+					sem_post(&LOCK);
 					std::cout << "Loose Wheel maneuver complete" << std::endl;
 					OLD_DIR = 1;
 				} else {
@@ -135,7 +165,9 @@ void motor_handler() {
 			digitalWrite(BPIN1, HIGH);
 			digitalWrite(BPIN2, LOW);
 			if (*val_ptr.RUN_MODEaddr == 0) {
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Baddr = DUTY;
+				sem_post(&LOCK);
 			} else {
 				speed_up(2);
 			}
@@ -145,7 +177,9 @@ void motor_handler() {
 			if (OLD_DIR == 1) {
 				auto current_time = std::chrono::system_clock::now();
 				std::chrono::duration<double> elapsed_seconds = current_time-OLD_LOOSE_WHEEL_TIME;
+				sem_wait(&LOCK);
 				*val_ptr.DUTY_Baddr = DUTY;
+				sem_post(&LOCK);
 				if (elapsed_seconds > LOOSE_WHEEL_DURATION) {
 					*val_ptr.DUTY_Baddr = MIN_DUTY;
 					std::cout << "Loose Wheel maneuver complete" << std::endl;
@@ -174,15 +208,23 @@ void speed_up(int motor) {
 	
 	if (motor == 1) {
 		if (*val_ptr.DUTY_Aaddr < 20) {
+			sem_wait(&LOCK);
 			*val_ptr.DUTY_Aaddr = 20;
+			sem_post(&LOCK);
 		} else if (*val_ptr.DUTY_Aaddr < 100) {
+			sem_wait(&LOCK);
 			*val_ptr.DUTY_Aaddr = *val_ptr.DUTY_Aaddr + 1;
+			sem_post(&LOCK);
 		}
 	} else if (motor == 2) {
 		if (*val_ptr.DUTY_Baddr < 20) {
+			sem_wait(&LOCK);
 			*val_ptr.DUTY_Baddr = 20;
+			sem_post(&LOCK);
 		} else if (*val_ptr.DUTY_Baddr < 100) {
+			sem_wait(&LOCK);
 			*val_ptr.DUTY_Baddr = *val_ptr.DUTY_Baddr + 1;
+			sem_post(&LOCK);
 		}
 	}
 	return;
