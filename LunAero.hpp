@@ -50,33 +50,33 @@ inline std::chrono::time_point OLD_RECORD_TIME = std::chrono::system_clock::now(
 
 // Struct of values used when writing labels (Inline Requires C++17)
 inline struct val_addresses {
-	int * ISO_VALaddr;
-	int * SHUTTER_VALaddr;
-	int * RUN_MODEaddr;
-	int * ABORTaddr;
-	int * REFRESH_CAMaddr;
+	volatile int * ISO_VALaddr;
+	volatile int * SHUTTER_VALaddr;
+	volatile int * RUN_MODEaddr;
+	volatile int * ABORTaddr;
+	volatile int * REFRESH_CAMaddr;
 	/* Horizontal motion
 	 * 0 = none
 	 * 1 = left
 	 * 2 = right
 	 */
-	int * HORZ_DIRaddr;
+	volatile int * HORZ_DIRaddr;
 	/* Vertical motion
 	 * 0 = none
 	 * 1 = up
 	 * 2 = down
 	 */
-	int * VERT_DIRaddr;
+	volatile int * VERT_DIRaddr;
 	/* Stop motor
 	 * 0 = none
 	 * 1 = horizontal
 	 * 2 = vertical
 	 * 3 = both
 	 */
-	int * STOP_DIRaddr;
-	int * DUTY_Aaddr;
-	int * DUTY_Baddr;
-	int * SUBSaddr;
+	volatile int * STOP_DIRaddr;
+	volatile int * DUTY_Aaddr;
+	volatile int * DUTY_Baddr;
+	volatile int * SUBSaddr;
 } val_ptr;
 
 // Declare Function Prototypes
