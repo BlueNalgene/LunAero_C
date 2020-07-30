@@ -34,6 +34,8 @@ inline std::chrono::duration<double> LOOSE_WHEEL_DURATION = (std::chrono::durati
 inline int OLD_DIR = 0;
 inline int OLD_DUTY_A = 0;
 inline int OLD_DUTY_B = 0;
+inline int CNT_MOTOR_A = 0;
+inline int CNT_MOTOR_B = 0;
 inline std::chrono::time_point OLD_LOOSE_WHEEL_TIME = std::chrono::system_clock::now();
 
 // Declare Functions

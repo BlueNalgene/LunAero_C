@@ -207,24 +207,34 @@ void speed_up(int motor) {
 	
 	
 	if (motor == 1) {
-		if (*val_ptr.DUTY_Aaddr < 20) {
-			sem_wait(&LOCK);
-			*val_ptr.DUTY_Aaddr = 20;
-			sem_post(&LOCK);
-		} else if (*val_ptr.DUTY_Aaddr < 100) {
-			sem_wait(&LOCK);
-			*val_ptr.DUTY_Aaddr = *val_ptr.DUTY_Aaddr + 1;
-			sem_post(&LOCK);
+		if (CNT_MOTOR_A == 2) {
+			CNT_MOTOR_A = 0;
+			if (*val_ptr.DUTY_Aaddr < 20) {
+				sem_wait(&LOCK);
+				*val_ptr.DUTY_Aaddr = 20;
+				sem_post(&LOCK);
+			} else if (*val_ptr.DUTY_Aaddr < 75) {
+				sem_wait(&LOCK);
+				*val_ptr.DUTY_Aaddr = *val_ptr.DUTY_Aaddr + 1;
+				sem_post(&LOCK);
+			}
+		} else {
+			CNT_MOTOR_A += 1;
 		}
 	} else if (motor == 2) {
-		if (*val_ptr.DUTY_Baddr < 20) {
-			sem_wait(&LOCK);
-			*val_ptr.DUTY_Baddr = 20;
-			sem_post(&LOCK);
-		} else if (*val_ptr.DUTY_Baddr < 100) {
-			sem_wait(&LOCK);
-			*val_ptr.DUTY_Baddr = *val_ptr.DUTY_Baddr + 1;
-			sem_post(&LOCK);
+		if (CNT_MOTOR_B == 2) {
+			CNT_MOTOR_B = 0;
+			if (*val_ptr.DUTY_Baddr < 20) {
+				sem_wait(&LOCK);
+				*val_ptr.DUTY_Baddr = 20;
+				sem_post(&LOCK);
+			} else if (*val_ptr.DUTY_Baddr < 75) {
+				sem_wait(&LOCK);
+				*val_ptr.DUTY_Baddr = *val_ptr.DUTY_Baddr + 1;
+				sem_post(&LOCK);
+			}
+		} else {
+			CNT_MOTOR_B += 1;
 		}
 	}
 	return;
