@@ -33,14 +33,15 @@
 
 void cb_framecheck() {
 	printf("getting current frame\n");
+	std::cout << "Time in Milliseconds ="
+	 << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count()
+	<< std::endl;
 	current_frame();
-	LOST_COUNTER = frame_centroid(LOST_COUNTER);
-	if (LOST_COUNTER == 30) {
+	frame_centroid();
+	if (*val_ptr.LOST_COUNTERaddr == 30) {
 		sem_wait(&LOCK);
 		*val_ptr.ABORTaddr = 1;
 		sem_post(&LOCK);
-	} else {
-		LOST_COUNTER = 0;
 	}
 }
 
@@ -123,87 +124,85 @@ std::string current_time(int gmt) {
 }
 
 void current_frame() {
-	auto start = std::chrono::steady_clock::now();
-	DISPMANX_DISPLAY_HANDLE_T   display;
+	
+	DISPMANX_DISPLAY_HANDLE_T   display = 0;
 	DISPMANX_MODEINFO_T         info;
-	DISPMANX_RESOURCE_HANDLE_T  resource;
+	DISPMANX_RESOURCE_HANDLE_T  resource = 0;
 	VC_IMAGE_TYPE_T             type = VC_IMAGE_RGB888;
 	DISPMANX_TRANSFORM_T	    transform = static_cast <DISPMANX_TRANSFORM_T> (0);
 	VC_RECT_T			        rect;
 	
 	void *image;
 	uint32_t vc_image_ptr;
-	int ret;
 	uint32_t screen = 0;
 
 	bcm_host_init();
 
 	// Get display info for the screen we are using.
 	display = vc_dispmanx_display_open( screen );
-	ret = vc_dispmanx_display_get_info(display, &info);
-	assert(ret == 0);
+	if (vc_dispmanx_display_get_info(display, &info) != 0) {
+		std::cout << "failed to get display info" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
 
 	// This holds an image
 	image = calloc( 1, info.width * 3 * info.height );
-	assert(image);
+	if (!image) {
+		std::cout << "failed image assertion" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
 
 	// Create space based on the screen info
 	resource = vc_dispmanx_resource_create( type, info.width, info.height, &vc_image_ptr );
-	
+
 	// Take a snapshot of the screen (stored in resource)
 	vc_dispmanx_snapshot(display, resource, transform);
 
 	// Read the rectangular data from resource into the image calloc
 	vc_dispmanx_rect_set(&rect, 0, 0, info.width, info.height);
 	vc_dispmanx_resource_read_data(resource, &rect, image, info.width*3);
-	auto mid = std::chrono::steady_clock::now();
 	// Store the image in a .ppm format file on the hard drive
 	// TODO - assert that the drive is plugged in
 	// TODO - Make this an mmap stored image.
+
 	FILE *fp = fopen("/media/pi/MOON1/out.ppm", "wb");
 	// This is the requisite .ppm header
-	fprintf(fp, "P6\n%d %d\n255\n", info.width, info.height);
-	fwrite(image, info.width*3*info.height, 1, fp);
+	fprintf(fp, "P6\n%d %d\n255\n", WORK_WIDTH, WORK_HEIGHT);
+	fwrite(image, WORK_WIDTH*3*WORK_HEIGHT, 1, fp);
 	fclose(fp);
+	sem_post(&LOCK);
 	
 	// Cleanup the VC resources
-	ret = vc_dispmanx_resource_delete(resource);
-	assert(ret == 0);
-	ret = vc_dispmanx_display_close(display);
-	assert(ret == 0);
+	if (vc_dispmanx_resource_delete(resource) != 0) {
+		std::cout << "failed to delete vc resource" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
+	if (vc_dispmanx_display_close(display) != 0) {
+		std::cout << "failed to close vc display" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
+	free(image);
+		
+	Magick::Image img;
+	img.read("/media/pi/MOON1/out.ppm");
+	img.chop(Magick::Geometry((WORK_WIDTH/2)-(WORK_WIDTH/4),(WORK_HEIGHT/2)+3));
+	img.crop(Magick::Geometry((WORK_WIDTH/2),(WORK_HEIGHT/2)));
+	img.threshold((65535/2) * 0.50);
+	img.depth(1);
+	img.write("/media/pi/MOON1/out.ppm");
 	
-	// This command crops the full screenshot and converts to a 1bit BW at 50% thresh.
-	std::string commandstring;
-	commandstring = "convert /media/pi/MOON1/out.ppm -crop "
-	+ std::to_string(info.width/2)
-	+ "x"
-	+ std::to_string(info.height/2)
-	+ "+"
-	+ std::to_string((info.width/2)-(info.width/4))
-	+ "+"
-	+ std::to_string(info.height/2)
-	+ " -threshold 50% -depth 1 /media/pi/MOON1/out.ppm"; 
-	system(commandstring.c_str());
-	auto end = std::chrono::steady_clock::now();
-	std::cout 
-	<< "mid-start = "
-	<< std::chrono::duration_cast<std::chrono::microseconds>(mid - start).count()
-	<< " µs, end-mid = " 
-	<< std::chrono::duration_cast<std::chrono::microseconds>(end - mid).count()
-	<< " µs"
-	<< std::endl;
+	return;
 }
 
-int frame_centroid(int lost_cnt) {
-	printf("framecentroid\n");
+void frame_centroid() {
+	std::cout<< "framecentroid" << std::endl;
 	// TODO - Change to mmap when possible
 	FILE *fp = fopen("/media/pi/MOON1/out.ppm", "rb");
-	
+
 	//Check for bright or dark spots?
 	// Bright spots == 1
 	// dark spots == 0
 	int checkval = 1;
-	
 	
 	// Number of points to be "on edge" is 10% of edge
 	int w_thresh = WORK_WIDTH/20;
@@ -214,16 +213,16 @@ int frame_centroid(int lost_cnt) {
 	int i = 0;
 	int j;
 	int k;
-	int frmwidth;
-	int frmheight;
+	int frmwidth = 0;
+	int frmheight = 0;
 	std::string charst = "";
-	
+
 	// Ignore P6 Header
 	rewind(fp);
 	fgetc(fp); //P
 	fgetc(fp); //6
 	fgetc(fp); //OxOa
-	
+
 	// Grab the image size from header
 	while (i < 2) {
 		c = fgetc(fp);
@@ -239,14 +238,14 @@ int frame_centroid(int lost_cnt) {
 			i++;
 		}
 	}
+	std::cout << frmwidth << " x " << frmheight << std::endl;
 	// Ignore netbpm max value (1)
 	fgetc(fp); //1
 	fgetc(fp); //OxOa
-	
+
 	// Create Matrix
 	int matrix[frmheight][frmwidth];
-	
-	
+
 	// Put the pixels in the matrix
 	for (k=0; k<frmheight; k++) {
 		for (j=0; j<frmwidth; j++) {
@@ -256,6 +255,10 @@ int frame_centroid(int lost_cnt) {
 				c = fgetc(fp);
 				if ((c == 0) || (c == 1)) {
 					i++;
+				} else {
+					//~ *val_ptr.ABORTaddr = 1;
+					std::cout << "found problem value in fgetc: " << c << std::endl;
+					return;
 				}
 			}
 			matrix[k][j] = c;
@@ -276,6 +279,7 @@ int frame_centroid(int lost_cnt) {
 			bottom_edge++;
 		}
 	}
+	
 	for (k=0; k<frmheight; k++) {
 		if (matrix[k][0] == checkval) {
 			left_edge++;
@@ -284,7 +288,6 @@ int frame_centroid(int lost_cnt) {
 			right_edge++;
 		}
 	}
-	
 	
 	// Calculate the centroid using sum.
 	int sumx = 0;
@@ -300,14 +303,21 @@ int frame_centroid(int lost_cnt) {
 			}
 		}
 	}
+	std::cout << "sumx " << sumx << " sumy " << sumy << std::endl;
 	
 	// If nothing is found, return an increment to the moon loss counter
 	if ((sumx == 0) && (sumy == 0)) {
-		lost_cnt = lost_cnt + 1;
-		std::cout << "lost moon for " << lost_cnt <<  " cycles" << std::endl;
+		int local_cnt = *val_ptr.LOST_COUNTERaddr;
+		local_cnt = local_cnt + 1;
+		sem_wait(&LOCK);
+		*val_ptr.LOST_COUNTERaddr = local_cnt;
+		sem_post(&LOCK);
+		std::cout << "lost moon for " << *val_ptr.LOST_COUNTERaddr <<  " cycles" << std::endl;
 	} else {
 		// something was found, reset moon loss counter
-		lost_cnt = 0;
+		sem_wait(&LOCK);
+		*val_ptr.LOST_COUNTERaddr = 0;
+		sem_post(&LOCK);
 		std::cout << "Moon found centered at (" << (sumx/mcnt) << ", " << (sumy/mcnt) << ")\n" << std::endl;
 		std::cout << "top:bottom::left:right " << top_edge << ":" << bottom_edge << "::" << left_edge 
 		<< ":" << right_edge <<std::endl;
@@ -384,7 +394,7 @@ int frame_centroid(int lost_cnt) {
 			}
 		}
 	}
-	return lost_cnt;
+	return;
 }
 
 int main (int argc, char **argv) {
@@ -398,7 +408,7 @@ int main (int argc, char **argv) {
 	// init SUBS semaphore
 	sem_init(&LOCK, 1, 1);
 	
-	
+	Magick::InitializeMagick(*argv);
 	
 	// Make folder for stuff
 	TSBUFF = current_time(0);
@@ -426,6 +436,7 @@ int main (int argc, char **argv) {
 	
 	
 	// Memory values which influence camera commands. Defaults to 0.
+	val_ptr.LOST_COUNTERaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
 	val_ptr.ISO_VALaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
 	val_ptr.SHUTTER_VALaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
 	val_ptr.RUN_MODEaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
@@ -443,6 +454,7 @@ int main (int argc, char **argv) {
 	val_ptr.ABORTaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
 	
 	// Assign initial values to mmap'd variables
+	*val_ptr.LOST_COUNTERaddr = 0;
 	*val_ptr.ISO_VALaddr = 200;
 	*val_ptr.SHUTTER_VALaddr = 10000;
 	*val_ptr.RUN_MODEaddr = 0;

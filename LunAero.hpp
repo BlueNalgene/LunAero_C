@@ -15,7 +15,6 @@
 #include "bcm_host.h"      // provides DISPMANX et al.
 
 // Module specific Includes
-#include <assert.h>        // provides assert
 #include <signal.h>        // provides kill signals
 #include <semaphore.h>     // provides sem_init
 #include <stdlib.h>        // provides system
@@ -26,6 +25,7 @@
 #include <sys/wait.h>      // provides wait
 #include <time.h>          // provides time
 #include <unistd.h>        // provides usleep
+#include <Magick++.h>
 
 
 // User Includes
@@ -36,14 +36,13 @@
 // Globally Defined Constants
 #define LOST_THRESH 30
 // Observed duration is 2100s in video, but 1801 in timestamp
-inline std::chrono::duration<double> RECORD_DURATION = (std::chrono::duration<double>) 30.;
+inline std::chrono::duration<double> RECORD_DURATION = (std::chrono::duration<double>) 1800.;
 
 // Global variables (Inline Requires C++17)
-inline int LOST_COUNTER = 0;
 inline int COUNTER = 0;
 inline int WORK_HEIGHT = 0;
 inline int WORK_WIDTH = 0;
-inline int RASPI_PID = 0;
+//~ inline int RASPI_PID = 0;
 inline std::string FILEPATH;
 inline std::string DEFAULT_FILEPATH = "/media/pi/MOON1/";
 inline std::string TSBUFF;
@@ -53,6 +52,7 @@ inline sem_t LOCK;
 
 // Struct of values used when writing labels (Inline Requires C++17)
 inline struct val_addresses {
+	volatile int * LOST_COUNTERaddr;
 	volatile int * ISO_VALaddr;
 	volatile int * SHUTTER_VALaddr;
 	volatile int * RUN_MODEaddr;
@@ -89,7 +89,7 @@ void cleanup();
 void kill_raspivid();
 void current_frame();
 std::string current_time(int gmt);
-int frame_centroid(int lost_counter);
+void frame_centroid();
 void abort_code();
 
 #endif
