@@ -1,7 +1,6 @@
 #include "gtk_LunAero.hpp"
 
 gboolean refresh_text_boxes(gpointer data) {
-	//~ std::cout << "refresh text boxes: " << *(int *)*(int *)val_ptr.RUN_MODEaddr << std::endl;
 	if (*val_ptr.ABORTaddr == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			std::string msg;
@@ -340,19 +339,6 @@ void gtk_css_preview() {
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::window), 
 		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	// Apply activebutton class to buttons
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::exit_button), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_up), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_down), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_left), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_right), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_stop), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_camera_command), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_shutter_up), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_shutter_down), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_shutter_up_up), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_shutter_down_down), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_iso), "activebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_record), "activebutton");
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::exit_button), 
 		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_up),
@@ -379,12 +365,21 @@ void gtk_css_preview() {
 		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_record),
 		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::exit_button), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_up), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_down), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_left), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_right), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_stop), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_camera_command), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_shutter_up), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_shutter_down), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_shutter_up_up), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_shutter_down_down), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_iso), "activebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_record), "activebutton");
+	
 	// Add fakebuttons to special button class
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton), "fakebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton2), "fakebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton3), "fakebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton4), "fakebutton");
-	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton5), "fakebutton");
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton),
 		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton2),
@@ -395,6 +390,12 @@ void gtk_css_preview() {
 		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::fakebutton5),
 		GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton), "fakebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton2), "fakebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton3), "fakebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton4), "fakebutton");
+	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::fakebutton5), "fakebutton");
+	
 	return;
 }
 
@@ -409,7 +410,7 @@ void activate(GtkApplication *app, gpointer local_val_ptr) {
 	g_timeout_add(60, G_SOURCE_FUNC(cb_subsequent), app);
 	
 	//Activate!
-	refresh_text_boxes(NULL);
+	//~ refresh_text_boxes(NULL);
 	gtk_widget_grab_focus(gtk_class::fakebutton);
 	gtk_widget_show_all(gtk_class::window);
 }
@@ -503,7 +504,7 @@ gboolean key_event_running(GtkWidget *widget, GdkEventKey *event) {
 
 gboolean abort_check(GtkWidget* data) {
 	if (*val_ptr.ABORTaddr == 1) {
-		if (LOST_COUNTER > LOST_THRESH) {
+		if (*val_ptr.LOST_COUNTERaddr > LOST_THRESH) {
 			std::cout << "lost moon, shutting down" << std::endl;
 		} else {
 			std::cout << "recieved shutdown command from user" << std::endl;
@@ -518,7 +519,7 @@ gboolean abort_check(GtkWidget* data) {
 }
 
 void first_record_killer(GtkWidget* data) {
-	
+	sem_wait(&LOCK);
 	
 	//~ GList   *listrunner;
 	//~ gint    *value;
@@ -529,10 +530,10 @@ void first_record_killer(GtkWidget* data) {
 		//~ printf("first %d\n", *value);
 		//~ listrunner = g_list_next(listrunner);
 	//~ }
-
+	
 	gtk_style_context_remove_class(gtk_widget_get_style_context(gtk_class::button_up), "activebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_up), "fakebutton");
-gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_up), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_up), GTK_STYLE_PROVIDER(gtk_class::provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	
 	
 	//~ // Assign fakebutton context to each
@@ -568,34 +569,11 @@ gtk_style_context_add_provider(gtk_widget_get_style_context(gtk_class::button_up
 	
 	gtk_widget_queue_draw(gtk_class::window);
 	
-	//~ GdkScreen *screen = gdk_screen_get_default();
-	//~ gtk_style_context_reset_widgets(screen);
+	while (g_main_context_pending(NULL)) {
+		g_main_context_iteration(NULL,FALSE);
+	}
 	
-	
-	//~ listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up)));
-	//~ while (listrunner) {
-		//~ value = (gint *)listrunner->data;
-		//~ printf("second %d\n", *value);
-		//~ listrunner = g_list_next(listrunner);
-	//~ }
-	
-	//~ listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_down)));
-	//~ while (listrunner) {
-		//~ value = (gint *)listrunner->data;
-		//~ printf("down %d\n", *value);
-		//~ listrunner = g_list_next(listrunner);
-	//~ }
-	
-	//~ listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_left)));
-	//~ while (listrunner) {
-		//~ value = (gint *)listrunner->data;
-		//~ printf("left %d\n", *value);
-		//~ listrunner = g_list_next(listrunner);
-	//~ }
-	
-	//~ std::cout << "button_up context: " << g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up))) << std::endl;
-	//~ std::cout << "button_down context: " << g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_down))) << std::endl;
-	//~ std::cout << "button_down_down context: " << g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_left))) << std::endl;
+	sem_post(&LOCK);
 	
 	first_record();
 	sem_wait(&LOCK);
@@ -611,6 +589,8 @@ gboolean cb_subsequent(GtkWidget* data) {
 			sem_wait(&LOCK);
 			*val_ptr.SUBSaddr = 0;
 			sem_post(&LOCK);
+	} else {
+		std::cout << "No subs" << std::endl;
 	}
 	return TRUE;
 }
