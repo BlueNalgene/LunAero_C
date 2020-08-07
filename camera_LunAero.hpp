@@ -7,11 +7,13 @@
 
 // Module specific includes
 #include <gtk/gtk.h>       // provides GTK3
+#include <fstream>         // provides ifstream
 
 // User Includes
 #include "LunAero.hpp"
 
 // Function Prototypes
+void confirm_mmal_safety();
 void camera_preview();
 void camera_start();
 void iso_cycle();

@@ -1,6 +1,31 @@
 #include "camera_LunAero.hpp"
 
-void camera_start () {
+void confirm_mmal_safety() {
+	usleep(1000000);
+	std::string str_mmal = "mmal:";
+	std::ifstream file("/tmp/raspivid.log");
+	if (file.is_open()) {
+		std::string line;
+		while (std::getline(file, line)) {
+			std::cout << line << std::endl;
+			// using printf() in all tests for consistency
+			if (line.find(str_mmal) != std::string::npos) {
+				std::cout << "ERROR: LunAero detected an MMAL problem with raspivid.  Exiting" << '\n';
+				kill_raspivid();
+				sem_wait(&LOCK);
+				*val_ptr.ABORTaddr = 1;
+				sem_post(&LOCK);
+				file.close();
+				return;
+			}
+			
+		}
+		file.close();
+	}
+	return;
+}
+
+void camera_start() {
 	std::cout << "\n\nNOW RECORDING\n\nPATH: " << FILEPATH << std::endl;
 	// Call preview of camera
 	std::string commandstring;
@@ -23,9 +48,12 @@ void camera_start () {
 	+ FILEPATH
 	+ "/"
 	+ TSBUFF
-	+ "outA.h264 &";
+	+ "outA.h264 > /tmp/raspivid.log 2>&1 &";
 	std::cout << "Using the command: " << commandstring << std::endl;
 	system(commandstring.c_str());
+	
+	confirm_mmal_safety();
+	return;
 }
 
 void camera_preview() {
@@ -47,9 +75,12 @@ void camera_preview() {
 	+ std::to_string(WORK_WIDTH/2)
 	+ ","
 	+ std::to_string(WORK_HEIGHT/2)
-	+ " &";
+	+ " > /tmp/raspivid.log 2>&1 &";
 	std::cout << "Using the command: " << commandstring << std::endl;
 	system(commandstring.c_str());
+	
+	confirm_mmal_safety();
+	return;
 }
 
 void first_record() {

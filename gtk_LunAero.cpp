@@ -583,12 +583,11 @@ void first_record_killer(GtkWidget* data) {
 
 gboolean cb_subsequent(GtkWidget* data) {
 	if (*val_ptr.SUBSaddr == 2) {
-			std::cout << "cb sub 2 " << std::endl;
-			//~ g_timeout_add(50, G_SOURCE_FUNC(g_framecheck), NULL);
-			reset_record();
-			sem_wait(&LOCK);
-			*val_ptr.SUBSaddr = 0;
-			sem_post(&LOCK);
+		std::cout << "cb sub 2 " << std::endl;
+		reset_record();
+		sem_wait(&LOCK);
+		*val_ptr.SUBSaddr = 0;
+		sem_post(&LOCK);
 	} else {
 		std::cout << "No subs" << std::endl;
 	}

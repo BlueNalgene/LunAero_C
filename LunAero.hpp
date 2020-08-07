@@ -25,7 +25,6 @@
 #include <sys/wait.h>      // provides wait
 #include <time.h>          // provides time
 #include <unistd.h>        // provides usleep
-#include <Magick++.h>
 
 
 // User Includes
@@ -35,6 +34,7 @@
 
 // Globally Defined Constants
 #define LOST_THRESH 30
+#define SAVE_DEBUG_IMAGE 0
 // Observed duration is 2100s in video, but 1801 in timestamp
 inline std::chrono::duration<double> RECORD_DURATION = (std::chrono::duration<double>) 1800.;
 

@@ -37,7 +37,7 @@ void cb_framecheck() {
 	 << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count()
 	<< std::endl;
 	current_frame();
-	frame_centroid();
+	//~ frame_centroid();
 	if (*val_ptr.LOST_COUNTERaddr == 30) {
 		sem_wait(&LOCK);
 		*val_ptr.ABORTaddr = 1;
@@ -125,6 +125,45 @@ std::string current_time(int gmt) {
 
 void current_frame() {
 	
+	// Don't bother if we have already told the program to abort
+	if (*val_ptr.ABORTaddr == 1) {
+		return;
+	}
+	
+	// Run a system check to see if raspivid is running, if not, print a warning
+	pid_t thepid = 0;
+	FILE* fpidof = popen("pidof raspivid", "r");
+	if (fpidof) {
+		int p=0;
+		if (fscanf(fpidof, "%d", &p)>0 && p>0) {
+			thepid = (pid_t)p;
+		} else {
+			int local_cnt = *val_ptr.LOST_COUNTERaddr;
+			local_cnt = local_cnt + 1;
+			sem_wait(&LOCK);
+			*val_ptr.LOST_COUNTERaddr = local_cnt;
+			sem_post(&LOCK);
+			std::cout << "WARNING: lost moon counter increased to" 
+			<< *val_ptr.LOST_COUNTERaddr 
+			<<  " cycles due to failure to find raspivid" 
+			<< std::endl;
+			pclose(fpidof);
+			return;
+		}
+		pclose(fpidof);
+	} else {
+		int local_cnt = *val_ptr.LOST_COUNTERaddr;
+		local_cnt = local_cnt + 1;
+		sem_wait(&LOCK);
+		*val_ptr.LOST_COUNTERaddr = local_cnt;
+		sem_post(&LOCK);
+		std::cout << "WARNING: lost moon counter increased to " 
+		<< *val_ptr.LOST_COUNTERaddr 
+		<<  " cycles due to failure to find raspivid" 
+		<< std::endl;
+		return;
+	}
+	
 	DISPMANX_DISPLAY_HANDLE_T   display = 0;
 	DISPMANX_MODEINFO_T         info;
 	DISPMANX_RESOURCE_HANDLE_T  resource = 0;
@@ -141,19 +180,23 @@ void current_frame() {
 	// Get display info for the screen we are using.
 	display = vc_dispmanx_display_open( screen );
 	if (vc_dispmanx_display_get_info(display, &info) != 0) {
-		std::cout << "failed to get display info" << std::endl;
+		std::cout << "ERROR: failed to get display info" << std::endl;
 		*val_ptr.ABORTaddr = 1;
 	}
 
 	// This holds an image
 	image = calloc( 1, info.width * 3 * info.height );
 	if (!image) {
-		std::cout << "failed image assertion" << std::endl;
+		std::cout << "ERROR: failed image assertion" << std::endl;
 		*val_ptr.ABORTaddr = 1;
 	}
 
 	// Create space based on the screen info
-	resource = vc_dispmanx_resource_create( type, info.width, info.height, &vc_image_ptr );
+	resource = vc_dispmanx_resource_create( type, info.width, info.height, &vc_image_ptr);
+	if (!resource) {
+		std::cout << "ERROR: failed to create VC Dispmanx Resource" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
 
 	// Take a snapshot of the screen (stored in resource)
 	vc_dispmanx_snapshot(display, resource, transform);
@@ -165,113 +208,84 @@ void current_frame() {
 	// TODO - assert that the drive is plugged in
 	// TODO - Make this an mmap stored image.
 
-	FILE *fp = fopen("/media/pi/MOON1/out.ppm", "wb");
-	// This is the requisite .ppm header
-	fprintf(fp, "P6\n%d %d\n255\n", WORK_WIDTH, WORK_HEIGHT);
-	fwrite(image, WORK_WIDTH*3*WORK_HEIGHT, 1, fp);
-	fclose(fp);
-	sem_post(&LOCK);
+	std::cout << info.width << " x " << info.height << std::endl;
+	std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
+			
+	int frmwidth = info.width/2;
+	int frmheight = (WORK_HEIGHT/2) - 2; // WORK_HEIGHT != info.height
+	int matrix[frmheight][frmwidth];
+	int wcnt = 0;
+	int hcnt = 0;
+	int wcnt_prime = 0;
+	int hcnt_prime = 0;
+	for (unsigned int i=0; i<imgstr.size(); i=i+3) {
+		if ((wcnt > (frmwidth - (frmwidth/2))) && (wcnt < (frmwidth + (frmwidth/2) + 1))) {
+			if ((hcnt > (frmheight - 2)) && (hcnt < ((frmheight*2) - 1))) {
+				int out;
+				out = 0.30*(int)imgstr[i] + 0.59*(int)imgstr[i+1] + 0.11*(int)imgstr[i+2];
+				if (out > 25) { // 10% threshold
+					out = 0;
+				} else {
+					out = 1;
+				}
+				matrix[hcnt_prime][wcnt_prime] = out;
+				wcnt_prime += 1;
+				if (wcnt_prime == frmwidth) {
+					wcnt_prime = 0;
+					hcnt_prime += 1;
+				}
+			}
+		}
+		wcnt += 1;
+		if (wcnt == info.width) {
+			wcnt = 0;
+			hcnt += 1;
+		}
+	}
+	
+	// Optionally, save the image to a file on the disk so we can check that it makes sense
+	if (SAVE_DEBUG_IMAGE) {
+		FILE *fp = fopen("/media/pi/MOON1/out.pbm", "wb");
+		fprintf(fp, "P1\n%d %d\n1\n", frmwidth, frmheight);
+		for (int i=0; i<frmheight; i++) {
+			for(int j=0; j<frmwidth; j++) {
+				if (j == frmwidth-1) {
+					fprintf(fp, "\n");
+				}
+				fprintf(fp, "%d", matrix[i][j]);
+			}
+		}
+		fclose(fp);
+	}
 	
 	// Cleanup the VC resources
 	if (vc_dispmanx_resource_delete(resource) != 0) {
-		std::cout << "failed to delete vc resource" << std::endl;
+		std::cout << "ERROR: failed to delete vc resource" << std::endl;
 		*val_ptr.ABORTaddr = 1;
 	}
 	if (vc_dispmanx_display_close(display) != 0) {
-		std::cout << "failed to close vc display" << std::endl;
+		std::cout << "ERROR: failed to close vc display" << std::endl;
 		*val_ptr.ABORTaddr = 1;
 	}
 	free(image);
-		
-	Magick::Image img;
-	img.read("/media/pi/MOON1/out.ppm");
-	img.chop(Magick::Geometry((WORK_WIDTH/2)-(WORK_WIDTH/4),(WORK_HEIGHT/2)+3));
-	img.crop(Magick::Geometry((WORK_WIDTH/2),(WORK_HEIGHT/2)));
-	img.threshold((65535/2) * 0.50);
-	img.depth(1);
-	img.write("/media/pi/MOON1/out.ppm");
 	
-	return;
-}
-
-void frame_centroid() {
-	std::cout<< "framecentroid" << std::endl;
-	// TODO - Change to mmap when possible
-	FILE *fp = fopen("/media/pi/MOON1/out.ppm", "rb");
-
 	//Check for bright or dark spots?
-	// Bright spots == 1
-	// dark spots == 0
-	int checkval = 1;
+	// Note the weird inversion when we use .pbm format
+	// Bright spots == 0
+	// dark spots == 1
+	int checkval = 0;
 	
 	// Number of points to be "on edge" is 10% of edge
 	int w_thresh = WORK_WIDTH/20;
 	int h_thresh = WORK_HEIGHT/20;
-	
-	//~ unsigned char linebreak = 0x0a;
-	unsigned char c;
-	int i = 0;
-	int j;
-	int k;
-	int frmwidth = 0;
-	int frmheight = 0;
-	std::string charst = "";
 
-	// Ignore P6 Header
-	rewind(fp);
-	fgetc(fp); //P
-	fgetc(fp); //6
-	fgetc(fp); //OxOa
-
-	// Grab the image size from header
-	while (i < 2) {
-		c = fgetc(fp);
-		if (((int)c > 47) && ((int)c < 58)) {
-			charst += c;
-		} else {
-			if (i == 0) {
-				frmwidth = std::stoi(charst);
-			} else if (i == 1) {
-				frmheight = std::stoi(charst);
-			}
-			charst = "";
-			i++;
-		}
-	}
-	std::cout << frmwidth << " x " << frmheight << std::endl;
-	// Ignore netbpm max value (1)
-	fgetc(fp); //1
-	fgetc(fp); //OxOa
-
-	// Create Matrix
-	int matrix[frmheight][frmwidth];
-
-	// Put the pixels in the matrix
-	for (k=0; k<frmheight; k++) {
-		for (j=0; j<frmwidth; j++) {
-			// RGB has depth of 3 digits
-			i = 0;
-			while (i < 3) {
-				c = fgetc(fp);
-				if ((c == 0) || (c == 1)) {
-					i++;
-				} else {
-					//~ *val_ptr.ABORTaddr = 1;
-					std::cout << "found problem value in fgetc: " << c << std::endl;
-					return;
-				}
-			}
-			matrix[k][j] = c;
-		}
-	}
-	
 	// Store sum of each edge
 	int top_edge = 0;
 	int bottom_edge = 0;
 	int left_edge = 0;
 	int right_edge = 0;
 	
-	for (j=0; j<frmwidth; j++) {
+	for (int j=0; j<frmwidth; j++) {
 		if (matrix[0][j] == checkval) {
 			top_edge++;
 		}
@@ -280,7 +294,7 @@ void frame_centroid() {
 		}
 	}
 	
-	for (k=0; k<frmheight; k++) {
+	for (int k=0; k<frmheight; k++) {
 		if (matrix[k][0] == checkval) {
 			left_edge++;
 		}
@@ -294,8 +308,8 @@ void frame_centroid() {
 	int sumy = 0;
 	int mcnt = 0;
 	
-	for (k=0; k<frmheight; k++) {
-		for (j=0; j<frmwidth; j++) {
+	for (int k=0; k<frmheight; k++) {
+		for (int j=0; j<frmwidth; j++) {
 			if (matrix[k][j] == checkval) {
 				sumx = sumx + j;
 				sumy = sumy + k;
@@ -394,6 +408,7 @@ void frame_centroid() {
 			}
 		}
 	}
+	
 	return;
 }
 
@@ -408,8 +423,6 @@ int main (int argc, char **argv) {
 	// init SUBS semaphore
 	sem_init(&LOCK, 1, 1);
 	
-	Magick::InitializeMagick(*argv);
-	
 	// Make folder for stuff
 	TSBUFF = current_time(0);
 	FILEPATH = DEFAULT_FILEPATH + TSBUFF;
@@ -419,7 +432,7 @@ int main (int argc, char **argv) {
 	
 	// Make ID file
 	if (create_id_file()) {
-		std::cout << "Failed to create ID file" << std::endl;
+		std::cout << "ERROR: Failed to create ID file" << std::endl;
 	}
 	
 	
