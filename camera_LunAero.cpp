@@ -18,6 +18,17 @@
 
 #include "camera_LunAero.hpp"
 
+int confirm_filespace() {
+	namespace fs = std::filesystem;
+	fs::space_info tmp = fs::space(DEFAULT_FILEPATH);
+	if (tmp.available < (1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
+		std::cout << "ERROR: The space on this drive is too low with "
+		<< tmp.available << " bytes remaining, exiting." << std::endl;
+		return 1;
+	}
+	return 0;
+}
+
 int confirm_mmal_safety(int error_cnt) {
 	// If the retry attempts are way too high, don't even bother
 	if (error_cnt > 100) {
@@ -67,6 +78,14 @@ void camera_start() {
 	// Call preview of camera
 	std::string commandstring = "";
 	commandstring = command_cam_start();
+	
+	if (confirm_filespace) {
+		sem_wait(&LOCK);
+		*val_ptr.ABORTaddr = 1;
+		sem_post(&LOCK);
+		usleep(1000000);
+		return;
+	}
 	
 	int mmal_safety_outcome = 1;
 	

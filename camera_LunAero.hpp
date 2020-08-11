@@ -31,6 +31,7 @@
 #include "LunAero.hpp"
 
 // Function Prototypes
+int confirm_filespace();
 int confirm_mmal_safety(int error_cnt);
 void camera_preview();
 void camera_start();
