@@ -13,9 +13,11 @@
 #include "LunAero.hpp"
 
 // Function Prototypes
-void confirm_mmal_safety();
+int confirm_mmal_safety(int error_cnt);
 void camera_preview();
 void camera_start();
+std::string command_cam_start();
+std::string command_cam_preview();
 void iso_cycle();
 void first_record();
 void refresh_camera();
