@@ -72,7 +72,7 @@ void camera_preview() {
 	return;
 }
 
-std::string command_cam_start() {
+std::string command_cam_preview() {
 	std::string commandstring;
 	// Get the current unix timestamp as a string
 	TSBUFF = std::to_string((unsigned long)time(NULL));
@@ -94,7 +94,7 @@ std::string command_cam_start() {
 	return commandstring;
 }
 
-std::string command_cam_preview() {
+std::string command_cam_start() {
 	std::string commandstring;
 	// Get the current unix timestamp as a string
 	TSBUFF = current_time(0);
