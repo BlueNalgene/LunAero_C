@@ -26,6 +26,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <cstdlib>         // provides c++ version of getenv
 #include <chrono>          // provides C++ chrono
 #include <ctime>           // provides c time funcitons for chrono usage
 //~ #include <sstream>
@@ -64,7 +65,7 @@ inline int WORK_HEIGHT = 0;
 inline int WORK_WIDTH = 0;
 //~ inline int RASPI_PID = 0;
 inline std::string FILEPATH;
-inline std::string DEFAULT_FILEPATH = "/media/pi/MOON1/";
+inline std::string DEFAULT_FILEPATH = "";
 inline std::string TSBUFF;
 inline std::string IDPATH = "";
 inline std::chrono::time_point OLD_RECORD_TIME = std::chrono::system_clock::now();
