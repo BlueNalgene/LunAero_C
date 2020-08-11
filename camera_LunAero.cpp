@@ -38,6 +38,9 @@ int confirm_mmal_safety(int error_cnt) {
 		}
 		file.close();
 	}
+	
+	write_video_id();
+	
 	return 0;
 }
 
@@ -117,7 +120,33 @@ std::string command_cam_start() {
 	+ TSBUFF
 	+ "outA.h264 > /tmp/raspivid.log 2>&1 &";
 	std::cout << "Using the command: " << commandstring << std::endl;
+	
 	return commandstring;
+}
+
+void write_video_id() {
+	std::ofstream idfile;
+	idfile.open(IDPATH, std::ios_base::app);
+	idfile 
+	<< "File: " 
+	<< TSBUFF << "outA.h264"
+	<< std::endl
+	<< "    Width:         1920"
+	<< std::endl
+	<< "    Height:        1080"
+	<< std::endl
+	<< "    ISO:           "
+	<< std::to_string(*val_ptr.ISO_VALaddr)
+	<< std::endl
+	<< "    Shutter Speed: "
+	<< std::to_string(*val_ptr.SHUTTER_VALaddr)
+	<< std::endl
+	<< "    Bitrate:       8000000"
+	<< std::endl
+	<< "    Framerate:     30"
+	<< std::endl;
+	
+	idfile.close();
 }
 
 void first_record() {

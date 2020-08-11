@@ -18,6 +18,7 @@ void camera_preview();
 void camera_start();
 std::string command_cam_start();
 std::string command_cam_preview();
+void write_video_id();
 void iso_cycle();
 void first_record();
 void refresh_camera();

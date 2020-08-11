@@ -78,13 +78,14 @@ int create_id_file() {
 	
 	std::string linestr(line);
 	linestr.erase(std::remove(linestr.begin(), linestr.end(), '\n'), linestr.end());
-	std::string idpath = FILEPATH + "/" + linestr + ".txt";
+	IDPATH = FILEPATH + "/" + linestr + ".txt";
+	
 	std::cout << "LUID: " << linestr << std::endl;
-	std::cout << "idpath: " << idpath << std::endl;
+	std::cout << "idpath: " << IDPATH << std::endl;
 	
 	std::string gmt = current_time(1);
 	
-	idfile.open(idpath);
+	idfile.open(IDPATH);
 	idfile 
 	<< "LUID: " 
 	<< linestr 
