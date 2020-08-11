@@ -433,7 +433,52 @@ void current_frame() {
 	return;
 }
 
+int startup_disk_check() {
+	std::ifstream mountsfile("/proc/mounts", std::ifstream::in);
+	if (!mountsfile.good()) {
+		std::cout << "ERROR: Input stream to /proc/mounts is not valid" << std::endl;
+		return 1;
+	}
+	
+	int found_mount = 0;
+	std::string line;
+	std::string correct_mount = "/media/pi/MOON1";
+	while (std::getline(mountsfile, line)) {
+		if (line.find(correct_mount) != std::string::npos) {
+			found_mount = 1;
+			break;
+		}
+	}
+	mountsfile.close();
+	
+	if (found_mount) {
+		namespace fs = std::filesystem;
+		fs::space_info tmp = fs::space("/media/pi/MOON1");
+		if (tmp.available < (1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
+			std::cout << "ERROR: The space on this drive is too low with "
+			<< tmp.available << " bytes remaining" << std::endl
+			<< "...    the run will likely not be successful, exiting." << std::endl;
+		} else if (tmp.available < (10 * 1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
+			std::cout << "WARNING: This drive only has " << tmp.available
+			<< " bytes of space remaining," << std::endl 
+			<< "...      you may run out of during this run" << std::endl;
+		}
+		std::cout << "Free space: " << tmp.free << std::endl 
+		<< "Available space: " << tmp.available << std::endl;
+		return 0;
+	} else {
+		std::cout << "ERROR: Could not find a drive mounted at /media/pi/MOON1"
+		<< std::endl << "... check that your external drive is connected properly"
+		<< std::endl;
+		return 1;
+	}
+}
+
 int main (int argc, char **argv) {
+	
+	if (startup_disk_check) {
+		return 1;
+	}
 	
 	// Screensaver settings for the raspberry pi
 	system("xset -dpms");

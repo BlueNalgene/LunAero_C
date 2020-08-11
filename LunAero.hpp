@@ -44,6 +44,7 @@
 #include <sys/wait.h>      // provides wait
 #include <time.h>          // provides time
 #include <unistd.h>        // provides usleep
+#include <filesystem>      // provides filesystem space info
 
 
 // User Includes
@@ -104,6 +105,7 @@ inline struct val_addresses {
 
 // Declare Function Prototypes
 int main (int argc, char **argv);
+int startup_disk_check();
 void cb_framecheck();
 void cleanup();
 void kill_raspivid();
