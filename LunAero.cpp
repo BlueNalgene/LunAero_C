@@ -479,7 +479,7 @@ int startup_disk_check() {
 
 int main (int argc, char **argv) {
 	
-	if (startup_disk_check) {
+	if (startup_disk_check()) {
 		return 1;
 	}
 	
