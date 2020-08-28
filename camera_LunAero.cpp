@@ -19,6 +19,7 @@
 #include "camera_LunAero.hpp"
 
 int confirm_filespace() {
+	std::cout << "Confirming filespace" << std::endl;
 	namespace fs = std::filesystem;
 	fs::space_info tmp = fs::space(DEFAULT_FILEPATH);
 	if (tmp.available < (1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
@@ -30,6 +31,7 @@ int confirm_filespace() {
 }
 
 int confirm_mmal_safety(int error_cnt) {
+	std::cout << "mmal safety count: " << error_cnt << std::endl;
 	// If the retry attempts are way too high, don't even bother
 	if (error_cnt > 100) {
 		std::cout << "ERROR: LunAero detected repeating MMAL problems.  Exiting" << std::endl;
@@ -79,7 +81,7 @@ void camera_start() {
 	std::string commandstring = "";
 	commandstring = command_cam_start();
 	
-	if (confirm_filespace) {
+	if (confirm_filespace()) {
 		sem_wait(&LOCK);
 		*val_ptr.ABORTaddr = 1;
 		sem_post(&LOCK);
