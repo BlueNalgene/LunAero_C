@@ -435,7 +435,8 @@ void current_frame() {
 
 int startup_disk_check() {
 	std::string userenv = std::getenv("USER");
-	DEFAULT_FILEPATH = "/media/" + userenv + "/MOON1";
+	std::string local_path = "/media/" + userenv + "/MOON1";
+	DEFAULT_FILEPATH = local_path + "/";
 	
 	std::ifstream mountsfile("/proc/mounts", std::ifstream::in);
 	if (!mountsfile.good()) {
@@ -447,7 +448,7 @@ int startup_disk_check() {
 	std::string line;
 	
 	while (std::getline(mountsfile, line)) {
-		if (line.find(DEFAULT_FILEPATH) != std::string::npos) {
+		if (line.find(local_path) != std::string::npos) {
 			found_mount = 1;
 			break;
 		}
@@ -456,7 +457,7 @@ int startup_disk_check() {
 	
 	if (found_mount) {
 		namespace fs = std::filesystem;
-		fs::space_info tmp = fs::space(DEFAULT_FILEPATH);
+		fs::space_info tmp = fs::space(local_path);
 		if (tmp.available < (1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
 			std::cout << "ERROR: The space on this drive is too low with "
 			<< tmp.available << " bytes remaining" << std::endl
@@ -573,9 +574,15 @@ int main (int argc, char **argv) {
 			// Parent Process 2
 			std::cout << "started child proc 2" << std::endl;
 			camera_preview();
+			sem_wait(&LOCK);
+			*val_ptr.RUN_MODEaddr = 0;
+			sem_post(&LOCK);
 			while ((*val_ptr.ABORTaddr == 0) && (*val_ptr.RUN_MODEaddr == 0)) {
 				usleep(50);
 			}
+			sem_wait(&LOCK);
+			*val_ptr.RUN_MODEaddr = 1;
+			sem_post(&LOCK);
 			while ((*val_ptr.ABORTaddr == 0) && (*val_ptr.RUN_MODEaddr == 1)) {
 				auto current_time = std::chrono::system_clock::now();
 				std::chrono::duration<double> elapsed_seconds = current_time-OLD_RECORD_TIME;
