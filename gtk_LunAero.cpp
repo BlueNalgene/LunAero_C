@@ -46,9 +46,25 @@ void screen_size () {
 	gtk_init(0, NULL);
 	GdkRectangle workarea = {0};
 	gdk_monitor_get_workarea(gdk_display_get_primary_monitor(gdk_display_get_default()), &workarea);
+	// Calculate the screen workarea
 	WORK_HEIGHT = workarea.height;
 	WORK_WIDTH = workarea.width;
 	std::cout << "W: " << WORK_WIDTH << " x H: " << WORK_HEIGHT << std::endl;
+	// Calculate the estimated size of a Raspivid window
+	RVD_HEIGHT = WORK_HEIGHT/2;
+	RVD_WIDTH = WORK_WIDTH/2;
+	if ((RVD_WIDTH/RVD_HEIGHT) != (16/9)) {
+		if ((RVD_WIDTH/RVD_HEIGHT) > (16/9)) {
+			RVD_WIDTH = RVD_HEIGHT * 16/9;
+		} else {
+			RVD_HEIGHT = RVD_WIDTH * 9/16;
+		}
+	}
+	std::cout << "Est Raspivid preview W: " << RVD_WIDTH << " x H: " << RVD_HEIGHT << std::endl;
+	// Calculate the Raspivid preview corner
+	RVD_XCORN = (WORK_WIDTH/2)-(WORK_WIDTH/4);
+	RVD_YCORN = (WORK_HEIGHT/2);
+	std::cout << "Raspivid corner X: " << RVD_XCORN << " x Y: " << RVD_YCORN << std::endl;
 	return;
 }
 
@@ -606,8 +622,8 @@ gboolean cb_subsequent(GtkWidget* data) {
 		sem_wait(&LOCK);
 		*val_ptr.SUBSaddr = 0;
 		sem_post(&LOCK);
-	} else {
-		std::cout << "No subs" << std::endl;
+	//~ } else {
+		//~ std::cout << "No subs" << std::endl;
 	}
 	return TRUE;
 }

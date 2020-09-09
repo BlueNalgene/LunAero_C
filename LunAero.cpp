@@ -231,17 +231,20 @@ void current_frame() {
 
 	std::cout << info.width << " x " << info.height << std::endl;
 	std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
-			
-	int frmwidth = info.width/2;
-	int frmheight = (WORK_HEIGHT/2) - 2; // WORK_HEIGHT != info.height
-	int matrix[frmheight][frmwidth];
+	
+	int local_height = RVD_HEIGHT - 6;
+	int local_width = RVD_WIDTH - 4;
+	int local_xcorn = RVD_XCORN + 2;
+	int local_ycorn = RVD_YCORN + 3;
+	
+	int matrix[local_height][local_width];
 	int wcnt = 0;
 	int hcnt = 0;
 	int wcnt_prime = 0;
 	int hcnt_prime = 0;
 	for (unsigned int i=0; i<imgstr.size(); i=i+3) {
-		if ((wcnt > (frmwidth - (frmwidth/2))) && (wcnt < (frmwidth + (frmwidth/2) + 1))) {
-			if ((hcnt > (frmheight - 2)) && (hcnt < ((frmheight*2) - 1))) {
+		if ((wcnt > (local_xcorn)) && (wcnt < (local_xcorn + local_width + 1))) {
+			if ((hcnt > (local_ycorn - 1)) && (hcnt < (local_ycorn + local_height))) {
 				int out;
 				out = 0.30*(int)imgstr[i] + 0.59*(int)imgstr[i+1] + 0.11*(int)imgstr[i+2];
 				if (out > 25) { // 10% threshold
@@ -251,7 +254,7 @@ void current_frame() {
 				}
 				matrix[hcnt_prime][wcnt_prime] = out;
 				wcnt_prime += 1;
-				if (wcnt_prime == frmwidth) {
+				if (wcnt_prime == local_width) {
 					wcnt_prime = 0;
 					hcnt_prime += 1;
 				}
@@ -267,10 +270,11 @@ void current_frame() {
 	// Optionally, save the image to a file on the disk so we can check that it makes sense
 	if (SAVE_DEBUG_IMAGE) {
 		FILE *fp = fopen("/media/pi/MOON1/out.pbm", "wb");
-		fprintf(fp, "P1\n%d %d\n1\n", frmwidth, frmheight);
-		for (int i=0; i<frmheight; i++) {
-			for(int j=0; j<frmwidth; j++) {
-				if (j == frmwidth-1) {
+		//~ fprintf(fp, "P1\n%d %d\n1\n", frmwidth, frmheight);
+		fprintf(fp, "P1\n%d %d\n1\n", local_width, local_height);
+		for (int i=0; i<local_height; i++) {
+			for(int j=0; j<local_width; j++) {
+				if (j == local_width-1) {
 					fprintf(fp, "\n");
 				}
 				fprintf(fp, "%d", matrix[i][j]);
@@ -306,20 +310,20 @@ void current_frame() {
 	int left_edge = 0;
 	int right_edge = 0;
 	
-	for (int j=0; j<frmwidth; j++) {
+	for (int j=0; j<local_width; j++) {
 		if (matrix[0][j] == checkval) {
 			top_edge++;
 		}
-		if (matrix[frmheight-1][j] == checkval) {
+		if (matrix[local_height-1][j] == checkval) {
 			bottom_edge++;
 		}
 	}
 	
-	for (int k=0; k<frmheight; k++) {
+	for (int k=0; k<local_height; k++) {
 		if (matrix[k][0] == checkval) {
 			left_edge++;
 		}
-		if (matrix[k][frmwidth-1] == checkval) {
+		if (matrix[k][local_width-1] == checkval) {
 			right_edge++;
 		}
 	}
@@ -329,8 +333,8 @@ void current_frame() {
 	int sumy = 0;
 	int mcnt = 0;
 	
-	for (int k=0; k<frmheight; k++) {
-		for (int j=0; j<frmwidth; j++) {
+	for (int k=0; k<local_height; k++) {
+		for (int j=0; j<local_width; j++) {
 			if (matrix[k][j] == checkval) {
 				sumx = sumx + j;
 				sumy = sumy + k;
@@ -383,9 +387,9 @@ void current_frame() {
 			std::cout << "detected light on bottom edge" << std::endl;
 			mot_down_command();
 		} else {
-			if (abs((sumy/mcnt)-(frmheight/2)) > ((frmheight/2)*0.2)) {
-				std::cout << "M_y = " << (sumy/mcnt)-(frmheight/2) << std::endl;
-				if (((sumy/mcnt)-(frmheight/2)) > 0) {
+			if (abs((sumy/mcnt)-(local_height/2)) > ((local_height/2)*0.2)) {
+				std::cout << "M_y = " << (sumy/mcnt)-(local_height/2) << std::endl;
+				if (((sumy/mcnt)-(local_height/2)) > 0) {
 					std::cout << "centroid moving to down" << std::endl;
 					mot_down_command();
 				} else {
@@ -406,9 +410,9 @@ void current_frame() {
 			std::cout << "detected light on right edge" << std::endl;
 			mot_right_command();
 		} else {
-			if (abs((sumx/mcnt)-(frmwidth/2)) > ((frmwidth/2)*0.4)) {
-				std::cout << "M_x = " << (sumx/mcnt)-(frmwidth/2) << std::endl;
-				if (((sumx/mcnt)-(frmwidth/2)) > 0) {
+			if (abs((sumx/mcnt)-(local_width/2)) > ((local_width/2)*0.4)) {
+				std::cout << "M_x = " << (sumx/mcnt)-(local_width/2) << std::endl;
+				if (((sumx/mcnt)-(local_width/2)) > 0) {
 					std::cout << "centroid moving to right" << std::endl;
 					mot_right_command();
 				} else {

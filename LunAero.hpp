@@ -63,6 +63,10 @@ inline std::chrono::duration<double> RECORD_DURATION = (std::chrono::duration<do
 inline int COUNTER = 0;
 inline int WORK_HEIGHT = 0;
 inline int WORK_WIDTH = 0;
+inline int RVD_HEIGHT = 0;
+inline int RVD_WIDTH = 0;
+inline int RVD_XCORN = 0;
+inline int RVD_YCORN = 0;
 //~ inline int RASPI_PID = 0;
 inline std::string FILEPATH;
 inline std::string DEFAULT_FILEPATH = "";

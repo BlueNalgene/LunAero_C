@@ -124,13 +124,13 @@ std::string command_cam_preview() {
 	+ std::to_string(*val_ptr.SHUTTER_VALaddr)
 	+ " --exposure auto "
 	+ " -p "
-	+ std::to_string((WORK_WIDTH/2)-(WORK_WIDTH/4))
+	+ std::to_string(RVD_XCORN)
 	+ ","
-	+ std::to_string(WORK_HEIGHT/2)
+	+ std::to_string(RVD_YCORN)
 	+ ","
-	+ std::to_string(WORK_WIDTH/2)
+	+ std::to_string(RVD_WIDTH)
 	+ ","
-	+ std::to_string(WORK_HEIGHT/2)
+	+ std::to_string(RVD_HEIGHT)
 	+ " > /tmp/raspivid.log 2>&1 &";
 	std::cout << "Using the command: " << commandstring << std::endl;
 	return commandstring;
@@ -146,13 +146,13 @@ std::string command_cam_start() {
 	+ std::to_string(*val_ptr.SHUTTER_VALaddr)
 	+ " --exposure auto "
 	+ " -p "
-	+ std::to_string((WORK_WIDTH/2)-(WORK_WIDTH/4))
+	+ std::to_string(RVD_XCORN)
 	+ ","
-	+ std::to_string(WORK_HEIGHT/2)
+	+ std::to_string(RVD_YCORN)
 	+ ","
-	+ std::to_string(WORK_WIDTH/2)
+	+ std::to_string(RVD_WIDTH)
 	+ ","
-	+ std::to_string(WORK_HEIGHT/2)
+	+ std::to_string(RVD_HEIGHT)
 	+ " -o "
 	+ FILEPATH
 	+ "/"
@@ -249,7 +249,7 @@ void shutter_up_up() {
 		*val_ptr.SHUTTER_VALaddr = 33000;
 		sem_post(&LOCK);
 	}
-	std::cout << "SHUTTER_VAL: %d\n" << *val_ptr.SHUTTER_VALaddr << std::endl;
+	std::cout << "SHUTTER_VAL: \n" << *val_ptr.SHUTTER_VALaddr << std::endl;
 }
 
 void shutter_down_down() {
