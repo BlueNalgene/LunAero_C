@@ -51,13 +51,13 @@ int confirm_mmal_safety(int error_cnt) {
 			std::cout << line << std::endl;
 			if (line.find(str_mmal) != std::string::npos) {
 				std::cout << "WARNING: LunAero detected an MMAL problem with raspivid.  Retrying" << std::endl;
-				kill_raspivid();
 				if (error_cnt > 100) {
 					sem_wait(&LOCK);
 					*val_ptr.ABORTaddr = 1;
 					sem_post(&LOCK);
 				} else {
 					// Alternate kill method if "pidof" doesn't work right
+					std::cout << "attempting killall" << std::endl;
 					std::string commandstring = "killall raspivid";
 					system(commandstring.c_str());
 				}
