@@ -21,19 +21,14 @@
 gboolean refresh_text_boxes(gpointer data) {
 	if (*val_ptr.ABORTaddr == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
-			std::string blur_msg;
 			float blur_val = blur_test();
-			if (blur_val < BLUR_THRESH) {
-				blur_msg = "\nBLURRY\n";
-			} else {
-				blur_msg = "\nFOCUSED\n";
-			}
 			std::string msg;
 			msg = "Shutter Speed:\n  ";
 			msg += std::to_string(*val_ptr.SHUTTER_VALaddr);
 			msg += "\nISO:\n  ";
 			msg += std::to_string(*val_ptr.ISO_VALaddr);
-			msg += blur_msg;
+			msg += "\nFOCUS VAL:\n";
+			msg += std::to_string(floor(blur_val*100)/100);
 			//~ std::cout << msg << std::endl;
 			gtk_label_set_text(GTK_LABEL(gtk_class::text_status), msg.c_str());
 		} else {
