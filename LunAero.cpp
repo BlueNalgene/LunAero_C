@@ -609,6 +609,70 @@ int startup_disk_check() {
 	}
 }
 
+int parse_checklist(std::string name, std::string value) {
+	// Boolean cases
+// 	if (name == "TEST_BOOL_1"
+// 		|| name == "TEST_BOOL_2"
+// 		) {
+// 		// Define booleans
+// 		bool result;
+// 		if (value == "true" || value == "True" || value == "TRUE") {
+// 			result = true;
+// 		} else if (value == "false" || value == "False" || value == "FALSE") {
+// 			result = false;
+// 		} else {
+// 			std::cerr << "Invalid boolean value in settings.cfg item: " << name << std::endl;
+// 			return 1;
+// 		}
+// 		
+// 		if (name == "TEST_BOOL_1") {
+// 			TEST_BOOL_1 = result;
+// 		} else if (name == "TEST_BOOL_2") {
+// 			TEST_BOOL_2 = result;
+// 		}
+// 	}
+	// Int cases
+	else if (
+		name == "BLUR_THRESH"
+// 		|| name == "QHE_WIDTH"
+// 		|| name == "T1_AT_BLOCKSIZE"
+		) {
+		int result = std::stoi(value);
+		if (name == "BLUR_THRESH") {
+			BLUR_THRESH = result;
+		}/* else if (name == "QHE_WIDTH") {
+			QHE_WIDTH = result;
+		} else if (name == "T1_AT_BLOCKSIZE") {
+			T1_AT_BLOCKSIZE = result;
+		}*/
+	}
+	// Double cases
+	else if (
+		name == "RECORD_DURATION"
+		|| name == "LOOSE_WHEEL_DURATION"
+		) {
+		double result = std::stod(value);
+		if (name == "RECORD_DURATION") {
+			RECORD_DURATION = (std::chrono::duration<double>) result;
+		} else if (name == "LOOSE_WHEEL_DURATION") {
+			LOOSE_WHEEL_DURATION = (std::chrono::duration<double>) result;
+		}
+	// String cases
+// 	} else if (
+// 		name == "OSFPROJECT"
+// 		|| name == "OUTPUTDIR"
+// 		) {
+// 			if (name == "OSFPROJECT") {
+// 				OSFPROJECT = value;
+// 			} else if (name == "OUTPUTDIR") {
+// 				OUTPUTDIR = value;
+// 			}
+	} else {
+		std::cerr << "Did not recognize entry " << name << " in config file, skipping" << std::endl;
+	}
+	return 0;
+}
+
 int main (int argc, char **argv) {
 	
 	if (startup_disk_check()) {
@@ -623,6 +687,30 @@ int main (int argc, char **argv) {
 	
 	// init SUBS semaphore
 	sem_init(&LOCK, 1, 1);
+	
+	// Parse config file
+	config_file = "./settings.cfg";
+	std::ifstream cFile (config_file);
+	if (cFile.is_open()) {
+		std::string line;
+		while(getline(cFile, line)){
+			line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
+			if(line[0] == '#' || line.empty()) {
+				continue;
+			}
+			delimiter_pos = line.find("=");
+			std::string name = line.substr(0, delimiter_pos);
+			std::string value = line.substr(delimiter_pos + 1);
+			if (parse_checklist(name, value)) {
+				return 1;
+			}
+		}
+		
+	}
+	else {
+		std::cerr << "Couldn't open config file for reading." << std::endl;
+		return 1;
+	}
 	
 	// Make folder for stuff
 	TSBUFF = current_time(0);

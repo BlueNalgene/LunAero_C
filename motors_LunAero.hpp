@@ -45,6 +45,7 @@
 #define BPIN2 13                // GPIO BCM pin definition 9
 #define BPINP 14                // GPIO BCM pin definition 11
 #define MIN_DUTY 20             // Minimum allowable duty cycle
+
 // Number of seconds to perform a loose wheel maneuver
 inline std::chrono::duration<double> LOOSE_WHEEL_DURATION = (std::chrono::duration<double>)2.;
 
