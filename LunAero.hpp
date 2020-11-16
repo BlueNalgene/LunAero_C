@@ -33,6 +33,8 @@
 
 //Special RPi include
 #include "bcm_host.h"      // provides DISPMANX et al.
+#include "opencv2/opencv.hpp"
+using namespace cv;
 
 // Module specific Includes
 #include <signal.h>        // provides kill signals
@@ -46,7 +48,6 @@
 #include <time.h>          // provides time
 #include <unistd.h>        // provides usleep
 #include <filesystem>      // provides filesystem space info
-
 
 // User Includes
 #include "gtk_LunAero.hpp"
@@ -67,6 +68,7 @@ inline int RVD_HEIGHT = 0;
 inline int RVD_WIDTH = 0;
 inline int RVD_XCORN = 0;
 inline int RVD_YCORN = 0;
+inline int BLUR_THRESH = 100;
 //~ inline int RASPI_PID = 0;
 inline std::string FILEPATH;
 inline std::string DEFAULT_FILEPATH = "";
@@ -111,6 +113,7 @@ inline struct val_addresses {
 // Declare Function Prototypes
 int main (int argc, char **argv);
 int startup_disk_check();
+float blur_test();
 void cb_framecheck();
 void cleanup();
 void kill_raspivid();

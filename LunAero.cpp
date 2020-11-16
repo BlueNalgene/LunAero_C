@@ -144,6 +144,133 @@ std::string current_time(int gmt) {
 	return str;
 }
 
+float blur_test() {
+	float blurval = 0;
+	
+	// Run a system check to see if raspivid is running, if not, print a warning
+	pid_t thepid = 0;
+	FILE* fpidof = popen("pidof raspivid", "r");
+	if (fpidof) {
+		int p=0;
+		if (fscanf(fpidof, "%d", &p)>0 && p>0) {
+			thepid = (pid_t)p;
+		} else {
+			std::cout << "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+			return 0;
+		}
+		pclose(fpidof);
+	} else {
+		std::cout << "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+		return 0;
+	}
+	
+	DISPMANX_DISPLAY_HANDLE_T   display = 0;
+	DISPMANX_MODEINFO_T         info;
+	DISPMANX_RESOURCE_HANDLE_T  resource = 0;
+	VC_IMAGE_TYPE_T             type = VC_IMAGE_RGB888;
+	DISPMANX_TRANSFORM_T	    transform = static_cast <DISPMANX_TRANSFORM_T> (0);
+	VC_RECT_T			        rect;
+	
+	void *image;
+	uint32_t vc_image_ptr;
+	uint32_t screen = 0;
+
+	bcm_host_init();
+
+	// Get display info for the screen we are using.
+	display = vc_dispmanx_display_open( screen );
+	if (vc_dispmanx_display_get_info(display, &info) != 0) {
+		std::cout << "ERROR: failed to get display info" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
+
+	// This holds an image
+	image = calloc( 1, info.width * 3 * info.height );
+	if (!image) {
+		std::cout << "ERROR: failed image assertion" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
+
+	// Create space based on the screen info
+	resource = vc_dispmanx_resource_create( type, info.width, info.height, &vc_image_ptr);
+	if (!resource) {
+		std::cout << "ERROR: failed to create VC Dispmanx Resource" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
+
+	// Take a snapshot of the screen (stored in resource)
+	vc_dispmanx_snapshot(display, resource, transform);
+
+	// Read the rectangular data from resource into the image calloc
+	vc_dispmanx_rect_set(&rect, 0, 0, info.width, info.height);
+	vc_dispmanx_resource_read_data(resource, &rect, image, info.width*3);
+
+	std::cout << info.width << " x " << info.height << std::endl;
+	std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
+	
+	int local_height = RVD_HEIGHT - 6;
+	int local_width = RVD_WIDTH - 4;
+	int local_xcorn = RVD_XCORN + 2;
+	int local_ycorn = RVD_YCORN + 3;
+	
+	unsigned char * img_data_ptr = (unsigned char*) &image;
+	Mat in_image(info.height, info.width, CV_8UC3, image);
+	cvtColor(in_image.clone(), in_image, COLOR_RGB2GRAY);
+	
+	
+	
+	//~ int matrix[local_height][local_width];
+	//~ int wcnt = 0;
+	//~ int hcnt = 0;
+	//~ int wcnt_prime = 0;
+	//~ int hcnt_prime = 0;
+	//~ for (unsigned int i=0; i<imgstr.size(); i=i+3) {
+		//~ if ((wcnt > (local_xcorn)) && (wcnt < (local_xcorn + local_width + 1))) {
+			//~ if ((hcnt > (local_ycorn - 1)) && (hcnt < (local_ycorn + local_height))) {
+				//~ int out;
+				//~ out = 0.30*(int)imgstr[i] + 0.59*(int)imgstr[i+1] + 0.11*(int)imgstr[i+2];
+				//~ matrix[hcnt_prime][wcnt_prime] = out;
+				//~ wcnt_prime += 1;
+				//~ if (wcnt_prime == local_width) {
+					//~ wcnt_prime = 0;
+					//~ hcnt_prime += 1;
+				//~ }
+			//~ }
+		//~ }
+		//~ wcnt += 1;
+		//~ if (wcnt == info.width) {
+			//~ wcnt = 0;
+			//~ hcnt += 1;
+		//~ }
+	//~ }
+	
+	// Cleanup the VC resources
+	if (vc_dispmanx_resource_delete(resource) != 0) {
+		std::cout << "ERROR: failed to delete vc resource" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
+	if (vc_dispmanx_display_close(display) != 0) {
+		std::cout << "ERROR: failed to close vc display" << std::endl;
+		*val_ptr.ABORTaddr = 1;
+	}
+	free(image);
+	
+	// Run laplacian on input image
+	Mat ROI(in_image, Rect(local_xcorn, local_ycorn, local_width, local_height));
+	Mat cropped_image;
+	ROI.copyTo(cropped_image);
+	imwrite("/home/pi/Documents/LunAero_C/test.png", cropped_image);
+	
+	Laplacian(cropped_image, in_image, CV_64F);
+	Scalar mean, stddev; // 0:1st channel, 1:2nd channel and 2:3rd channel
+	meanStdDev(in_image, mean, stddev, Mat());
+	blurval = stddev.val[0] * stddev.val[0];
+	
+	std::cout << "BLURVAL: " << blurval << std::endl;
+	
+	return blurval;
+}
+
 void current_frame() {
 	
 	// Don't bother if we have already told the program to abort
