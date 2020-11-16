@@ -19,22 +19,42 @@
 #include "camera_LunAero.hpp"
 
 int confirm_filespace() {
-	std::cout << "Confirming filespace" << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "Confirming filespace" << std::endl;
+		LOGGING.close();
+	}
 	namespace fs = std::filesystem;
 	fs::space_info tmp = fs::space(DEFAULT_FILEPATH);
 	if (tmp.available < (1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
-		std::cout << "ERROR: The space on this drive is too low with "
-		<< tmp.available << " bytes remaining, exiting." << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: The space on this drive is too low with "
+			<< tmp.available << " bytes remaining, exiting." << std::endl;
+			LOGGING.close();
+		}
 		return 1;
 	}
 	return 0;
 }
 
 int confirm_mmal_safety(int error_cnt) {
-	std::cout << "mmal safety count: " << error_cnt << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "mmal safety count: " << error_cnt << std::endl;
+		LOGGING.close();
+	}
 	// If the retry attempts are way too high, don't even bother
 	if (error_cnt > 100) {
-		std::cout << "ERROR: LunAero detected repeating MMAL problems.  Exiting" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: LunAero detected repeating MMAL problems.  Exiting" << std::endl;
+			LOGGING.close();
+		}
 		kill_raspivid();
 		sem_wait(&LOCK);
 		*val_ptr.ABORTaddr = 1;
@@ -48,16 +68,31 @@ int confirm_mmal_safety(int error_cnt) {
 	if (file.is_open()) {
 		std::string line;
 		while (std::getline(file, line)) {
-			std::cout << line << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< line << std::endl;
+				LOGGING.close();
+			}
 			if (line.find(str_mmal) != std::string::npos) {
-				std::cout << "WARNING: LunAero detected an MMAL problem with raspivid.  Retrying" << std::endl;
+				if (DEBUG_COUT) {
+					LOGGING.open(LOGOUT, std::ios_base::app);
+					LOGGING
+					<< "WARNING: LunAero detected an MMAL problem with raspivid.  Retrying" << std::endl;
+					LOGGING.close();
+				}
 				if (error_cnt > 100) {
 					sem_wait(&LOCK);
 					*val_ptr.ABORTaddr = 1;
 					sem_post(&LOCK);
 				} else {
 					// Alternate kill method if "pidof" doesn't work right
-					std::cout << "attempting killall" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "attempting killall" << std::endl;
+						LOGGING.close();
+					}
 					std::string commandstring = "killall raspivid";
 					system(commandstring.c_str());
 				}
@@ -76,7 +111,12 @@ int confirm_mmal_safety(int error_cnt) {
 }
 
 void camera_start() {
-	std::cout << "\n\nNOW RECORDING\n\nPATH: " << FILEPATH << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "\n\nNOW RECORDING\n\nPATH: " << FILEPATH << std::endl;
+		LOGGING.close();
+	}
 	// Call preview of camera
 	std::string commandstring = "";
 	commandstring = command_cam_start();
@@ -132,7 +172,12 @@ std::string command_cam_preview() {
 	+ ","
 	+ std::to_string(RVD_HEIGHT)
 	+ " > /tmp/raspivid.log 2>&1 &";
-	std::cout << "Using the command: " << commandstring << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "Using the command: " << commandstring << std::endl;
+		LOGGING.close();
+	}
 	return commandstring;
 }
 
@@ -158,7 +203,12 @@ std::string command_cam_start() {
 	+ "/"
 	+ TSBUFF
 	+ "outA.h264 > /tmp/raspivid.log 2>&1 &";
-	std::cout << "Using the command: " << commandstring << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "Using the command: " << commandstring << std::endl;
+		LOGGING.close();
+	}
 	
 	return commandstring;
 }
@@ -196,7 +246,12 @@ void first_record() {
 	*val_ptr.DUTY_Baddr = 20;
 	sem_post(&LOCK);
 	camera_start();
-	std::cout << "-----------------\nRECORDING STARTED\n-----------------\n" << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "-----------------\nRECORDING STARTED\n-----------------\n" << std::endl;
+		LOGGING.close();
+	}
 }
 
 void reset_record() {
@@ -223,7 +278,12 @@ void shutter_up() {
 		*val_ptr.SHUTTER_VALaddr = 33000;
 		sem_post(&LOCK);
 	}
-	std::cout << "SHUTTER_VAL: " << *val_ptr.SHUTTER_VALaddr << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "SHUTTER_VAL: " << *val_ptr.SHUTTER_VALaddr << std::endl;
+		LOGGING.close();
+	}
 }
 
 void shutter_down() {
@@ -236,7 +296,12 @@ void shutter_down() {
 		*val_ptr.SHUTTER_VALaddr = 10;
 		sem_post(&LOCK);
 	}
-	std::cout << "SHUTTER_VAL: " << *val_ptr.SHUTTER_VALaddr << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "SHUTTER_VAL: " << *val_ptr.SHUTTER_VALaddr << std::endl;
+		LOGGING.close();
+	}
 }
 
 void shutter_up_up() {
@@ -249,7 +314,12 @@ void shutter_up_up() {
 		*val_ptr.SHUTTER_VALaddr = 33000;
 		sem_post(&LOCK);
 	}
-	std::cout << "SHUTTER_VAL: \n" << *val_ptr.SHUTTER_VALaddr << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "SHUTTER_VAL: \n" << *val_ptr.SHUTTER_VALaddr << std::endl;
+		LOGGING.close();
+	}
 }
 
 void shutter_down_down() {
@@ -262,7 +332,12 @@ void shutter_down_down() {
 		*val_ptr.SHUTTER_VALaddr = 10;
 		sem_post(&LOCK);
 	}
-	std::cout << "SHUTTER_VAL: " << *val_ptr.SHUTTER_VALaddr << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "SHUTTER_VAL: " << *val_ptr.SHUTTER_VALaddr << std::endl;
+		LOGGING.close();
+	}
 }
 
 void iso_cycle() {
@@ -283,5 +358,10 @@ void iso_cycle() {
 		*val_ptr.ISO_VALaddr = 200;
 		sem_post(&LOCK);
 	}
-	std::cout << "ISO_VAL: " << *val_ptr.ISO_VALaddr << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "ISO_VAL: " << *val_ptr.ISO_VALaddr << std::endl;
+		LOGGING.close();
+	}
 }

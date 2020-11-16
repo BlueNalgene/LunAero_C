@@ -48,6 +48,7 @@ using namespace cv;
 #include <time.h>          // provides time
 #include <unistd.h>        // provides usleep
 #include <filesystem>      // provides filesystem space info
+#include <libnotify/notify.h> // provides notify functions
 
 // User Includes
 #include "gtk_LunAero.hpp"
@@ -75,6 +76,11 @@ inline std::string DEFAULT_FILEPATH = "";
 inline std::string TSBUFF;
 inline std::string IDPATH = "";
 inline std::chrono::time_point OLD_RECORD_TIME = std::chrono::system_clock::now();
+inline bool DEBUG_COUT = false;
+inline std::string DEBUG_LOG;
+vector <std::string> DISK_OUTPUT;
+std::string LOGOUT;
+std::ofstream LOGGING;
 
 inline sem_t LOCK;
 

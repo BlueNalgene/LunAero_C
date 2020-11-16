@@ -29,7 +29,6 @@ gboolean refresh_text_boxes(gpointer data) {
 			msg += std::to_string(*val_ptr.ISO_VALaddr);
 			msg += "\nFOCUS VAL:\n";
 			msg += std::to_string(floor(blur_val*100)/100);
-			//~ std::cout << msg << std::endl;
 			gtk_label_set_text(GTK_LABEL(gtk_class::text_status), msg.c_str());
 		} else {
 			std::string msg;
@@ -52,7 +51,12 @@ void screen_size () {
 	// Calculate the screen workarea
 	WORK_HEIGHT = workarea.height;
 	WORK_WIDTH = workarea.width;
-	std::cout << "W: " << WORK_WIDTH << " x H: " << WORK_HEIGHT << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "W: " << WORK_WIDTH << " x H: " << WORK_HEIGHT << std::endl;
+		LOGGING.close();
+	}
 	// Calculate the estimated size of a Raspivid window
 	RVD_HEIGHT = WORK_HEIGHT/2;
 	RVD_WIDTH = WORK_WIDTH/2;
@@ -63,20 +67,35 @@ void screen_size () {
 			RVD_HEIGHT = RVD_WIDTH * 9/16;
 		}
 	}
-	std::cout << "Est Raspivid preview W: " << RVD_WIDTH << " x H: " << RVD_HEIGHT << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "Est Raspivid preview W: " << RVD_WIDTH << " x H: " << RVD_HEIGHT << std::endl;
+		LOGGING.close();
+	}
 	// Calculate the Raspivid preview corner
 	RVD_XCORN = (WORK_WIDTH/2)-(WORK_WIDTH/4);
 	RVD_YCORN = (WORK_HEIGHT/2);
-	std::cout << "Raspivid corner X: " << RVD_XCORN << " x Y: " << RVD_YCORN << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "Raspivid corner X: " << RVD_XCORN << " x Y: " << RVD_YCORN << std::endl;
+		LOGGING.close();
+	}
 	return;
 }
 
 std::string get_css_string() {
 	screen_size();
 	std::string css_string;
-	std::cout << "width: " << WORK_WIDTH << std::endl;
-	std::cout << "height: " << WORK_HEIGHT << std::endl;
-	std::cout << "font-size: " << ((WORK_WIDTH*20)/WORK_HEIGHT) << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "width: " << WORK_WIDTH << std::endl
+		<< "height: " << WORK_HEIGHT << std::endl
+		<< "font-size: " << ((WORK_WIDTH*20)/WORK_HEIGHT) << std::endl;
+		LOGGING.close();
+	}
 	std::string font_size_string = std::to_string((WORK_WIDTH*20)/WORK_HEIGHT);
 	css_string = "window { background-color: black; \
 		 color: red; \
@@ -257,9 +276,19 @@ void gtk_global_setup(GtkApplication *app, gpointer local_val_ptr) {
 
 void mot_stop_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
-		std::cout << "mot stop command" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot stop command" << std::endl;
+			LOGGING.close();
+		}
 	} else {
-		std::cout << "mot stop auto" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot stop auto" << std::endl;
+			LOGGING.close();
+		}
 	}
 	sem_wait(&LOCK);
 	*val_ptr.STOP_DIRaddr = 3;
@@ -268,9 +297,19 @@ void mot_stop_command() {
 
 void mot_up_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
-		std::cout << "mot up command" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot up command" << std::endl;
+			LOGGING.close();
+		}
 	} else {
-		std::cout << "mot up auto" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot up auto" << std::endl;
+			LOGGING.close();
+		}
 	}
 	if (*val_ptr.STOP_DIRaddr == 3) {
 		sem_wait(&LOCK);
@@ -288,9 +327,19 @@ void mot_up_command() {
 
 void mot_down_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
-		std::cout << "mot down command" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot down command" << std::endl;
+			LOGGING.close();
+		}
 	} else {
-		std::cout << "mot down auto" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot down auto" << std::endl;
+			LOGGING.close();
+		}
 	}
 	if (*val_ptr.STOP_DIRaddr == 3) {
 		sem_wait(&LOCK);
@@ -308,9 +357,19 @@ void mot_down_command() {
 
 void mot_left_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
-		std::cout << "mot left command" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot left command" << std::endl;
+			LOGGING.close();
+		}
 	} else {
-		std::cout << "mot left auto" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot left auto" << std::endl;
+			LOGGING.close();
+		}
 	}
 	if (*val_ptr.STOP_DIRaddr == 3) {
 		sem_wait(&LOCK);
@@ -328,9 +387,19 @@ void mot_left_command() {
 
 void mot_right_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
-		std::cout << "mot right command" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot right command" << std::endl;
+			LOGGING.close();
+		}
 	} else {
-		std::cout << "mot right auto" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "mot right auto" << std::endl;
+			LOGGING.close();
+		}
 	}
 	if (*val_ptr.STOP_DIRaddr == 3) {
 		sem_wait(&LOCK);
@@ -510,7 +579,12 @@ gboolean key_event_preview(GtkWidget *widget, GdkEventKey *event) {
 			first_record_killer(NULL);
 		}
 	} else {
-		std::cout << "keyval: \"" << val << "\" not used here\n" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "keyval: \"" << val << "\" not used here\n" << std::endl;
+			LOGGING.close();
+		}
 	}
 	
 	// Always return the keyboard focus back to our fake button
@@ -530,7 +604,12 @@ gboolean key_event_running(GtkWidget *widget, GdkEventKey *event) {
 		*val_ptr.ABORTaddr = 1;
 		sem_post(&LOCK);
 	} else {
-		std::cout << "keyval: \"" << val << "\" not used here\n" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "keyval: \"" << val << "\" not used here\n" << std::endl;
+			LOGGING.close();
+		}
 	}
 	
 	// Always return the keyboard focus back to our fake button
@@ -542,9 +621,19 @@ gboolean key_event_running(GtkWidget *widget, GdkEventKey *event) {
 gboolean abort_check(GtkWidget* data) {
 	if (*val_ptr.ABORTaddr == 1) {
 		if (*val_ptr.LOST_COUNTERaddr > LOST_THRESH) {
-			std::cout << "lost moon, shutting down" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "lost moon, shutting down" << std::endl;
+				LOGGING.close();
+			}
 		} else {
-			std::cout << "recieved shutdown command from user" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "recieved shutdown command from user" << std::endl;
+				LOGGING.close();
+			}
 		}
 		//~ gtk_widget_destroy(data);
 		gtk_window_close(GTK_WINDOW(gtk_class::window));
@@ -620,7 +709,12 @@ void first_record_killer(GtkWidget* data) {
 
 gboolean cb_subsequent(GtkWidget* data) {
 	if (*val_ptr.SUBSaddr == 2) {
-		std::cout << "cb sub 2 " << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "cb sub 2 " << std::endl;
+			LOGGING.close();
+		}
 		reset_record();
 		sem_wait(&LOCK);
 		*val_ptr.SUBSaddr = 0;

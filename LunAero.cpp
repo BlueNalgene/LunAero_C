@@ -53,9 +53,14 @@
 
 void cb_framecheck() {
 	printf("getting current frame\n");
-	std::cout << "Time in Milliseconds ="
-	 << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count()
-	<< std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "Time in Milliseconds ="
+		<< std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count()
+		<< std::endl;
+		LOGGING.close();
+	}
 	current_frame();
 	//~ frame_centroid();
 	if (*val_ptr.LOST_COUNTERaddr == 30) {
@@ -67,7 +72,12 @@ void cb_framecheck() {
 
 void cleanup () {
 	// Placeholder in case we need to clean anything up on exit.
-	std::cout << "killing run" << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "killing run" << std::endl;
+		LOGGING.close();
+	}
 	kill_raspivid();
 	usleep(1000000);
 }
@@ -85,7 +95,12 @@ void kill_raspivid () {
 	pid_t pid = strtoul(line, NULL, 10);
 	pclose(cmd);
 	if (kill(pid, SIGINT) != 0) {
-		std::cout << "ERROR: Unable to kill raspivid" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: Unable to kill raspivid" << std::endl;
+			LOGGING.close();
+		}
 	}
 }
 
@@ -100,8 +115,13 @@ int create_id_file() {
 	linestr.erase(std::remove(linestr.begin(), linestr.end(), '\n'), linestr.end());
 	IDPATH = FILEPATH + "/" + linestr + ".txt";
 	
-	std::cout << "LUID: " << linestr << std::endl;
-	std::cout << "idpath: " << IDPATH << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "LUID: " << linestr << std::endl
+		<< "idpath: " << IDPATH << std::endl;
+		LOGGING.close();
+	}
 	
 	std::string gmt = current_time(1);
 	
@@ -139,7 +159,12 @@ std::string current_time(int gmt) {
 	strftime(buffer, sizeof(buffer), "%Y%m%d%H%M%S", timeinfo);
 	std::string str(buffer);
 
-	std::cout << str << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< str << std::endl;
+		LOGGING.close();
+	}
 	
 	return str;
 }
@@ -155,12 +180,22 @@ float blur_test() {
 		if (fscanf(fpidof, "%d", &p)>0 && p>0) {
 			thepid = (pid_t)p;
 		} else {
-			std::cout << "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+				LOGGING.close();
+			}
 			return 0;
 		}
 		pclose(fpidof);
 	} else {
-		std::cout << "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+			LOGGING.close();
+		}
 		return 0;
 	}
 	
@@ -180,21 +215,36 @@ float blur_test() {
 	// Get display info for the screen we are using.
 	display = vc_dispmanx_display_open( screen );
 	if (vc_dispmanx_display_get_info(display, &info) != 0) {
-		std::cout << "ERROR: failed to get display info" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to get display info" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 
 	// This holds an image
 	image = calloc( 1, info.width * 3 * info.height );
 	if (!image) {
-		std::cout << "ERROR: failed image assertion" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed image assertion" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 
 	// Create space based on the screen info
 	resource = vc_dispmanx_resource_create( type, info.width, info.height, &vc_image_ptr);
 	if (!resource) {
-		std::cout << "ERROR: failed to create VC Dispmanx Resource" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to create VC Dispmanx Resource" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 
@@ -205,7 +255,12 @@ float blur_test() {
 	vc_dispmanx_rect_set(&rect, 0, 0, info.width, info.height);
 	vc_dispmanx_resource_read_data(resource, &rect, image, info.width*3);
 
-	std::cout << info.width << " x " << info.height << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< info.width << " x " << info.height << std::endl;
+		LOGGING.close();
+	}
 	std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
 	
 	int local_height = RVD_HEIGHT - 6;
@@ -246,11 +301,21 @@ float blur_test() {
 	
 	// Cleanup the VC resources
 	if (vc_dispmanx_resource_delete(resource) != 0) {
-		std::cout << "ERROR: failed to delete vc resource" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to delete vc resource" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 	if (vc_dispmanx_display_close(display) != 0) {
-		std::cout << "ERROR: failed to close vc display" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to close vc display" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 	free(image);
@@ -266,7 +331,12 @@ float blur_test() {
 	meanStdDev(in_image, mean, stddev, Mat());
 	blurval = stddev.val[0] * stddev.val[0];
 	
-	std::cout << "BLURVAL: " << blurval << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "BLURVAL: " << blurval << std::endl;
+		LOGGING.close();
+	}
 	
 	return blurval;
 }
@@ -291,10 +361,15 @@ void current_frame() {
 			sem_wait(&LOCK);
 			*val_ptr.LOST_COUNTERaddr = local_cnt;
 			sem_post(&LOCK);
-			std::cout << "WARNING: lost moon counter increased to" 
-			<< *val_ptr.LOST_COUNTERaddr 
-			<<  " cycles due to failure to find raspivid" 
-			<< std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "WARNING: lost moon counter increased to" 
+				<< *val_ptr.LOST_COUNTERaddr 
+				<<  " cycles due to failure to find raspivid" 
+				<< std::endl;
+				LOGGING.close();
+			}
 			pclose(fpidof);
 			return;
 		}
@@ -305,10 +380,15 @@ void current_frame() {
 		sem_wait(&LOCK);
 		*val_ptr.LOST_COUNTERaddr = local_cnt;
 		sem_post(&LOCK);
-		std::cout << "WARNING: lost moon counter increased to " 
-		<< *val_ptr.LOST_COUNTERaddr 
-		<<  " cycles due to failure to find raspivid" 
-		<< std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "WARNING: lost moon counter increased to " 
+			<< *val_ptr.LOST_COUNTERaddr 
+			<<  " cycles due to failure to find raspivid" 
+			<< std::endl;
+			LOGGING.close();
+		}
 		return;
 	}
 	
@@ -328,21 +408,36 @@ void current_frame() {
 	// Get display info for the screen we are using.
 	display = vc_dispmanx_display_open( screen );
 	if (vc_dispmanx_display_get_info(display, &info) != 0) {
-		std::cout << "ERROR: failed to get display info" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to get display info" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 
 	// This holds an image
 	image = calloc( 1, info.width * 3 * info.height );
 	if (!image) {
-		std::cout << "ERROR: failed image assertion" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed image assertion" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 
 	// Create space based on the screen info
 	resource = vc_dispmanx_resource_create( type, info.width, info.height, &vc_image_ptr);
 	if (!resource) {
-		std::cout << "ERROR: failed to create VC Dispmanx Resource" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to create VC Dispmanx Resource" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 
@@ -356,7 +451,12 @@ void current_frame() {
 	// TODO - assert that the drive is plugged in
 	// TODO - Make this an mmap stored image.
 
-	std::cout << info.width << " x " << info.height << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< info.width << " x " << info.height << std::endl;
+		LOGGING.close();
+	}
 	std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
 	
 	int local_height = RVD_HEIGHT - 6;
@@ -412,11 +512,21 @@ void current_frame() {
 	
 	// Cleanup the VC resources
 	if (vc_dispmanx_resource_delete(resource) != 0) {
-		std::cout << "ERROR: failed to delete vc resource" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to delete vc resource" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 	if (vc_dispmanx_display_close(display) != 0) {
-		std::cout << "ERROR: failed to close vc display" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to close vc display" << std::endl;
+			LOGGING.close();
+		}
 		*val_ptr.ABORTaddr = 1;
 	}
 	free(image);
@@ -469,7 +579,12 @@ void current_frame() {
 			}
 		}
 	}
-	std::cout << "sumx " << sumx << " sumy " << sumy << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "sumx " << sumx << " sumy " << sumy << std::endl;
+		LOGGING.close();
+	}
 	
 	// If nothing is found, return an increment to the moon loss counter
 	if ((sumx == 0) && (sumy == 0)) {
@@ -478,27 +593,57 @@ void current_frame() {
 		sem_wait(&LOCK);
 		*val_ptr.LOST_COUNTERaddr = local_cnt;
 		sem_post(&LOCK);
-		std::cout << "lost moon for " << *val_ptr.LOST_COUNTERaddr <<  " cycles" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "lost moon for " << *val_ptr.LOST_COUNTERaddr <<  " cycles" << std::endl;
+			LOGGING.close();
+		}
 	} else {
 		// something was found, reset moon loss counter
 		sem_wait(&LOCK);
 		*val_ptr.LOST_COUNTERaddr = 0;
 		sem_post(&LOCK);
-		std::cout << "Moon found centered at (" << (sumx/mcnt) << ", " << (sumy/mcnt) << ")\n" << std::endl;
-		std::cout << "top:bottom::left:right " << top_edge << ":" << bottom_edge << "::" << left_edge 
-		<< ":" << right_edge <<std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "Moon found centered at (" << (sumx/mcnt) << ", " << (sumy/mcnt) << ")\n" << std::endl
+			<< "top:bottom::left:right " << top_edge << ":" << bottom_edge << "::" << left_edge
+			<< ":" << right_edge <<std::endl;
+			LOGGING.close();
+		}
 		// Report edges only
 		if ((top_edge >= w_thresh) && (bottom_edge < w_thresh)) {
-			std::cout << "+top edge" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "+top edge" << std::endl;
+				LOGGING.close();
+			}
 		}
 		if ((bottom_edge >= w_thresh) && (top_edge < w_thresh)) {
-			std::cout << "+bottom edge" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "+bottom edge" << std::endl;
+				LOGGING.close();
+			}
 		}
 		if ((left_edge >= h_thresh) && (right_edge < h_thresh)) {
-			std::cout << "+left edge" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "+left edge" << std::endl;
+				LOGGING.close();
+			}
 		}
 		if ((left_edge <= h_thresh) && (right_edge > h_thresh)) {
-			std::cout << "+right edge" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "+right edge" << std::endl;
+				LOGGING.close();
+			}
 		}
 		
 		
@@ -508,19 +653,44 @@ void current_frame() {
 		// If so, move away from that edge
 		// If not or near both edges, use centroid
 		if ((top_edge >= w_thresh) && (bottom_edge < w_thresh)) {
-			std::cout << "detected light on top edge" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "detected light on top edge" << std::endl;
+				LOGGING.close();
+			}
 			mot_up_command();
 		} else if ((bottom_edge >= w_thresh) && (top_edge < w_thresh)) {
-			std::cout << "detected light on bottom edge" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "detected light on bottom edge" << std::endl;
+				LOGGING.close();
+			}
 			mot_down_command();
 		} else {
 			if (abs((sumy/mcnt)-(local_height/2)) > ((local_height/2)*0.2)) {
-				std::cout << "M_y = " << (sumy/mcnt)-(local_height/2) << std::endl;
+				if (DEBUG_COUT) {
+					LOGGING.open(LOGOUT, std::ios_base::app);
+					LOGGING
+					<< "M_y = " << (sumy/mcnt)-(local_height/2) << std::endl;
+					LOGGING.close();
+				}
 				if (((sumy/mcnt)-(local_height/2)) > 0) {
-					std::cout << "centroid moving to down" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "centroid moving to down" << std::endl;
+						LOGGING.close();
+					}
 					mot_down_command();
 				} else {
-					std::cout << "centroid moving to up" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "centroid moving to up" << std::endl;
+						LOGGING.close();
+					}
 					mot_up_command();
 				}
 			} else {
@@ -531,19 +701,44 @@ void current_frame() {
 		}
 		
 		if ((left_edge >= h_thresh) && (right_edge < h_thresh)) {
-			std::cout << "detected light on left edge" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "detected light on left edge" << std::endl;
+				LOGGING.close();
+			}
 			mot_left_command();
 		} else if ((left_edge <= h_thresh) && (right_edge > h_thresh)) {
-			std::cout << "detected light on right edge" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "detected light on right edge" << std::endl;
+				LOGGING.close();
+			}
 			mot_right_command();
 		} else {
 			if (abs((sumx/mcnt)-(local_width/2)) > ((local_width/2)*0.4)) {
-				std::cout << "M_x = " << (sumx/mcnt)-(local_width/2) << std::endl;
+				if (DEBUG_COUT) {
+					LOGGING.open(LOGOUT, std::ios_base::app);
+					LOGGING
+					<< "M_x = " << (sumx/mcnt)-(local_width/2) << std::endl;
+					LOGGING.close();
+				}
 				if (((sumx/mcnt)-(local_width/2)) > 0) {
-					std::cout << "centroid moving to right" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "centroid moving to right" << std::endl;
+						LOGGING.close();
+					}
 					mot_right_command();
 				} else {
-					std::cout << "centroid moving to left" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "centroid moving to left" << std::endl;
+						LOGGING.close();
+					}
 					mot_left_command();
 				}
 			} else {
@@ -564,14 +759,26 @@ void current_frame() {
 	return;
 }
 
+int notify_handler(std::string input1, std::string input2) {
+	notify_init("LunAero");
+	NotifyNotification* n = notify_notification_new (input1, input2, 0);
+	notify_notification_set_timeout(n, 10000); // 10 seconds
+	if (!notify_notification_show(n, 0)) {
+		std::cerr << "Libnotify failed.  I hope you have terminal open!" << std::endl;
+		return -1;
+	}	
+	return 0;
+}
+
 int startup_disk_check() {
+	
 	std::string userenv = std::getenv("USER");
 	std::string local_path = "/media/" + userenv + "/MOON1";
 	DEFAULT_FILEPATH = local_path + "/";
 	
 	std::ifstream mountsfile("/proc/mounts", std::ifstream::in);
 	if (!mountsfile.good()) {
-		std::cout << "ERROR: Input stream to /proc/mounts is not valid" << std::endl;
+		notify_handler("LunAero Error", "Input stream to /proc/mounts is not valid");
 		return 1;
 	}
 	
@@ -590,62 +797,58 @@ int startup_disk_check() {
 		namespace fs = std::filesystem;
 		fs::space_info tmp = fs::space(local_path);
 		if (tmp.available < (1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
-			std::cout << "ERROR: The space on this drive is too low with "
-			<< tmp.available << " bytes remaining" << std::endl
-			<< "...    the run will likely not be successful, exiting." << std::endl;
+			notify_handler("LunAero Error", "The space on this drive is too low with " + tmp.available << " bytes remaining");
+			return 2;
 		} else if (tmp.available < (10 * 1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
-			std::cout << "WARNING: This drive only has " << tmp.available
-			<< " bytes of space remaining," << std::endl 
-			<< "...     you may run out of during this run" << std::endl;
+			notify_handler("LunAero Warning", "This drive only has " + tmp.available
+			+ " bytes of space remaining.");
 		}
-		std::cout << "Free space: " << tmp.free << std::endl 
-		<< "Available space: " << tmp.available << std::endl;
+		DISK_OUTPUT.push_back("Free space: " + tmp.free);
+		DISK_OUTPUT.push_back("Available space: " + tmp.available);
 		return 0;
 	} else {
-		std::cout << "ERROR: Could not find a drive mounted at " << DEFAULT_FILEPATH
-		<< std::endl << "...    check that your external drive is connected properly"
-		<< std::endl;
-		return 1;
+		notify_handler("LunAero Error", "Could not find a drive mounted at " + DEFAULT_FILEPATH);
+		return 3;
 	}
 }
 
 int parse_checklist(std::string name, std::string value) {
 	// Boolean cases
-// 	if (name == "TEST_BOOL_1"
+	if (name == "DEBUG_COUT"
 // 		|| name == "TEST_BOOL_2"
-// 		) {
-// 		// Define booleans
-// 		bool result;
-// 		if (value == "true" || value == "True" || value == "TRUE") {
-// 			result = true;
-// 		} else if (value == "false" || value == "False" || value == "FALSE") {
-// 			result = false;
-// 		} else {
-// 			std::cerr << "Invalid boolean value in settings.cfg item: " << name << std::endl;
-// 			return 1;
-// 		}
-// 		
-// 		if (name == "TEST_BOOL_1") {
-// 			TEST_BOOL_1 = result;
-// 		} else if (name == "TEST_BOOL_2") {
-// 			TEST_BOOL_2 = result;
-// 		}
-// 	}
-	// Int cases
-	else if (
-		name == "BLUR_THRESH"
-// 		|| name == "QHE_WIDTH"
-// 		|| name == "T1_AT_BLOCKSIZE"
 		) {
-		int result = std::stoi(value);
-		if (name == "BLUR_THRESH") {
-			BLUR_THRESH = result;
-		}/* else if (name == "QHE_WIDTH") {
-			QHE_WIDTH = result;
-		} else if (name == "T1_AT_BLOCKSIZE") {
-			T1_AT_BLOCKSIZE = result;
+		// Define booleans
+		bool result;
+		if (value == "true" || value == "True" || value == "TRUE") {
+			result = true;
+		} else if (value == "false" || value == "False" || value == "FALSE") {
+			result = false;
+		} else {
+			std::cerr << "Invalid boolean value in settings.cfg item: " << name << std::endl;
+			return 1;
+		}
+		
+		if (name == "DEBUG_COUT") {
+			DEBUG_COUT = result;
+		}/* else if (name == "TEST_BOOL_2") {
+			TEST_BOOL_2 = result;
 		}*/
 	}
+	// Int cases
+// 	else if (
+// 		name == "BLUR_THRESH"
+// 		|| name == "QHE_WIDTH"
+// 		|| name == "T1_AT_BLOCKSIZE"
+// 		) {
+// 		int result = std::stoi(value);
+// 		if (name == "BLUR_THRESH") {
+// 			BLUR_THRESH = result;
+// 		} else if (name == "QHE_WIDTH") {
+// 			QHE_WIDTH = result;
+// 		} else if (name == "T1_AT_BLOCKSIZE") {
+// 			T1_AT_BLOCKSIZE = result;
+// 		}
+// 	}
 	// Double cases
 	else if (
 		name == "RECORD_DURATION"
@@ -679,15 +882,6 @@ int main (int argc, char **argv) {
 		return 1;
 	}
 	
-	// Screensaver settings for the raspberry pi
-	system("xset -dpms");
-	system("xset s off");
-	
-	int status = 0;
-	
-	// init SUBS semaphore
-	sem_init(&LOCK, 1, 1);
-	
 	// Parse config file
 	config_file = "./settings.cfg";
 	std::ifstream cFile (config_file);
@@ -705,37 +899,61 @@ int main (int argc, char **argv) {
 				return 1;
 			}
 		}
-		
 	}
 	else {
-		std::cerr << "Couldn't open config file for reading." << std::endl;
+		notify_handler("LunAero Error", "Couldn't open config file for reading.");
 		return 1;
 	}
+	
 	
 	// Make folder for stuff
 	TSBUFF = current_time(0);
 	FILEPATH = DEFAULT_FILEPATH + TSBUFF;
 	mkdir(FILEPATH.c_str(), 0700);
-	std::cout << "time: " << TSBUFF << std::endl;
-	std::cout << "path: " << FILEPATH << std::endl;
+	
+	if (DEBUG_COUT) {
+		LOGOUT = FILEPATH + "log.log";
+		LOGGING.open(LOGOUT);
+		LOGGING.close();
+	}
+	
+	// Add startup disk check messages to log file
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< DISK_OUTPUT[0]
+		<< std::endl
+		<< DISK_OUTPUT[1]
+		<< std::endl;
+		LOGGING.close();
+	}
+	
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "time: " << TSBUFF << std::endl
+		<< "path: " << FILEPATH << std::endl;
+		LOGGING.close();
+	}
+		
+	// Screensaver settings for the raspberry pi
+	system("xset -dpms");
+	system("xset s off");
+	
+	int status = 0;
+	
+	// init SUBS semaphore
+	sem_init(&LOCK, 1, 1);
 	
 	// Make ID file
 	if (create_id_file()) {
-		std::cout << "ERROR: Failed to create ID file" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: Failed to create ID file" << std::endl;
+			LOGGING.close();
+		}
 	}
-	
-	
-	// Get the screen size now.  Opens and kills an invisible GTK instance.
-	//~ screen_size(argc, argv);
-	
-	// Keep these in order! Fork MUST be called AFTER the mmap ABORT code!!
-	
-	//~ if (memory_map_init() != 0) {
-		//~ std::cout << "Failed to map values to memory" << std::endl;
-		//~ return 1;
-	//~ }
-	
-	
 	
 	// Memory values which influence camera commands. Defaults to 0.
 	val_ptr.LOST_COUNTERaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
@@ -783,15 +1001,30 @@ int main (int argc, char **argv) {
 		// Stop everything
 		final_stop();
 
-		std::cout << "waiting for child exit signal 2" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "waiting for child exit signal 2" << std::endl;
+			LOGGING.close();
+		}
 		wait(0);
-		std::cout << "caught second wait" << std::endl;
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "caught second wait" << std::endl;
+			LOGGING.close();
+		}
 	} else {
 		// Child process 1
 		int pid2 = fork();
 		if (pid2 > 0) {
 			// Parent Process 2
-			std::cout << "started child proc 2" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "started child proc 2" << std::endl;
+				LOGGING.close();
+			}
 			camera_preview();
 			sem_wait(&LOCK);
 			*val_ptr.RUN_MODEaddr = 0;
@@ -806,7 +1039,12 @@ int main (int argc, char **argv) {
 				auto current_time = std::chrono::system_clock::now();
 				std::chrono::duration<double> elapsed_seconds = current_time-OLD_RECORD_TIME;
 				if (elapsed_seconds > RECORD_DURATION) {
-					std::cout << "refreshing camera" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "refreshing camera" << std::endl;
+						LOGGING.close();
+					}
 					sem_wait(&LOCK);
 					OLD_RECORD_TIME = std::chrono::system_clock::now();
 					*val_ptr.SUBSaddr = 2;
@@ -815,19 +1053,48 @@ int main (int argc, char **argv) {
 				// This doesn't have to be super accurate, so only do it every 5 seconds
 				usleep(5000000);
 			}
-			std::cout << "caught abort code: " << *val_ptr.ABORTaddr << " run mode: " << *val_ptr.RUN_MODEaddr << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "caught abort code: "
+				<< *val_ptr.ABORTaddr
+				<< " run mode: "
+				<< *val_ptr.RUN_MODEaddr
+				<< std::endl;
+				LOGGING.close();
+			}
 			kill_raspivid();
 			
-			std::cout << "waiting for child exit signal 1" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "waiting for child exit signal 1" << std::endl;
+				LOGGING.close();
+			}
 			wait(0);
-			std::cout << "caught first wait" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "caught first wait" << std::endl;
+				LOGGING.close();
+			}
 			
-			std::cout << "SIGCHLD camera" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "SIGCHLD camera" << std::endl;
+				LOGGING.close();
+			}
 			exit(SIGCHLD);
 		} else {
 			// child process of 2
 			// Init app
-			std::cout << "preparing app" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "preparing app" << std::endl;
+				LOGGING.close();
+			}
 			//~ int LOST_COUNTER = 0;
 			gtk_class::app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE);
 			g_signal_connect(gtk_class::app, "activate", G_CALLBACK (activate), NULL);
@@ -836,12 +1103,22 @@ int main (int argc, char **argv) {
 			// Cleanup GTK
 			g_object_unref(gtk_class::app);
 			
-			std::cout << "SIGCHLD gtk" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "SIGCHLD gtk" << std::endl;
+				LOGGING.close();
+			}
 			exit(SIGCHLD);
 		}
 	}
 	
-	std::cout << "closing program" << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "closing program" << std::endl;
+		LOGGING.close();
+	}
 	//~ usleep(2000000);
 	
 	// Undo our screensaver settings

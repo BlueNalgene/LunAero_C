@@ -113,7 +113,12 @@ void motor_handler() {
 				speed_up(1);
 			}
 			if (*val_ptr.DUTY_Aaddr != OLD_DUTY_A) {
-				std::cout << "setting motor B duty cycle to: " << *val_ptr.DUTY_Aaddr << std::endl;
+				if (DEBUG_COUT) {
+					LOGGING.open(LOGOUT, std::ios_base::app);
+					LOGGING
+					<< "setting motor B duty cycle to: " << *val_ptr.DUTY_Aaddr << std::endl;
+					LOGGING.close();
+				}
 			}
 			softPwmWrite(APINP, *val_ptr.DUTY_Aaddr);
 		} else {
@@ -130,7 +135,12 @@ void motor_handler() {
 				speed_up(1);
 			}
 			if (*val_ptr.DUTY_Aaddr != OLD_DUTY_A) {
-				std::cout << "setting motor B duty cycle to: " << *val_ptr.DUTY_Aaddr << std::endl;
+				if (DEBUG_COUT) {
+					LOGGING.open(LOGOUT, std::ios_base::app);
+					LOGGING
+					<< "setting motor B duty cycle to: " << *val_ptr.DUTY_Aaddr << std::endl;
+					LOGGING.close();
+				}
 			}
 			softPwmWrite(APINP, *val_ptr.DUTY_Aaddr);
 		}
@@ -151,7 +161,12 @@ void motor_handler() {
 				speed_up(2);
 			}
 			if ((*val_ptr.DUTY_Baddr != OLD_DUTY_B) && (OLD_DIR == 1)) {
-				std::cout << "setting motor B duty cycle to: " << *val_ptr.DUTY_Baddr << std::endl;
+				if (DEBUG_COUT) {
+					LOGGING.open(LOGOUT, std::ios_base::app);
+					LOGGING
+					<< "setting motor B duty cycle to: " << *val_ptr.DUTY_Baddr << std::endl;
+					LOGGING.close();
+				}
 			}
 			softPwmWrite(BPINP, *val_ptr.DUTY_Baddr);
 			if (OLD_DIR == 2) {
@@ -165,13 +180,28 @@ void motor_handler() {
 					sem_wait(&LOCK);
 					*val_ptr.DUTY_Baddr = MIN_DUTY;
 					sem_post(&LOCK);
-					std::cout << "Loose Wheel maneuver complete" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "Loose Wheel maneuver complete" << std::endl;
+						LOGGING.close();
+					}
 					OLD_DIR = 1;
 				} else {
-					std::cout << "running in Loose Wheel mode" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "running in Loose Wheel mode" << std::endl;
+						LOGGING.close();
+					}
 					OLD_DIR = 2;
 				}
-				std::cout << "setting motor B duty cycle to: " << *val_ptr.DUTY_Baddr << std::endl;
+				if (DEBUG_COUT) {
+					LOGGING.open(LOGOUT, std::ios_base::app);
+					LOGGING
+					<< "setting motor B duty cycle to: " << *val_ptr.DUTY_Baddr << std::endl;
+					LOGGING.close();
+				}
 			} else {
 				OLD_DIR = 1;
 				softPwmWrite(BPINP, *val_ptr.DUTY_Baddr);
@@ -190,7 +220,12 @@ void motor_handler() {
 				speed_up(2);
 			}
 			if ((*val_ptr.DUTY_Baddr != OLD_DUTY_B) && (OLD_DIR == 2)) {
-				std::cout << "setting motor B duty cycle to: " << *val_ptr.DUTY_Baddr << std::endl;
+				if (DEBUG_COUT) {
+					LOGGING.open(LOGOUT, std::ios_base::app);
+					LOGGING
+					<< "setting motor B duty cycle to: " << *val_ptr.DUTY_Baddr << std::endl;
+					LOGGING.close();
+				}
 			}
 			if (OLD_DIR == 1) {
 				auto current_time = std::chrono::system_clock::now();
@@ -200,13 +235,28 @@ void motor_handler() {
 				sem_post(&LOCK);
 				if (elapsed_seconds > LOOSE_WHEEL_DURATION) {
 					*val_ptr.DUTY_Baddr = MIN_DUTY;
-					std::cout << "Loose Wheel maneuver complete" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "Loose Wheel maneuver complete" << std::endl;
+						LOGGING.close();
+					}
 					OLD_DIR = 2;
 				} else {
-					std::cout << "running in Loose Wheel mode" << std::endl;
+					if (DEBUG_COUT) {
+						LOGGING.open(LOGOUT, std::ios_base::app);
+						LOGGING
+						<< "running in Loose Wheel mode" << std::endl;
+						LOGGING.close();
+					}
 					OLD_DIR = 1;
 				}
-				std::cout << "setting motor B duty cycle to: " << *val_ptr.DUTY_Baddr << std::endl;
+				if (DEBUG_COUT) {
+					LOGGING.open(LOGOUT, std::ios_base::app);
+					LOGGING
+					<< "setting motor B duty cycle to: " << *val_ptr.DUTY_Baddr << std::endl;
+					LOGGING.close();
+				}
 				softPwmWrite(BPINP, *val_ptr.DUTY_Baddr);
 			} else {
 				OLD_DIR = 2;
@@ -270,10 +320,20 @@ void gpio_pin_setup () {
 		// PWM pins go PWM, all else go HIGH
 		if ((i == 0) | (i == 5)) {
 			digitalWrite(pin_array[i], LOW);
-			std::cout << "Set pin " << pin_array[i] << " LOW" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "Set pin " << pin_array[i] << " LOW" << std::endl;
+				LOGGING.close();
+			}
 		} else {
 			digitalWrite(pin_array[i], HIGH);
-			std::cout << "Set pin " << pin_array[i] << " HIGH" << std::endl;
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "Set pin " << pin_array[i] << " HIGH" << std::endl;
+				LOGGING.close();
+			}
 		}
 	}
 	// create soft PWM
@@ -282,7 +342,12 @@ void gpio_pin_setup () {
 }
 
 void final_stop() {
-	std::cout << "stopping motors to end program" << std::endl;
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "stopping motors to end program" << std::endl;
+		LOGGING.close();
+	}
 	softPwmWrite(APINP, 0);
 	softPwmWrite(BPINP, 0);
 	digitalWrite(APIN1, LOW);
