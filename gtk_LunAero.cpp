@@ -18,6 +18,16 @@
 
 #include "gtk_LunAero.hpp"
 
+/**
+ * This function refreshes the text boxes on the side of the GTK window.  During preview and manual motor
+ * movement mode, this portion of the screen shows the value of the selected SHUTTER_VAL, ISO, and blur
+ * value.  Note that this does not show the values of the video in the preview screen if the values have
+ * been adjusted but not refreshed using the refresh camera button.  During normal operation, the box
+ * just says "running".
+ *
+ * @param data gpointer to data from callback.  Not used here.
+ * @return gboolean status
+ */
 gboolean refresh_text_boxes(gpointer data) {
 	if (*val_ptr.ABORTaddr == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
@@ -39,11 +49,26 @@ gboolean refresh_text_boxes(gpointer data) {
     return TRUE;
 }
 
+/**
+ * This callback function is a local holder of the cb_framecheck function from LunAero.cpp
+ *
+ * @param data gpointer to data from callback.  Not used here.
+ * @return gboolean status
+ */
 gboolean g_framecheck(gpointer data) {
 	cb_framecheck();
 	return TRUE;
 }
 
+/**
+ * This funciton, called at program start, measures the available screen size the GTK window can occupy.
+ * Several globals are defined here, including those of the RVD_ prototype, WORK_WIDTH, and WORK_HEIGHT.
+ * If you are having strange behavior related to screen sizing, check here first.  Note that some of the
+ * values do not always behave well with the VC/DISPMANX screen program, since GTK is based on the X
+ * window environment and VC/DISPMANX is a unique entity.  If the screenshot related functions are
+ * experiencing issues, check those functions first rather than starting here.
+ *
+ */
 void screen_size () {
 	gtk_init(0, NULL);
 	GdkRectangle workarea = {0};
@@ -85,6 +110,13 @@ void screen_size () {
 	return;
 }
 
+/**
+ * This function constructs a CSS string which is used to format the GTK window.  This is a hacky way to
+ * generate the CSS code since we want our screen properties and font size to be dependent on the size
+ * of the screen as determined by WORK_WIDTH and WORK_HEIGHT.  Therefore, a static CSS will not do.
+ *
+ * @return css_string the CSS formatting code formatted as a string
+ */
 std::string get_css_string() {
 	screen_size();
 	std::string css_string;
@@ -120,6 +152,19 @@ std::string get_css_string() {
 	return css_string;
 }
 
+/**
+ * This function prepares the GTK window layout.  All widgets available to our GTK setup are defined here
+ * before being activated.  The steps taken are 1) Define the window based on dynamic screen size 2)
+ * create table layouts and apply to screen 3) define simple buttons 4) define button boxes to hold the
+ * buttons 5) define exit button and box 6) define fake buttons (buttons used to prevent incorrect
+ * keyboard focus) and grid 6) define directional button pad and grid 7) define refresh button 8)
+ * define camera function buttons using a grid layout 9) define record button and box 10) define text
+ * boxes 11) attach these elements to a grid (rudimentary image of layout is in the function comments)
+ * 12) expand and align all boxes to fill space.
+ *
+ * @param *app Pointer value to the whole GtkApplication
+ * @param local_val_ptr payload passed to this function (unused)
+ */
 void gtk_global_setup(GtkApplication *app, gpointer local_val_ptr) {
 	// Define Window, dynamic size for screen.
 	gtk_class::window = gtk_application_window_new (app);
@@ -274,6 +319,11 @@ void gtk_global_setup(GtkApplication *app, gpointer local_val_ptr) {
 	return;
 }
 
+/**
+ * This function defines the stop button response and tells motors_LunAero.cpp to execute a stop on both
+ * motors.
+ *
+ */
 void mot_stop_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
 		if (DEBUG_COUT) {
@@ -295,6 +345,11 @@ void mot_stop_command() {
 	sem_post(&LOCK);
 }
 
+/**
+ * This function describes the up button response and sets the behavior value to be processed on the
+ * next cycle of motors_LunAero.cpp/motor_handler.
+ *
+ */
 void mot_up_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
 		if (DEBUG_COUT) {
@@ -325,6 +380,11 @@ void mot_up_command() {
 	sem_post(&LOCK);
 }
 
+/**
+ * This function describes the down button response and sets the behavior value to be processed on the
+ * next cycle of motors_LunAero.cpp/motor_handler.
+ *
+ */
 void mot_down_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
 		if (DEBUG_COUT) {
@@ -355,6 +415,11 @@ void mot_down_command() {
 	sem_post(&LOCK);
 }
 
+/**
+ * This function describes the left button response and sets the behavior value to be processed on the
+ * next cycle of motors_LunAero.cpp/motor_handler.
+ *
+ */
 void mot_left_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
 		if (DEBUG_COUT) {
@@ -385,6 +450,11 @@ void mot_left_command() {
 	sem_post(&LOCK);
 }
 
+/**
+ * This function describes the right button response and sets the behavior value to be processed on the
+ * next cycle of motors_LunAero.cpp/motor_handler.
+ *
+ */
 void mot_right_command() {
 	if (*val_ptr.RUN_MODEaddr == 0) {
 		if (DEBUG_COUT) {
@@ -415,27 +485,36 @@ void mot_right_command() {
 	sem_post(&LOCK);
 }
 
+/**
+ * This function connects the buttons available during preview/manual mode to the appropriate functions
+ * on button behaviors.
+ *
+ */
 void gtk_buttons_preview() {
 	// Connect signals to buttons
-	g_signal_connect_swapped (gtk_class::exit_button, "clicked", G_CALLBACK (abort_code), NULL);
-	g_signal_connect_swapped (gtk_class::button_stop, "clicked", G_CALLBACK (mot_stop_command), NULL);
-	g_signal_connect_swapped (gtk_class::button_up, "clicked", G_CALLBACK (mot_up_command), NULL);
-	g_signal_connect_swapped (gtk_class::button_down, "clicked", G_CALLBACK (mot_down_command), NULL);
-	g_signal_connect_swapped (gtk_class::button_left, "clicked", G_CALLBACK (mot_left_command), NULL);
-	g_signal_connect_swapped (gtk_class::button_right, "clicked", G_CALLBACK (mot_right_command), NULL);
-	g_signal_connect_swapped (gtk_class::button_shutter_up, "clicked", G_CALLBACK (shutter_up), NULL);
-	g_signal_connect_swapped (gtk_class::button_shutter_down, "clicked", G_CALLBACK (shutter_down), NULL);
-	g_signal_connect_swapped (gtk_class::button_shutter_up_up, "clicked", G_CALLBACK (shutter_up_up), NULL);
-	g_signal_connect_swapped (gtk_class::button_shutter_down_down, "clicked", G_CALLBACK (shutter_down_down), NULL);
-	g_signal_connect_swapped (gtk_class::button_iso, "clicked", G_CALLBACK (iso_cycle), NULL);
-	g_signal_connect_swapped (gtk_class::button_camera_command, "clicked", G_CALLBACK (refresh_camera), NULL);
-	g_signal_connect_swapped (gtk_class::button_record, "clicked", G_CALLBACK (first_record_killer), NULL);
+	g_signal_connect_swapped(gtk_class::exit_button, "clicked", G_CALLBACK (abort_code), NULL);
+	g_signal_connect_swapped(gtk_class::button_stop, "clicked", G_CALLBACK (mot_stop_command), NULL);
+	g_signal_connect_swapped(gtk_class::button_up, "clicked", G_CALLBACK (mot_up_command), NULL);
+	g_signal_connect_swapped(gtk_class::button_down, "clicked", G_CALLBACK (mot_down_command), NULL);
+	g_signal_connect_swapped(gtk_class::button_left, "clicked", G_CALLBACK (mot_left_command), NULL);
+	g_signal_connect_swapped(gtk_class::button_right, "clicked", G_CALLBACK (mot_right_command), NULL);
+	g_signal_connect_swapped(gtk_class::button_shutter_up, "clicked", G_CALLBACK (shutter_up), NULL);
+	g_signal_connect_swapped(gtk_class::button_shutter_down, "clicked", G_CALLBACK (shutter_down), NULL);
+	g_signal_connect_swapped(gtk_class::button_shutter_up_up, "clicked", G_CALLBACK (shutter_up_up), NULL);
+	g_signal_connect_swapped(gtk_class::button_shutter_down_down, "clicked", G_CALLBACK (shutter_down_down), NULL);
+	g_signal_connect_swapped(gtk_class::button_iso, "clicked", G_CALLBACK (iso_cycle), NULL);
+	g_signal_connect_swapped(gtk_class::button_camera_command, "clicked", G_CALLBACK (refresh_camera), NULL);
+	g_signal_connect_swapped(gtk_class::button_record, "clicked", G_CALLBACK (first_record_killer), NULL);
 	
 	// Capture Key Events
 	gtk_class::key_id = g_signal_connect(gtk_class::window, "key-release-event", G_CALLBACK(key_event_preview), NULL);
 	return;
 }
 
+/**
+ * This function applies the CSS style to the elements of the preview/manual mode GTK window.
+ *
+ */
 void gtk_css_preview() {
 	// CSS stylesheet without using CSS
 	//~ std::string css_string = get_css_string();
@@ -505,6 +584,16 @@ void gtk_css_preview() {
 	return;
 }
 
+/**
+ * This is the main function of the GTK code, per the GTK usage guide.  The elements are set up from
+ * global definitions, buttons are connected, and the CSS is applied.  Timeouts are applied which, after
+ * a set number of microseconds (or maybe cycles?) the function in G_SOURCE_FUNC is called.  Keyboard
+ * focus is set to one of the fake buttons to prevent accidental button presses.  Finally, the actual
+ * window is activated.
+ *
+ * @param *app Pointer value to the whole GtkApplication
+ * @param local_val_ptr payload passed to this function (unused but passed on)
+ */
 void activate(GtkApplication *app, gpointer local_val_ptr) {
 	gtk_global_setup(app, local_val_ptr);
 	gtk_buttons_preview();
@@ -521,6 +610,14 @@ void activate(GtkApplication *app, gpointer local_val_ptr) {
 	gtk_widget_show_all(gtk_class::window);
 }
 
+/**
+ * This function defines keyboard button press events for the preview/manual mode.  The code here
+ * captures button pressed on the user's keyboard and issues the appropriate command.
+ *
+ * @param *widget Pointer value to the associated GTK widget
+ * @param *event payload contents of button press event passed to this function.  Holds keyvalue.
+ * @return gboolean status
+ */
 gboolean key_event_preview(GtkWidget *widget, GdkEventKey *event) {
 
 	gchar* val = gdk_keyval_name (event->keyval);
@@ -593,6 +690,14 @@ gboolean key_event_preview(GtkWidget *widget, GdkEventKey *event) {
 	return 0;
 }
 
+/**
+ * This function defines keyboard button press events for the recording/automatic mode.  The code here
+ * captures button pressed on the user's keyboard and issues the appropriate command.
+ *
+ * @param *widget Pointer value to the associated GTK widget
+ * @param *event payload contents of button press event passed to this function.  Holds keyvalue.
+ * @return gboolean status
+ */
 gboolean key_event_running(GtkWidget *widget, GdkEventKey *event) {
 	//g_printerr("%s\n", gdk_keyval_name (event->keyval));
 	
@@ -618,6 +723,14 @@ gboolean key_event_running(GtkWidget *widget, GdkEventKey *event) {
 	return 0;
 }
 
+/**
+ * This function checks whether the ABORT flag has been set elsewhere in the code.  If it is found, the
+ * appropriate action is taken.  Next, the code checks if the LOST_COUNTER has passed the LOST_THRESH.
+ * If this value is breached, the moon has been lost by LunAero and a shutdown is initiated.
+ *
+ * @param data gpointer to data from callback.  Not used here.
+ * @return gboolean status
+ */
 gboolean abort_check(GtkWidget* data) {
 	if (*val_ptr.ABORTaddr == 1) {
 		if (*val_ptr.LOST_COUNTERaddr > LOST_THRESH) {
@@ -635,7 +748,6 @@ gboolean abort_check(GtkWidget* data) {
 				LOGGING.close();
 			}
 		}
-		//~ gtk_widget_destroy(data);
 		gtk_window_close(GTK_WINDOW(gtk_class::window));
 		g_application_quit(G_APPLICATION(gtk_class::app));
 		cleanup();
@@ -644,6 +756,16 @@ gboolean abort_check(GtkWidget* data) {
     return TRUE;
 }
 
+/**
+ * This function is called when the mode is switched from preview/manual mode to recording/automatic
+ * mode.  The code here transitions between the modes by refreshing elements of the screen to be kept
+ * and removing functionality from buttons that no longer have function in recording/automatic mode.
+ * Keyboard bindings from preview/manual mode are disconnected and the new bindings are set.  Finally,
+ * a new timeout is added to call g_framecheck and begin testing frames for moon centering.  The mode
+ * flag RUN_MODE is incremented here.
+ *
+ * @param data gpointer to data from callback.  Not used here.
+ */
 void first_record_killer(GtkWidget* data) {
 	sem_wait(&LOCK);
 	
@@ -707,6 +829,13 @@ void first_record_killer(GtkWidget* data) {
 	sem_post(&LOCK);
 }
 
+/**
+ * This callback function handles resetting video recording subsequent to the first recording event,
+ * which is manually called by the user on mode switch.
+ *
+ * @param data gpointer to data from callback.  Not used here.
+ * @return gboolean status
+ */
 gboolean cb_subsequent(GtkWidget* data) {
 	if (*val_ptr.SUBSaddr == 2) {
 		if (DEBUG_COUT) {

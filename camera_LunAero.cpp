@@ -18,6 +18,14 @@
 
 #include "camera_LunAero.hpp"
 
+/**
+ * This function confirms that there is enought space on the output drive for a new video to be saved.
+ * While this is similar to LunAero.cpp/startup_disk_check, it only checks the available space rather
+ * than the drive integrity.  And, it does not predictively check for low hard drive space for future
+ * videos.  If the check fails, a positive status is returned and the program ends.
+ *
+ * @return status
+ */
 int confirm_filespace() {
 	if (DEBUG_COUT) {
 		LOGGING.open(LOGOUT, std::ios_base::app);
@@ -40,6 +48,15 @@ int confirm_filespace() {
 	return 0;
 }
 
+/**
+ * This function checks the integrity of the MMAL camera connection.  This prevents improper restarts
+ * of the raspivid program caused by quick successive stops and starts.  Originally, on these restarts,
+ * the MMAL may fail for a few microseconds after a shutdown since something had not finished clearing
+ * in the background (black magic).  This simply handles a few failures before deciding that the MMAL
+ * device is not actually connected and ending the program.
+ *
+ * @return status
+ */
 int confirm_mmal_safety(int error_cnt) {
 	if (DEBUG_COUT) {
 		LOGGING.open(LOGOUT, std::ios_base::app);
@@ -110,6 +127,12 @@ int confirm_mmal_safety(int error_cnt) {
 	return 0;
 }
 
+/**
+ * This functions ties together multiple functions to 1) confirm_filespace 2) confirm_mmal_safety 3)
+ * execute the command constructed by command_cam_start.
+ *
+ *
+ */
 void camera_start() {
 	if (DEBUG_COUT) {
 		LOGGING.open(LOGOUT, std::ios_base::app);
@@ -139,6 +162,12 @@ void camera_start() {
 	return;
 }
 
+/**
+ * This command starts the preview screen using raspivid.  The command is constructed based on
+ * command_cam_preview and the MMAL integrity is checked with mmal_safety_outcome.
+ *
+ *
+ */
 void camera_preview() {
 	std::string commandstring = "killall raspivid";
 	system(commandstring.c_str());
@@ -154,6 +183,12 @@ void camera_preview() {
 	return;
 }
 
+/**
+ * This function constructs the command string to call a raspivid preview.  The size of the mini screen
+ * determined by other functions and used to construct the window.
+ *
+ * @return commandstring the constructed command formatted as a string
+ */
 std::string command_cam_preview() {
 	std::string commandstring;
 	// Get the current unix timestamp as a string
@@ -181,6 +216,13 @@ std::string command_cam_preview() {
 	return commandstring;
 }
 
+/**
+ * This function constructs the command string to call a raspivid recording and preview window.  The 
+ * size of the mini screen determined by other functions and used to construct the preview window.  The
+ * save location of the video is determined by the current timestamp.
+ *
+ * @return commandstring the constructed command formatted as a string
+ */
 std::string command_cam_start() {
 	std::string commandstring;
 	// Get the current unix timestamp as a string
@@ -213,6 +255,13 @@ std::string command_cam_start() {
 	return commandstring;
 }
 
+/**
+ * This function creates a metadata file for each recording called by LunAero.  The metadata includes
+ * the recording values set by the command constructed in command_cam_start.  The file is stored in the
+ * same directory as the video.
+ *
+ *
+ */
 void write_video_id() {
 	std::ofstream idfile;
 	idfile.open(IDPATH, std::ios_base::app);
@@ -238,6 +287,13 @@ void write_video_id() {
 	idfile.close();
 }
 
+/**
+ * This function handles the first recording.  This is distinct as we need to kill the preview window
+ * and ensure that the motors are in an initial state.  If we don't set the duty cycles for the motors
+ * to the minimum here, the motors start too aggressive and lose the target.
+ *
+ *
+ */
 void first_record() {
 	kill_raspivid();
 	sem_wait(&LOCK);
@@ -254,12 +310,24 @@ void first_record() {
 	}
 }
 
+/**
+ * This helper function kills raspivid and starts recording for each video restart subsequent to the
+ * initial recording.
+ *
+ *
+ */
 void reset_record() {
 	kill_raspivid();
 	usleep(1000000);
 	camera_start();
 }
 
+/**
+ * This helper function is called by a GTK button and is used to kill the existing preview window and
+ * replace it with a new window based on the latest ISO/Shutter values.
+ *
+ *
+ */
 void refresh_camera() {
 	kill_raspivid();
 	sem_wait(&LOCK);
@@ -268,6 +336,12 @@ void refresh_camera() {
 	camera_preview();
 }
 
+/**
+ * This function called from gtk_LunAero handles a request to increase the shutter value.  The maximum
+ * shutter value is locked in here and prevents a shutter value from extending beyond this limit.
+ *
+ *
+ */
 void shutter_up() {
 	if (*val_ptr.SHUTTER_VALaddr < 32901) {
 		sem_wait(&LOCK);
@@ -286,6 +360,12 @@ void shutter_up() {
 	}
 }
 
+/**
+ * This function called from gtk_LunAero handles a request to decrease the shutter value.  The minimum
+ * shutter value is locked in here and prevents a shutter value from extending below this limit.
+ *
+ *
+ */
 void shutter_down() {
 	if (*val_ptr.SHUTTER_VALaddr > 110) {
 		sem_wait(&LOCK);
@@ -304,6 +384,12 @@ void shutter_down() {
 	}
 }
 
+/**
+ * This function called from gtk_LunAero handles a request to greatly increase the shutter value.  The
+ * maximum shutter value is locked in here and prevents a shutter value from extending beyond this limit.
+ *
+ *
+ */
 void shutter_up_up() {
 	if (*val_ptr.SHUTTER_VALaddr < 32001) {
 		sem_wait(&LOCK);
@@ -322,6 +408,12 @@ void shutter_up_up() {
 	}
 }
 
+/**
+ * This function called from gtk_LunAero handles a request to greatly decrease the shutter value.  The
+ * minimum shutter value is locked in here and prevents a shutter value from extending below this limit.
+ *
+ *
+ */
 void shutter_down_down() {
 	if (*val_ptr.SHUTTER_VALaddr > 1010) {
 		sem_wait(&LOCK);
@@ -340,6 +432,12 @@ void shutter_down_down() {
 	}
 }
 
+/**
+ * This function handles the ISO cycle from gtk_LunAero.  Since there are only 4 valid ISO values (100,
+ * 200, 400, 800) for the Raspberry Pi camera, it cycles through these values.
+ *
+ *
+ */
 void iso_cycle() {
 	if (*val_ptr.ISO_VALaddr == 200) {
 		sem_wait(&LOCK);

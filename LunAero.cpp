@@ -51,6 +51,11 @@
 
 #include "LunAero.hpp"
 
+/**
+ * This function (called from gtk_LunAero.cpp) handles checking the frame during live operation and
+ * processes the LOST_COUNTER
+ *
+ */
 void cb_framecheck() {
 	printf("getting current frame\n");
 	if (DEBUG_COUT) {
@@ -70,6 +75,12 @@ void cb_framecheck() {
 	}
 }
 
+/**
+ * This function is called on exit to clean up the environment.  Primarily used to ensure that the
+ * raspivid system call is killed properly.
+ *
+ *
+ */
 void cleanup () {
 	// Placeholder in case we need to clean anything up on exit.
 	if (DEBUG_COUT) {
@@ -82,6 +93,12 @@ void cleanup () {
 	usleep(1000000);
 }
 
+/**
+ * This function kills raspivid.  It does this in an ugly way by finding the process ID of the raspivid
+ * instance and killing that PID.
+ *
+ *
+ */
 void kill_raspivid () {
 	sem_wait(&LOCK);
 	*val_ptr.STOP_DIRaddr = 3;
@@ -104,6 +121,13 @@ void kill_raspivid () {
 	}
 }
 
+/**
+ * This funciton creates an ID file to be stored with the recorded video which includes information
+ * about the unit the run worked on.  The processor id is stored using the cpuinfo unique to the 
+ * Raspberry Pi.
+ *
+ * @return status
+ */
 int create_id_file() {
 	std::ofstream idfile;
 	char line[1024];
@@ -138,12 +162,23 @@ int create_id_file() {
 	return 0;
 }
 
+/**
+ * This is a helper funciton which updates the abort code to end the run across all forks.
+ *
+ *
+ */
 void abort_code() {
 	sem_wait(&LOCK);
 	*val_ptr.ABORTaddr = 1;
 	sem_post(&LOCK);
 }
 
+/**
+ * This function fetches the current time and formats it as a string.
+ *
+ * @param gmt plus or minus tmz gmt
+ * @return str the current time formatted as a string
+ */
 std::string current_time(int gmt) {
 	time_t rawtime;
 	struct tm * timeinfo;
@@ -169,6 +204,14 @@ std::string current_time(int gmt) {
 	return str;
 }
 
+/**
+ * This function captures the frame from the preview window (a complicated process involving capturing
+ * the VC/DISPMANX screenshot, not the X window screensho), crops it to ignore the GTK,  and determines
+ * how blurry the image is.  Blur is computed based on the standard method, running a Laplacian
+ * operation on the cropped image and computing the variance of this result.
+ *
+ * @return blurval A floating point value representing the degree of variation in tbe blur
+ */
 float blur_test() {
 	float blurval = 0;
 	
@@ -341,6 +384,16 @@ float blur_test() {
 	return blurval;
 }
 
+/**
+ * This function captures the frame from the preview window (a complicated process involving capturing
+ * the VC/DISPMANX screenshot, not the X window screensho), crops it to ignore the GTK, and determines 
+ * how well the moon is centered in the cropped frame.  Priority is given to checking whether the moon
+ * is touching the side of the cropped image.  If the edge is not being touched, threshold limited
+ * brightness is used to find the center of mass of the bright spot and comparing it to the target
+ * location.
+ *
+ *
+ */
 void current_frame() {
 	
 	// Don't bother if we have already told the program to abort
@@ -759,6 +812,15 @@ void current_frame() {
 	return;
 }
 
+/**
+ * This function takes the two input strings and uses them to issue a notificaiton alert to the
+ * Raspian desktop.  This is a variation of the linux command ``notify-send``, and it requires
+ * libnotify-dev installed on the system.
+ *
+ * @param input1 The string which should be at the top of the notification
+ * @param input2 The string's bottomtext, more descriptive.
+ * @return status
+ */
 int notify_handler(std::string input1, std::string input2) {
 	notify_init("LunAero");
 	NotifyNotification* n = notify_notification_new (input1.c_str(), input2.c_str(), 0);
@@ -770,6 +832,18 @@ int notify_handler(std::string input1, std::string input2) {
 	return 0;
 }
 
+/**
+ * This function checks the save location properties to determine if the location is acceptable for
+ * saving video.  This only has limited capacity to determine the fitness of the drive.  The quality
+ * of the save location is determined based on 1) drive is findable 2) valid /proc/mounts file 3)
+ * remaining space left on the drive.  Remaining space is calculated based on 1000000*t_s where t_s
+ * is the seconds a video will be recorded based on the settings.cfg line RECORD_DURATION.  If the
+ * available space is less than this, the program stops with an error.  If it is less than 10 times this
+ * value, a warning issued, but the program continues.  Reported free space and available space on the
+ * drive is recorded in the log.
+ *
+ * @return status
+ */
 int startup_disk_check() {
 	
 	std::string userenv = std::getenv("USER");
@@ -815,6 +889,14 @@ int startup_disk_check() {
 	}
 }
 
+/**
+ * This function handles the strings and values parsed from the settings.cfg file and assigns them
+ * to the global values.
+ *
+ * @param name String obtained while parsing the settings.cfg file
+ * @param value The value associated with name from settings.cfg file
+ * @return status
+ */
 int parse_checklist(std::string name, std::string value) {
 	// Boolean cases
 	if (name == "DEBUG_COUT"
@@ -879,6 +961,11 @@ int parse_checklist(std::string name, std::string value) {
 	return 0;
 }
 
+/**
+ * Main function
+ *
+ * @return status
+ */
 int main (int argc, char **argv) {
 	
 	if (startup_disk_check()) {

@@ -18,6 +18,17 @@
 
 #include "motors_LunAero.hpp"
 
+/**
+ * This function handles the motor commands by running in a loop and checking the value from the motor
+ * struct.  Stopping the motors is handled by STOP_DIR values, and gradually slows the motor down
+ * to prevent abrupt stops shaking the video too much.  Next, the function handles vertical and
+ * horizontal motor commands sequentially.  If the motor command was a positive value and the same as
+ * the command in the previous cycle, the function calls speed_up.  In the case of horizontal motion,
+ * if the motor direction abruptly switches, the loose wheel protocol is summoned which forces high
+ * speed motion for a number of seconds based on the value LOOSE_WHEEL_DURATION in settings.cfg.
+ *
+ *
+ */
 void motor_handler() {
 	// Handle stopping
 	if (*val_ptr.STOP_DIRaddr == 3) {
@@ -266,6 +277,13 @@ void motor_handler() {
 	}
 }
 
+/**
+ * This function increases the speed of the motor's movement by setting appropriate PWM values.  The
+ * speed never drops below a minimum value (full stops ignore this function).  Speed is incremented
+ * by one percent PWM to a maximum value.
+ *
+ * @param motor The motor to run speed settings on.  1 = vertical, 2 = horizontal
+ */
 void speed_up(int motor) {
 	/* Increase the duty cycle of the motor called by this function.
 	 * The duty cycle will never go below 20%
@@ -308,6 +326,13 @@ void speed_up(int motor) {
 	return;
 }
 
+/**
+ * This function is called when the program starts to initalize the motor code.  Since the code uses
+ * wiringPi, this must first be initialized.  Then, initial stopped values are passed to the relevant
+ * motor pins.
+ *
+ *
+ */
 void gpio_pin_setup () {
 	int i;
 	int pin_array[] = { APINP, APIN1, APIN2, BPIN1, BPIN2, BPINP };
@@ -341,6 +366,11 @@ void gpio_pin_setup () {
 	softPwmCreate(BPINP, 0, DUTY);
 }
 
+/**
+ * This funciton performs a hard stop on all motors.  This is only called on program exit.
+ *
+ *
+ */
 void final_stop() {
 	if (DEBUG_COUT) {
 		LOGGING.open(LOGOUT, std::ios_base::app);
