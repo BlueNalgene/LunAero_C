@@ -65,7 +65,7 @@ int confirm_mmal_safety(int error_cnt) {
 		LOGGING.close();
 	}
 	// If the retry attempts are way too high, don't even bother
-	if (error_cnt > 100) {
+	if (error_cnt > MMAL_ERROR_THRESH) {
 		if (DEBUG_COUT) {
 			LOGGING.open(LOGOUT, std::ios_base::app);
 			LOGGING
@@ -98,7 +98,7 @@ int confirm_mmal_safety(int error_cnt) {
 					<< "WARNING: LunAero detected an MMAL problem with raspivid.  Retrying" << std::endl;
 					LOGGING.close();
 				}
-				if (error_cnt > 100) {
+				if (error_cnt > MMAL_ERROR_THRESH) {
 					sem_wait(&LOCK);
 					*val_ptr.ABORTaddr = 1;
 					sem_post(&LOCK);
@@ -193,11 +193,16 @@ std::string command_cam_preview() {
 	std::string commandstring;
 	// Get the current unix timestamp as a string
 	TSBUFF = std::to_string((unsigned long)time(NULL));
-	commandstring = "raspivid -v -t 0 -w 1920 -h 1080 -fps 30 -b 8000000 -ISO " 
+	commandstring = "raspivid -v -t 0 -w 1920 -h 1080 -fps "
+	+ std::to_string(RPI_FPS)
+	+ " -b "
+	+ std::to_string(RPI_BR)
+	+ " -ISO "
 	+ std::to_string(*val_ptr.ISO_VALaddr)
 	+ " -ss " 
 	+ std::to_string(*val_ptr.SHUTTER_VALaddr)
-	+ " --exposure auto "
+	+ " --exposure "
+	+ RPI_EX
 	+ " -p "
 	+ std::to_string(RVD_XCORN)
 	+ ","
@@ -227,11 +232,16 @@ std::string command_cam_start() {
 	std::string commandstring;
 	// Get the current unix timestamp as a string
 	TSBUFF = current_time(0);
-	commandstring = "raspivid -v -t 0 -w 1920 -h 1080 -fps 30 -b 8000000 -ISO " 
+	commandstring = "raspivid -v -t 0 -w 1920 -h 1080 -fps "
+	+ std::to_string(RPI_FPS)
+	+ " -b "
+	+ std::to_string(RPI_BR)
+	+ " -ISO "
 	+ std::to_string(*val_ptr.ISO_VALaddr)
 	+ " -ss " 
 	+ std::to_string(*val_ptr.SHUTTER_VALaddr)
-	+ " --exposure auto "
+	+ " --exposure "
+	+ RPI_EX
 	+ " -p "
 	+ std::to_string(RVD_XCORN)
 	+ ","
@@ -279,9 +289,14 @@ void write_video_id() {
 	<< "    Shutter Speed: "
 	<< std::to_string(*val_ptr.SHUTTER_VALaddr)
 	<< std::endl
-	<< "    Bitrate:       8000000"
+	<< "    Bitrate:       "
+	<< std::to_string(RPI_BR)
 	<< std::endl
-	<< "    Framerate:     30"
+	<< "    Framerate:     "
+	<< std::to_string(RPI_EX)
+	<< std::endl
+	<< "    Exposure Mode: "
+	<< RPI_BR
 	<< std::endl;
 	
 	idfile.close();
@@ -345,7 +360,7 @@ void refresh_camera() {
 void shutter_up() {
 	if (*val_ptr.SHUTTER_VALaddr < 32901) {
 		sem_wait(&LOCK);
-		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr + 100;
+		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr + SHUT_JUMP;
 		sem_post(&LOCK);
 	} else {
 		sem_wait(&LOCK);
@@ -369,7 +384,7 @@ void shutter_up() {
 void shutter_down() {
 	if (*val_ptr.SHUTTER_VALaddr > 110) {
 		sem_wait(&LOCK);
-		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr - 100;
+		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr - SHUT_JUMP;
 		sem_post(&LOCK);
 	} else {
 		sem_wait(&LOCK);
@@ -393,7 +408,7 @@ void shutter_down() {
 void shutter_up_up() {
 	if (*val_ptr.SHUTTER_VALaddr < 32001) {
 		sem_wait(&LOCK);
-		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr + 1000;
+		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr + SHUT_JUMP_BIG;
 		sem_post(&LOCK);
 	} else {
 		sem_wait(&LOCK);
@@ -417,7 +432,7 @@ void shutter_up_up() {
 void shutter_down_down() {
 	if (*val_ptr.SHUTTER_VALaddr > 1010) {
 		sem_wait(&LOCK);
-		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr - 1000;
+		*val_ptr.SHUTTER_VALaddr = *val_ptr.SHUTTER_VALaddr - SHUT_JUMP_BIG;
 		sem_post(&LOCK);
 	} else {
 		sem_wait(&LOCK);

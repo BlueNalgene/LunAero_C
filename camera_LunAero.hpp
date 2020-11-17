@@ -30,6 +30,33 @@
 // User Includes
 #include "LunAero.hpp"
 
+/**
+ * Threshold of MMAL errors encountered sequentially before ending the run.  Customizable from
+ * settings.cfg
+ */
+inline int MMAL_ERROR_THRESH = 100;
+/**
+ * Framerate to record video at.  Customizable from settings.cfg
+ */
+inline int RPI_FPS = 30;
+/**
+ * Bitrate to record video at.  Customizable from settings.cfg
+ */
+inline int RPI_BR = 8000000;
+/**
+ * Raspivid exposure mode to use.  Customizable from settings.cfg
+ */
+inline std::string RPI_EX = "auto";
+/**
+ * Shutter speed increase and decrease when using the up or down buttons.  Customziable from settings.cfg
+ */
+inline int SHUT_JUMP = 100;
+/**
+ * Large shutter speed increase and decrease when using the up_up or down_down buttons.  Customizable
+ * from settings.cfg
+ */
+inline int SHUT_JUMP_BIG = 1000;
+
 // Function Prototypes
 int confirm_filespace();
 int confirm_mmal_safety(int error_cnt);

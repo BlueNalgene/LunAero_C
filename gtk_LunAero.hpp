@@ -48,6 +48,81 @@ void mot_left_command();
 void mot_right_command();
 
 /**
+ * Modifier value for determining the font size.  Customizable from settings.cfg
+ */
+inline int FONT_MOD = 20;
+/**
+ * Frequency in milliseconds to check the frame for moon centering.  Customizable from settings.cfg
+ */
+inline int FRAMECHECK_FREQ = 50;
+/**
+ * Keybinding for quit command
+ * Customizable from settings.cfg
+ */
+const char KV_QUIT = "q";
+/**
+ * Keybinding for left manual motor movement.
+ * Customizable from settings.cfg
+ */
+const char KV_LEFT = "Left";
+/**
+ * Keybinding for right manual motor movement.
+ * Customizable from settings.cfg
+ */
+const char KV_RIGHT = "Right";
+/**
+ * Keybinding for up manual motor movement.
+ * Customizable from settings.cfg
+ */
+const char KV_UP = "Up";
+/**
+ * Keybinding for down manual motor movement.
+ * Customizable from settings.cfg
+ */
+const char KV_DOWN = "Down";
+/**
+ * Keybinding for motor stop command.
+ * Customizable from settings.cfg
+ */
+const char KV_STOP = "space";
+/**
+ * Keybinding for raspivid refresh command.
+ * Customizable from settings.cfg
+ */
+const char KV_REFRESH = "z";
+/**
+ * Keybinding for greatly increasing the shutter speed.
+ * Customizable from settings.cfg
+ */
+const char KV_S_UP_UP = "g";
+/**
+ * Keybinding for greatly decreasing the shutter speed.
+ * Customizable from settings.cfg
+ */
+const char KV_S_DOWN_DOWN = "b";
+/**
+ * Keybinding for increasing the shutter speed.
+ * Customizable from settings.cfg
+ */
+const char KV_S_UP = "h";
+/**
+ * Keybinding for decreasing the shutter speed.
+ * Customizable from settings.cfg
+ */
+const char KV_S_DOWN = "n";
+/**
+ * Keybinding for cycling the ISO value.
+ * Customizable from settings.cfg
+ */
+const char KV_ISO = "i";
+/**
+ * Keybinding for beginning the recording/entering automatic mode
+ * Customizable from settings.cfg
+ */
+const char KV_RUN = "Return";
+
+
+/**
  * This is a class to hold the various GTK widgets and whatnots.
  */
 class gtk_class {

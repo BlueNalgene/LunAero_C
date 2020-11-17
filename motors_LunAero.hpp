@@ -23,7 +23,6 @@
 #include <string>
 #include <iostream>
 
-
 // Motor Specific Includes
 #include <wiringPi.h>      // provides GPIO things
 #include <softPwm.h>       // provides PWM for GPIO
@@ -34,18 +33,53 @@
 #include "LunAero.hpp"
 
 // Global Defined Constants
-#define DELAY 0.01              // Number of seconds to delay between sampling frames
-#define MOVETHRESH 10           // % of frame height to warrant a move
-#define DUTY 100                // Duty cycle % for motors
-#define FREQ 10000              // Frequency in Hz to run PWM
-#define APINP 0                 // GPIO BCM pin definition 17
-#define APIN1 2                 // GPIO BCM pin definition 27
-#define APIN2 3                 // GPIO BCM pin definition 22
-#define BPIN1 12                // GPIO BCM pin definition 10
-#define BPIN2 13                // GPIO BCM pin definition 9
-#define BPINP 14                // GPIO BCM pin definition 11
-#define MIN_DUTY 20             // Minimum allowable duty cycle
+/**
+ * Duty cycle % range for motors
+ */
+#define DUTY 100
 
+
+/**
+ * Raspberry Pi GPIO pin for motor A Soft PWM.  BCM equivalent of 0 = 17  Customizable from settings.cfg.
+ */
+inline int APINP = 0;
+/**
+ * Raspberry Pi GPIO pin for motor A 1 pin.  BCM equivalent of 2 = 27  Customizable from settings.cfg.
+ */
+inline int APIN1 = 2;
+/**
+ * Raspberry Pi GPIO pin for motor A 2 pin.  BCM equivalent of 3 = 22  Customizable from settings.cfg.
+ */
+inline int APIN2 = 3;
+/**
+ * Raspberry Pi GPIO pin for motor B 1 pin.  BCM equivalent of 12 = 10  Customizable from settings.cfg.
+ */
+inline int BPIN1 = 12;
+/**
+ * Raspberry Pi GPIO pin for motor B 2 pin.  BCM equivalent of 13 = 9  Customizable from settings.cfg.
+ */
+inline int BPIN2 = 13;
+/**
+ * Raspberry Pi GPIO pin for motor A Soft PWM.  BCM equivalent of 14 = 11  Customizable from
+ * settings.cfg.
+ */
+inline int BPINP = 14;
+/**
+ * Minimum allowable duty cycle.  Customizable from settings.cfg.
+ */
+inline int MIN_DUTY = 20;
+/**
+ * Maximumallowable duty cycle.  Customizable from settings.cfg.
+ */
+inline int MIN_DUTY = 75;
+/**
+ * Duty cycle threshold for braking during recording.  Customizable from settings.cfg.
+ */
+inline int BRAKE_DUTY = 10;
+/**
+ * PWM operation frequency in Hz.  Customizable from settings.cfg.
+ */
+inline int FREQ = 10000;
 /**
  * Number of seconds to perform a loose wheel maneuver.  This can be customized in settings.cfg.
  */

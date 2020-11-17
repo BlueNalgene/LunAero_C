@@ -38,18 +38,18 @@ void motor_handler() {
 		*val_ptr.VERT_DIRaddr = 0;
 		sem_post(&LOCK);
 		while ((*val_ptr.DUTY_Aaddr > 0) || (*val_ptr.DUTY_Baddr > 0)) {
-			if (*val_ptr.DUTY_Aaddr > 10) {
+			if (*val_ptr.DUTY_Aaddr > BRAKE_DUTY) {
 				sem_wait(&LOCK);
-				*val_ptr.DUTY_Aaddr = 10;
+				*val_ptr.DUTY_Aaddr = BRAKE_DUTY;
 				sem_post(&LOCK);
 			} else {
 				sem_wait(&LOCK);
 				*val_ptr.DUTY_Aaddr = *val_ptr.DUTY_Aaddr - 1;
 				sem_post(&LOCK);
 			}
-			if (*val_ptr.DUTY_Baddr > 10) {
+			if (*val_ptr.DUTY_Baddr > BRAKE_DUTY) {
 				sem_wait(&LOCK);
-				*val_ptr.DUTY_Baddr = 10;
+				*val_ptr.DUTY_Baddr = BRAKE_DUTY;
 				sem_post(&LOCK);
 			} else {
 				sem_wait(&LOCK);
@@ -295,11 +295,11 @@ void speed_up(int motor) {
 	if (motor == 1) {
 		if (CNT_MOTOR_A == 2) {
 			CNT_MOTOR_A = 0;
-			if (*val_ptr.DUTY_Aaddr < 20) {
+			if (*val_ptr.DUTY_Aaddr < MIN_DUTY) {
 				sem_wait(&LOCK);
-				*val_ptr.DUTY_Aaddr = 20;
+				*val_ptr.DUTY_Aaddr = MIN_DUTY;
 				sem_post(&LOCK);
-			} else if (*val_ptr.DUTY_Aaddr < 75) {
+			} else if (*val_ptr.DUTY_Aaddr < MAX_DUTY) {
 				sem_wait(&LOCK);
 				*val_ptr.DUTY_Aaddr = *val_ptr.DUTY_Aaddr + 1;
 				sem_post(&LOCK);
@@ -310,11 +310,11 @@ void speed_up(int motor) {
 	} else if (motor == 2) {
 		if (CNT_MOTOR_B == 2) {
 			CNT_MOTOR_B = 0;
-			if (*val_ptr.DUTY_Baddr < 20) {
+			if (*val_ptr.DUTY_Baddr < MIN_DUTY) {
 				sem_wait(&LOCK);
-				*val_ptr.DUTY_Baddr = 20;
+				*val_ptr.DUTY_Baddr = MIN_DUTY;
 				sem_post(&LOCK);
-			} else if (*val_ptr.DUTY_Baddr < 75) {
+			} else if (*val_ptr.DUTY_Baddr < MAX_DUTY) {
 				sem_wait(&LOCK);
 				*val_ptr.DUTY_Baddr = *val_ptr.DUTY_Baddr + 1;
 				sem_post(&LOCK);

@@ -68,7 +68,7 @@ void cb_framecheck() {
 	}
 	current_frame();
 	//~ frame_centroid();
-	if (*val_ptr.LOST_COUNTERaddr == 30) {
+	if (*val_ptr.LOST_COUNTERaddr == LOST_THRESH) {
 		sem_wait(&LOCK);
 		*val_ptr.ABORTaddr = 1;
 		sem_post(&LOCK);
@@ -500,8 +500,6 @@ void current_frame() {
 	// Read the rectangular data from resource into the image calloc
 	vc_dispmanx_rect_set(&rect, 0, 0, info.width, info.height);
 	vc_dispmanx_resource_read_data(resource, &rect, image, info.width*3);
-	// Store the image in a .ppm format file on the hard drive
-	// TODO - assert that the drive is plugged in
 	// TODO - Make this an mmap stored image.
 
 	if (DEBUG_COUT) {
@@ -549,7 +547,9 @@ void current_frame() {
 	
 	// Optionally, save the image to a file on the disk so we can check that it makes sense
 	if (SAVE_DEBUG_IMAGE) {
-		FILE *fp = fopen("/media/pi/MOON1/out.pbm", "wb");
+		std::string userenv = std::getenv("USER");
+		std::string filestr = "/media/" + userenv + "/" + DRIVE_NAME + "/out.pbm";
+		FILE *fp = fopen(filestr.c_str(), "wb");
 		//~ fprintf(fp, "P1\n%d %d\n1\n", frmwidth, frmheight);
 		fprintf(fp, "P1\n%d %d\n1\n", local_width, local_height);
 		for (int i=0; i<local_height; i++) {
@@ -591,8 +591,8 @@ void current_frame() {
 	int checkval = 0;
 	
 	// Number of points to be "on edge" is 10% of edge
-	int w_thresh = WORK_WIDTH/20;
-	int h_thresh = WORK_HEIGHT/20;
+	int w_thresh = WORK_WIDTH/EDGE_DIVISOR_W;
+	int h_thresh = WORK_HEIGHT/EDGE_DIVISOR_H;
 
 	// Store sum of each edge
 	int top_edge = 0;
@@ -824,7 +824,7 @@ void current_frame() {
 int notify_handler(std::string input1, std::string input2) {
 	notify_init("LunAero");
 	NotifyNotification* n = notify_notification_new (input1.c_str(), input2.c_str(), 0);
-	notify_notification_set_timeout(n, 10000); // 10 seconds
+	notify_notification_set_timeout(n, EMG_DUR); // 10 seconds
 	if (!notify_notification_show(n, 0)) {
 		std::cerr << "Libnotify failed.  I hope you have terminal open!" << std::endl;
 		return -1;
@@ -847,7 +847,7 @@ int notify_handler(std::string input1, std::string input2) {
 int startup_disk_check() {
 	
 	std::string userenv = std::getenv("USER");
-	std::string local_path = "/media/" + userenv + "/MOON1";
+	std::string local_path = "/media/" + userenv + "/" + DRIVE_NAME;
 	DEFAULT_FILEPATH = local_path + "/";
 	
 	std::ifstream mountsfile("/proc/mounts", std::ifstream::in);
@@ -920,20 +920,74 @@ int parse_checklist(std::string name, std::string value) {
 		}*/
 	}
 	// Int cases
-// 	else if (
-// 		name == "BLUR_THRESH"
-// 		|| name == "QHE_WIDTH"
-// 		|| name == "T1_AT_BLOCKSIZE"
-// 		) {
-// 		int result = std::stoi(value);
-// 		if (name == "BLUR_THRESH") {
-// 			BLUR_THRESH = result;
-// 		} else if (name == "QHE_WIDTH") {
-// 			QHE_WIDTH = result;
-// 		} else if (name == "T1_AT_BLOCKSIZE") {
-// 			T1_AT_BLOCKSIZE = result;
-// 		}
-// 	}
+	else if (
+		name == "FONT_MOD"
+		|| name == "EDGE_DIVISOR_W"
+		|| name == "EDGE_DIVISOR_H"
+		|| name == "FRAMECHECK_FREQ"
+		|| name == "MMAL_ERROR_THRESH"
+		|| name == "RPI_FPS"
+		|| name == "RPI_BR"
+		|| name == "SHUT_JUMP"
+		|| name == "SHUT_JUMP_BIG"
+		|| name == "FREQ"
+		|| name == "MIN_DUTY"
+		|| name == "MAX_DUTY"
+		|| name == "BRAKE_DUTY"
+		|| name == "APINP"
+		|| name == "APIN1"
+		|| name == "APIN2"
+		|| name == "BPIN1"
+		|| name == "BPIN2"
+		|| name == "BPINP"
+		|| name == "EMG_DUR"
+		|| name == "LOST_THRESH"
+		) {
+		int result = std::stoi(value);
+		if (name == "FONT_MOD") {
+			FONT_MOD = result;
+		} else if (name == "EDGE_DIVISOR_W") {
+			EDGE_DIVISOR_W = result;
+		} else if (name == "EDGE_DIVISOR_H") {
+			EDGE_DIVISOR_H = result;
+		} else if (name == "FRAMECHECK_FREQ") {
+			FRAMECHECK_FREQ = result;
+		} else if (name == "MMAL_ERROR_THRESH") {
+			MMAL_ERROR_THRESH = result;
+		} else if (name == "RPI_FPS") {
+			RPI_FPS = result;
+		} else if (name == "RPI_BR") {
+			RPI_BR = result;
+		} else if (name == "SHUT_JUMP") {
+			SHUT_JUMP = result;
+		} else if (name == "SHUT_JUMP_BIG") {
+			SHUT_JUMP_BIG = result;
+		} else if (name == "FREQ") {
+			FREQ = result;
+		} else if (name == "MIN_DUTY") {
+			MIN_DUTY = result;
+		} else if (name == "MAX_DUTY") {
+			MAX_DUTY = result;
+		} else if (name == "BRAKE_DUTY") {
+			BRAKE_DUTY = result;
+		} else if (name == "APINP") {
+			APINP = result;
+		} else if (name == "APIN1") {
+			APIN1 = result;
+		} else if (name == "APIN2") {
+			APIN2 = result;
+		} else if (name == "BPIN1") {
+			BPIN1 = result;
+		} else if (name == "BPIN2") {
+			BPIN2 = result;
+		} else if (name == "BPINP") {
+			BPINP = result;
+		} else if (name == "EMG_DUR") {
+			EMG_DUR = result;
+		} else if (name == "LOST_THRESH") {
+			LOST_THRESH = result;
+		}
+	}
 	// Double cases
 	else if (
 		name == "RECORD_DURATION"
@@ -946,15 +1000,54 @@ int parse_checklist(std::string name, std::string value) {
 			LOOSE_WHEEL_DURATION = (std::chrono::duration<double>) result;
 		}
 	// String cases
-// 	} else if (
-// 		name == "OSFPROJECT"
-// 		|| name == "OUTPUTDIR"
-// 		) {
-// 			if (name == "OSFPROJECT") {
-// 				OSFPROJECT = value;
-// 			} else if (name == "OUTPUTDIR") {
-// 				OUTPUTDIR = value;
-// 			}
+	} else if (
+		name == "KV_QUIT"
+		|| name == "KV_RUN"
+		|| name == "KV_LEFT"
+		|| name == "KV_RIGHT"
+		|| name == "KV_UP"
+		|| name == "KV_DOWN"
+		|| name == "KV_STOP"
+		|| name == "KV_REFRESH"
+		|| name == "KV_S_UP_UP"
+		|| name == "KV_S_DOWN_DOWN"
+		|| name == "KV_S_UP"
+		|| name == "KV_S_DOWN"
+		|| name == "KV_ISO"
+		|| name == "RPI_EX"
+		|| name == "DRIVE_NAME"
+		) {
+			if (name == "KV_QUIT") {
+				KV_QUIT = value.c_str();
+			} else if (name == "KV_RUN") {
+				KV_RUN = value.c_str();
+			} else if (name == "KV_LEFT") {
+				KV_LEFT = value.c_str();
+			} else if (name == "KV_RIGHT") {
+				KV_RIGHT = value.c_str();
+			} else if (name == "KV_UP") {
+				KV_UP = value.c_str();
+			} else if (name == "KV_DOWN") {
+				KV_DOWN = value.c_str();
+			} else if (name == "KV_STOP") {
+				KV_STOP = value.c_str();
+			} else if (name == "KV_REFRESH") {
+				KV_REFRESH = value.c_str();
+			} else if (name == "KV_S_UP_UP") {
+				KV_S_UP_UP = value.c_str();
+			} else if (name == "KV_S_DOWN_DOWN") {
+				KV_S_DOWN_DOWN = value.c_str();
+			} else if (name == "KV_S_UP") {
+				KV_S_UP = value.c_str();
+			} else if (name == "KV_S_DOWN") {
+				KV_S_DOWN = value.c_str();
+			} else if (name == "KV_ISO") {
+				KV_ISO = value.c_str();
+			} else if (name == "RPI_EX") {
+				RPI_EX = value;
+			} else if (name == "DRIVE_NAME") {
+				DRIVE_NAME = value;
+			}
 	} else {
 		std::cerr << "Did not recognize entry " << name << " in config file, skipping" << std::endl;
 	}

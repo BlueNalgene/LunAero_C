@@ -38,7 +38,7 @@ gboolean refresh_text_boxes(gpointer data) {
 			msg += "\nISO:\n  ";
 			msg += std::to_string(*val_ptr.ISO_VALaddr);
 			msg += "\nFOCUS VAL:\n";
-			msg += std::to_string(floor(blur_val*100)/100);
+			msg += std::to_string(floor(blur_val*100)/100); // float to two dec places
 			gtk_label_set_text(GTK_LABEL(gtk_class::text_status), msg.c_str());
 		} else {
 			std::string msg;
@@ -125,10 +125,10 @@ std::string get_css_string() {
 		LOGGING
 		<< "width: " << WORK_WIDTH << std::endl
 		<< "height: " << WORK_HEIGHT << std::endl
-		<< "font-size: " << ((WORK_WIDTH*20)/WORK_HEIGHT) << std::endl;
+		<< "font-size: " << ((WORK_WIDTH*FONT_MOD)/WORK_HEIGHT) << std::endl;
 		LOGGING.close();
 	}
-	std::string font_size_string = std::to_string((WORK_WIDTH*20)/WORK_HEIGHT);
+	std::string font_size_string = std::to_string((WORK_WIDTH*FONT_MOD)/WORK_HEIGHT);
 	css_string = "window { background-color: black; \
 		 color: red; \
 		 font-size: " + font_size_string + "px; \
@@ -621,49 +621,49 @@ void activate(GtkApplication *app, gpointer local_val_ptr) {
 gboolean key_event_preview(GtkWidget *widget, GdkEventKey *event) {
 
 	gchar* val = gdk_keyval_name (event->keyval);
-	if (strcmp(val, "Left") == 0) {
+	if (strcmp(val, KV_LEFT) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_left_command();
 		}
-	} else if (strcmp(val, "Right") == 0) {
+	} else if (strcmp(val, KV_RIGHT) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_right_command();
 		}
-	} else if (strcmp(val, "Up") == 0) {
+	} else if (strcmp(val, KV_UP) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_up_command();
 		}
-	} else if (strcmp(val, "Down") == 0) {
+	} else if (strcmp(val, KV_DOWN) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_down_command();
 		}
-	} else if (strcmp(val, "space") == 0) {
+	} else if (strcmp(val, KV_STOP) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_stop_command();
 		}
-	} else if (strcmp(val, "z") == 0) {
+	} else if (strcmp(val, KV_REFRESH) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			refresh_camera();
 		}
-	} else if (strcmp(val, "q") == 0) {
+	} else if (strcmp(val, KV_QUIT) == 0) {
 		*val_ptr.ABORTaddr = 1;
-	} else if (strcmp(val, "g") == 0) {
+	} else if (strcmp(val, KV_S_UP_UP) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			shutter_up_up();
 		}
-	} else if (strcmp(val, "b") == 0) {
+	} else if (strcmp(val, KV_S_DOWN_DOWN) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			shutter_down_down();
 		}
-	} else if (strcmp(val, "h") == 0) {
+	} else if (strcmp(val, KV_S_UP) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			shutter_up();
 		}
-	} else if (strcmp(val, "n") == 0) {
+	} else if (strcmp(val, KV_S_DOWN) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			shutter_down();
 		}
-	} else if (strcmp(val, "i") == 0) {
+	} else if (strcmp(val, KV_ISO) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			iso_cycle();
 		}
@@ -671,7 +671,7 @@ gboolean key_event_preview(GtkWidget *widget, GdkEventKey *event) {
 		//~ if (*val_ptr.RUN_MODEaddr == 0) {
 			
 		//~ }
-	} else if (strcmp(val, "Return") == 0) {
+	} else if (strcmp(val, KV_RUN) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			first_record_killer(NULL);
 		}
@@ -704,7 +704,7 @@ gboolean key_event_running(GtkWidget *widget, GdkEventKey *event) {
 	
 	gchar* val = gdk_keyval_name (event->keyval);
 
-	if (strcmp(val, "q") == 0) {
+	if (strcmp(val, KV_QUIT) == 0) {
 		sem_wait(&LOCK);
 		*val_ptr.ABORTaddr = 1;
 		sem_post(&LOCK);
@@ -813,7 +813,7 @@ void first_record_killer(GtkWidget* data) {
 	gtk_label_set_text(GTK_LABEL(gtk_class::text_shutter), "");
 	g_signal_handler_disconnect(gtk_class::window, gtk_class::key_id);
 	g_signal_connect(gtk_class::window, "key-release-event", G_CALLBACK(key_event_running), NULL);
-	g_timeout_add(50, G_SOURCE_FUNC(g_framecheck), NULL);
+	g_timeout_add(FRAMECHECK_FREQ, G_SOURCE_FUNC(g_framecheck), NULL);
 	
 	gtk_widget_queue_draw(gtk_class::window);
 	

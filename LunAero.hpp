@@ -91,8 +91,29 @@ inline int RVD_XCORN = 0;
  * Y value for top left corner for preview window application
  */
 inline int RVD_YCORN = 0;
-
-
+/**
+ * Divisor for the number pixels on the top and bottom edges to warrant a move.  Customizable from
+ * settings.cfg.
+ */
+inline int EDGE_DIVISOR_W = 20;
+/**
+ * Divisor for the number pixels on the left and right edges to warrant a move.  Customizable from
+ * settings.cfg.
+ */
+inline int EDGE_DIVISOR_H = 20;
+/**
+ * Drive name given to the external video storage drive.  Customizable from settings.cfg.
+ */
+inline std::string DRIVE_NAME = "MOON1";
+/**
+ * Number of cycles the moon is lost for before stopping LunAero.  Customizable from settings.cfg.
+ */
+inline int LOST_THRESH = 30;
+/**
+ * Milliseconds an emergency messeage should remain on the desktop in event of a crash.  Customizable
+ * from settings.cfg
+ */
+inline int EMG_DUR = 10000;
 
 
 inline std::string FILEPATH;
