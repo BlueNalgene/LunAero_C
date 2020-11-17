@@ -29,6 +29,8 @@
 #include <cstdlib>         // provides c++ version of getenv
 #include <chrono>          // provides C++ chrono
 #include <ctime>           // provides c time funcitons for chrono usage
+#include <vector>
+using std::vector;
 //~ #include <sstream>
 
 //Special RPi include
@@ -78,9 +80,9 @@ inline std::string IDPATH = "";
 inline std::chrono::time_point OLD_RECORD_TIME = std::chrono::system_clock::now();
 inline bool DEBUG_COUT = false;
 inline std::string DEBUG_LOG;
-vector <std::string> DISK_OUTPUT;
-std::string LOGOUT;
-std::ofstream LOGGING;
+inline vector <std::string> DISK_OUTPUT;
+inline std::string LOGOUT;
+inline std::ofstream LOGGING;
 
 inline sem_t LOCK;
 
@@ -124,8 +126,11 @@ void cb_framecheck();
 void cleanup();
 void kill_raspivid();
 void current_frame();
+int create_id_file();
 std::string current_time(int gmt);
-void frame_centroid();
+//void frame_centroid();
 void abort_code();
+int notify_handler(std::string input1, std::string input2);
+int parse_checklist(std::string name, std::string value);
 
 #endif

@@ -761,7 +761,7 @@ void current_frame() {
 
 int notify_handler(std::string input1, std::string input2) {
 	notify_init("LunAero");
-	NotifyNotification* n = notify_notification_new (input1, input2, 0);
+	NotifyNotification* n = notify_notification_new (input1.c_str(), input2.c_str(), 0);
 	notify_notification_set_timeout(n, 10000); // 10 seconds
 	if (!notify_notification_show(n, 0)) {
 		std::cerr << "Libnotify failed.  I hope you have terminal open!" << std::endl;
@@ -797,10 +797,13 @@ int startup_disk_check() {
 		namespace fs = std::filesystem;
 		fs::space_info tmp = fs::space(local_path);
 		if (tmp.available < (1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
-			notify_handler("LunAero Error", "The space on this drive is too low with " + tmp.available << " bytes remaining");
+			notify_handler("LunAero Error", "The space on this drive is too low with "
+			+ std::to_string(tmp.available)
+			+ " bytes remaining");
 			return 2;
 		} else if (tmp.available < (10 * 1000000 * std::chrono::duration<double>(RECORD_DURATION).count())) {
-			notify_handler("LunAero Warning", "This drive only has " + tmp.available
+			notify_handler("LunAero Warning", "This drive only has "
+			+ std::to_string(tmp.available)
 			+ " bytes of space remaining.");
 		}
 		DISK_OUTPUT.push_back("Free space: " + tmp.free);
@@ -883,7 +886,7 @@ int main (int argc, char **argv) {
 	}
 	
 	// Parse config file
-	config_file = "./settings.cfg";
+	std::string config_file = "./settings.cfg";
 	std::ifstream cFile (config_file);
 	if (cFile.is_open()) {
 		std::string line;
@@ -892,7 +895,7 @@ int main (int argc, char **argv) {
 			if(line[0] == '#' || line.empty()) {
 				continue;
 			}
-			delimiter_pos = line.find("=");
+			auto delimiter_pos = line.find("=");
 			std::string name = line.substr(0, delimiter_pos);
 			std::string value = line.substr(delimiter_pos + 1);
 			if (parse_checklist(name, value)) {

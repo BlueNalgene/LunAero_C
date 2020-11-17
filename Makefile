@@ -29,6 +29,8 @@ LDFLAGS+=-L/opt/vc/lib/ -lbcm_host -lm -lwiringPi -lpthread -lstdc++fs
 LDFLAGS+=-DGTK_MULTIHEAD_SAFE=1 `pkg-config --cflags --libs gtk+-3.0`
 #~ LDFLAGS+=`Magick++-config --cppflags --cxxflags --ldflags --libs`
 LDFLAGS+=`pkg-config --cflags --libs opencv`
+# Note: to get this package use ``sudo apt install libnotify-dev``
+LDFLAGS+=`pkg-config --cflags --libs libnotify`
 
 INCLUDES+=-I/opt/vc/include/
 INCLUDES+=-I/opt/vc/include/interface/vcos/pthreads
