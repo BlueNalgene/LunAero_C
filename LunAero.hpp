@@ -60,19 +60,41 @@ using namespace cv;
 // Globally Defined Constants
 #define LOST_THRESH 30
 #define SAVE_DEBUG_IMAGE 0
-// Observed duration is 2100s in video, but 1801 in timestamp
+
+/*
+ * Recording duration in seconds.  Customizable from settings.cfg.  Default 1800.
+ */
 inline std::chrono::duration<double> RECORD_DURATION = (std::chrono::duration<double>) 1800.;
 
 // Global variables (Inline Requires C++17)
-inline int COUNTER = 0;
+/**
+ * The height of the usable GTK window.
+ */
 inline int WORK_HEIGHT = 0;
+/**
+ * The width of the usable GTK window.
+ */
 inline int WORK_WIDTH = 0;
+/**
+ * Relative half screen height of the window.  Altered to meet the 16:9 ratio of the Raspberry Pi camera.
+ */
 inline int RVD_HEIGHT = 0;
+/**
+ * Relative half screen width of the window.  Altered to meet the 16:9 ratio of the Raspberry Pi camera.
+ */
 inline int RVD_WIDTH = 0;
+/**
+ * X value of top left corner for preview window application.
+ */
 inline int RVD_XCORN = 0;
+/**
+ * Y value for top left corner for preview window application
+ */
 inline int RVD_YCORN = 0;
-inline int BLUR_THRESH = 100;
-//~ inline int RASPI_PID = 0;
+
+
+
+
 inline std::string FILEPATH;
 inline std::string DEFAULT_FILEPATH = "";
 inline std::string TSBUFF;
@@ -84,37 +106,67 @@ inline vector <std::string> DISK_OUTPUT;
 inline std::string LOGOUT;
 inline std::ofstream LOGGING;
 
+/*
+ * Semaphore int to lock processes across forks.  Do not touch.
+ */
 inline sem_t LOCK;
 
-// Struct of values used when writing labels (Inline Requires C++17)
+/**
+ * Struct of addresses used across forks to store important values.  Call these values with
+ * the prototype: *val_ptr.EXAMPLEaddr.  These are declared inline across cpp files, requiring C++17.
+ */
 inline struct val_addresses {
+	/**
+	 * Counter of the number of cycles the moon has been lost.
+	 */
 	volatile int * LOST_COUNTERaddr;
+	/**
+	 * Value of ISO selected by the user.  Valid values (100, 200, 400, 800)
+	 */
 	volatile int * ISO_VALaddr;
+	/**
+	 * Value of the shutter speed selected by the user.  Minimum and maximum values are determined by the
+	 * hardware and limited further by code.
+	 */
 	volatile int * SHUTTER_VALaddr;
+	/**
+	 * Value of the current run mode.  Valid values are 0 for preview/manual mode and 1 for
+	 * recording/automatic mode
+	 */
 	volatile int * RUN_MODEaddr;
+	/**
+	 * Flag to sync abort functions across code forks.  If 0, run.  If 1, abort.
+	 */
 	volatile int * ABORTaddr;
+	/**
+	 * Flag to sync camera refreshes across forks.  If 0, do nothing.  If 1, refresh.
+	 */
 	volatile int * REFRESH_CAMaddr;
-	/* Horizontal motion
-	 * 0 = none
-	 * 1 = left
-	 * 2 = right
+	/**
+	 * Horizontal motion to be applied to motor B. Values: 0 = none, 1 = left, 2 = right
 	 */
 	volatile int * HORZ_DIRaddr;
-	/* Vertical motion
-	 * 0 = none
-	 * 1 = up
-	 * 2 = down
+	/**
+	 * Vertical motion to be applied to motor A.  Values: 0 = none, 1 = up, 2 = down
 	 */
 	volatile int * VERT_DIRaddr;
-	/* Stop motor
-	 * 0 = none
-	 * 1 = horizontal
-	 * 2 = vertical
-	 * 3 = both
+	/**
+	 * Stop motors selected by this flag.  Values: 0 = none, 1 = horizontal only, 2 = vertical only,
+	 * 3 = both motors.
 	 */
 	volatile int * STOP_DIRaddr;
+	/**
+	 * Current duty cycle of motor A.  Valid values 0-100.
+	 */
 	volatile int * DUTY_Aaddr;
+	/**
+	 * Current duty cycle of motor B.  Valid values 0-100.
+	 */
 	volatile int * DUTY_Baddr;
+	/**
+	 * Flag for telling the raspivid refresh algorithm if this the original run or subsequent runs being
+	 * refreshed to elicit appropriate behavior.
+	 */
 	volatile int * SUBSaddr;
 } val_ptr;
 

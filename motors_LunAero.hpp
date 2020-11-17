@@ -46,10 +46,14 @@
 #define BPINP 14                // GPIO BCM pin definition 11
 #define MIN_DUTY 20             // Minimum allowable duty cycle
 
-// Number of seconds to perform a loose wheel maneuver
+/**
+ * Number of seconds to perform a loose wheel maneuver.  This can be customized in settings.cfg.
+ */
 inline std::chrono::duration<double> LOOSE_WHEEL_DURATION = (std::chrono::duration<double>)2.;
 
-// Global Variables
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+// Global Variables - Not "private" but not necessary to define for Doxygen
 inline int OLD_DIR = 0;
 inline int OLD_DUTY_A = 0;
 inline int OLD_DUTY_B = 0;
@@ -57,14 +61,11 @@ inline int CNT_MOTOR_A = 0;
 inline int CNT_MOTOR_B = 0;
 inline std::chrono::time_point OLD_LOOSE_WHEEL_TIME = std::chrono::system_clock::now();
 
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
 // Declare Functions
 void gpio_pin_setup();
 void motor_handler();
-//~ void mot_up();
-//~ void mot_down();
-//~ void mot_left();
-//~ void mot_right();
-//~ void mot_stop(int direct);
 void loose_wheel(int wheel_dir);
 void speed_up(int motor);
 void final_stop();

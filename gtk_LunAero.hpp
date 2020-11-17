@@ -47,52 +47,170 @@ void mot_down_command();
 void mot_left_command();
 void mot_right_command();
 
+/**
+ * This is a class to hold the various GTK widgets and whatnots.
+ */
 class gtk_class {
 	public:
-		// Main Application
+		/**
+		 * GTK Main Application
+		 */
 		inline static GtkApplication *app;
-		// Main Window
+		/**
+		 * Main GTK window
+		 */
 		inline static GtkWidget *window;
-		// CSS provider
+		/**
+		 * GTK CSS provider
+		 */
 		inline static GtkCssProvider *provider;
+		
 		// Grids
+		
+		/**
+		 * Primary grid for window layout.
+		 */
 		inline static GtkWidget *grid;
+		/**
+		 * Grid to hold the directional movement pad
+		 */
 		inline static GtkWidget *dirgrid;
+		/**
+		 * Grid to hold function buttons
+		 */
 		inline static GtkWidget *funcgrid;
+		/**
+		 * Grid to hold our fakebuttons
+		 */
 		inline static GtkWidget *fakegrid;
+		
 		// Button Containers
+		
+		/**
+		 * Quit button container
+		 */
 		inline static GtkWidget *button_box_quit;
+		/**
+		 * Container for all of the fake buttons
+		 */
 		inline static GtkWidget *button_box_fakes;
+		/**
+		 * Container for all of the directional pad buttons
+		 */
 		inline static GtkWidget *button_box_dirgrid;
+		/**
+		 * Container for the camera refresh button
+		 */
 		inline static GtkWidget *button_box_redeploy;
+		/**
+		 * Container for all of the ISO/Shutter editing buttons
+		 */
 		inline static GtkWidget *button_box_funcs;
+		/**
+		 * Container for the "start recording" button
+		 */
 		inline static GtkWidget *button_box_activate;
+		
 		// Buttons
+		
+		/**
+		 * exit button
+		 */
 		inline static GtkWidget *exit_button;
+		/**
+		 * movement up button
+		 */
 		inline static GtkWidget *button_up;
+		/**
+		 * movement down button
+		 */
 		inline static GtkWidget *button_down;
+		/**
+		 * movement left button
+		 */
 		inline static GtkWidget *button_left;
+		/**
+		 * movement right button
+		 */
 		inline static GtkWidget *button_right;
+		/**
+		 * movement stop button
+		 */
 		inline static GtkWidget *button_stop;
+		/**
+		 * refresh preview camera button
+		 */
 		inline static GtkWidget *button_camera_command;
+		/**
+		 * increase shutter value button
+		 */
 		inline static GtkWidget *button_shutter_up;
+		/**
+		 * decrease shutter value button
+		 */
 		inline static GtkWidget *button_shutter_down;
+		/**
+		 * greatly increase shutter button
+		 */
 		inline static GtkWidget *button_shutter_up_up;
+		/**
+		 * greately decrease shutter button
+		 */
 		inline static GtkWidget *button_shutter_down_down;
+		/**
+		 * cycle ISO button
+		 */
 		inline static GtkWidget *button_iso;
+		/**
+		 * begin recording button
+		 */
 		inline static GtkWidget *button_record;
+		
 		// Text Holders
+		
+		/**
+		 * Container to hold the status (ISO/Shutter/Blur and Running)
+		 */
 		inline static GtkWidget *text_status;
+		/**
+		 * Container for shutter speed label
+		 */
 		inline static GtkWidget *text_shutter;
+		/**
+		 * Container for some blank lines that help arrange the grid
+		 */
 		inline static GtkWidget *text_description;
+		
 		// More fake buttons to shield the real fake button!
+		
+		/**
+		 * fake button - does nothing
+		 */
 		inline static GtkWidget *fakebutton;
+		/**
+		 * fake button - does nothing
+		 */
 		inline static GtkWidget *fakebutton2;
+		/**
+		 * fake button - does nothing
+		 */
 		inline static GtkWidget *fakebutton3;
+		/**
+		 * fake button - does nothing
+		 */
 		inline static GtkWidget *fakebutton4;
+		/**
+		 * fake button - does nothing
+		 */
 		inline static GtkWidget *fakebutton5;
-    
+		
+		/**
+		 * Holds the CSS string.  Not an actual widtet!
+		 */
 		inline static const std::string css_string = get_css_string();
+		/**
+		 * Holds the key_id of a button pressed on the user's keyboard.
+		 */
 		inline static gulong key_id;
 	
 
