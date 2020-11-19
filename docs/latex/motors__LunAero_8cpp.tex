@@ -1,0 +1,96 @@
+\hypertarget{motors__LunAero_8cpp}{}\section{motors\+\_\+\+Lun\+Aero.\+cpp File Reference}
+\label{motors__LunAero_8cpp}\index{motors\+\_\+\+Lun\+Aero.\+cpp@{motors\+\_\+\+Lun\+Aero.\+cpp}}
+{\ttfamily \#include \char`\"{}motors\+\_\+\+Lun\+Aero.\+hpp\char`\"{}}\newline
+Include dependency graph for motors\+\_\+\+Lun\+Aero.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{motors__LunAero_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{motors__LunAero_8cpp_aa672beb83b7c19a5b2b697915403a37d}{motor\+\_\+handler} ()
+\item 
+void \hyperlink{motors__LunAero_8cpp_a580856bf1004f7550c52ad12b53d062d}{speed\+\_\+up} (int motor)
+\item 
+void \hyperlink{motors__LunAero_8cpp_aa45655ca1b2477a3a1573e23f397c65f}{gpio\+\_\+pin\+\_\+setup} ()
+\item 
+void \hyperlink{motors__LunAero_8cpp_aa19b40639f826d7ebacac070bffd3d1c}{final\+\_\+stop} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{motors__LunAero_8cpp_aa19b40639f826d7ebacac070bffd3d1c}\label{motors__LunAero_8cpp_aa19b40639f826d7ebacac070bffd3d1c}} 
+\index{motors\+\_\+\+Lun\+Aero.\+cpp@{motors\+\_\+\+Lun\+Aero.\+cpp}!final\+\_\+stop@{final\+\_\+stop}}
+\index{final\+\_\+stop@{final\+\_\+stop}!motors\+\_\+\+Lun\+Aero.\+cpp@{motors\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{final\+\_\+stop()}{final\_stop()}}
+{\footnotesize\ttfamily void final\+\_\+stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This funciton performs a hard stop on all motors. This is only called on program exit. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=213pt]{motors__LunAero_8cpp_aa19b40639f826d7ebacac070bffd3d1c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{motors__LunAero_8cpp_aa45655ca1b2477a3a1573e23f397c65f}\label{motors__LunAero_8cpp_aa45655ca1b2477a3a1573e23f397c65f}} 
+\index{motors\+\_\+\+Lun\+Aero.\+cpp@{motors\+\_\+\+Lun\+Aero.\+cpp}!gpio\+\_\+pin\+\_\+setup@{gpio\+\_\+pin\+\_\+setup}}
+\index{gpio\+\_\+pin\+\_\+setup@{gpio\+\_\+pin\+\_\+setup}!motors\+\_\+\+Lun\+Aero.\+cpp@{motors\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{gpio\+\_\+pin\+\_\+setup()}{gpio\_pin\_setup()}}
+{\footnotesize\ttfamily void gpio\+\_\+pin\+\_\+setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function is called when the program starts to initalize the motor code. Since the code uses wiring\+Pi, this must first be initialized. Then, initial stopped values are passed to the relevant motor pins. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{motors__LunAero_8cpp_aa45655ca1b2477a3a1573e23f397c65f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{motors__LunAero_8cpp_aa672beb83b7c19a5b2b697915403a37d}\label{motors__LunAero_8cpp_aa672beb83b7c19a5b2b697915403a37d}} 
+\index{motors\+\_\+\+Lun\+Aero.\+cpp@{motors\+\_\+\+Lun\+Aero.\+cpp}!motor\+\_\+handler@{motor\+\_\+handler}}
+\index{motor\+\_\+handler@{motor\+\_\+handler}!motors\+\_\+\+Lun\+Aero.\+cpp@{motors\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{motor\+\_\+handler()}{motor\_handler()}}
+{\footnotesize\ttfamily void motor\+\_\+handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function handles the motor commands by running in a loop and checking the value from the motor struct. Stopping the motors is handled by S\+T\+O\+P\+\_\+\+D\+IR values, and gradually slows the motor down to prevent abrupt stops shaking the video too much. Next, the function handles vertical and horizontal motor commands sequentially. If the motor command was a positive value and the same as the command in the previous cycle, the function calls speed\+\_\+up. In the case of horizontal motion, if the motor direction abruptly switches, the loose wheel protocol is summoned which forces high speed motion for a number of seconds based on the value L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON in settings.\+cfg. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{motors__LunAero_8cpp_aa672beb83b7c19a5b2b697915403a37d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{motors__LunAero_8cpp_aa672beb83b7c19a5b2b697915403a37d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{motors__LunAero_8cpp_a580856bf1004f7550c52ad12b53d062d}\label{motors__LunAero_8cpp_a580856bf1004f7550c52ad12b53d062d}} 
+\index{motors\+\_\+\+Lun\+Aero.\+cpp@{motors\+\_\+\+Lun\+Aero.\+cpp}!speed\+\_\+up@{speed\+\_\+up}}
+\index{speed\+\_\+up@{speed\+\_\+up}!motors\+\_\+\+Lun\+Aero.\+cpp@{motors\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{speed\+\_\+up()}{speed\_up()}}
+{\footnotesize\ttfamily void speed\+\_\+up (\begin{DoxyParamCaption}\item[{int}]{motor }\end{DoxyParamCaption})}
+
+This function increases the speed of the motor\textquotesingle{}s movement by setting appropriate P\+WM values. The speed never drops below a minimum value (full stops ignore this function). Speed is incremented by one percent P\+WM to a maximum value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & The motor to run speed settings on. 1 = vertical, 2 = horizontal \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{motors__LunAero_8cpp_a580856bf1004f7550c52ad12b53d062d_icgraph}
+\end{center}
+\end{figure}

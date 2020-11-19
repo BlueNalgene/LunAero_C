@@ -1,0 +1,3 @@
+\form#0:$ 3 \times 3$
+\form#1:\[ \boldsymbol{I_{neigh}} = \begin{bmatrix} 1 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 1 \end{bmatrix} \]
+\form#2:\[ \boldsymbol{I_{t}} = \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & 0 \end{bmatrix} , \boldsymbol{I_{x}} = \begin{bmatrix} 1 & 0 & 1 \\ 0 & 0 & 0 \\ 1 & 0 & 1 \end{bmatrix} \]

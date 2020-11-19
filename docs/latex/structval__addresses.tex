@@ -1,0 +1,126 @@
+\hypertarget{structval__addresses}{}\section{val\+\_\+addresses Struct Reference}
+\label{structval__addresses}\index{val\+\_\+addresses@{val\+\_\+addresses}}
+
+
+{\ttfamily \#include $<$Lun\+Aero.\+hpp$>$}
+
+
+
+Collaboration diagram for val\+\_\+addresses\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=205pt]{structval__addresses__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a0eb119cb562c1ab4a3d68e513d439fcd}{L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+E\+Raddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a5a5f6d9a976602675639458fa735c845}{I\+S\+O\+\_\+\+V\+A\+Laddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a57ee2cd54ae492b38aae06975b64b0e2}{S\+H\+U\+T\+T\+E\+R\+\_\+\+V\+A\+Laddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_aae5779146fa4fb188bb9572c20d5da4a}{R\+U\+N\+\_\+\+M\+O\+D\+Eaddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a0fe118a58a06a6f24181c13f97962e26}{A\+B\+O\+R\+Taddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a9da32da59ec29598d672ad09003491fd}{R\+E\+F\+R\+E\+S\+H\+\_\+\+C\+A\+Maddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_aaa663924337345adb7b14897d1e7d1a5}{H\+O\+R\+Z\+\_\+\+D\+I\+Raddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a0bc3ea6915b32a17b4c333b865c81ea9}{V\+E\+R\+T\+\_\+\+D\+I\+Raddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_ae9ae522d433f333dbb15a1ed5ebe70e6}{S\+T\+O\+P\+\_\+\+D\+I\+Raddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_aadc43e056f0b10d3c772bd0ed45ae5bc}{D\+U\+T\+Y\+\_\+\+Aaddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a3bb48724a49aba39d68249e4714f731c}{D\+U\+T\+Y\+\_\+\+Baddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a2dc7beaca139f55cee0def0170611e03}{S\+U\+B\+Saddr}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Struct of addresses used across forks to store important values. Call these values with the prototype\+: $\ast$val\+\_\+ptr.E\+X\+A\+M\+P\+L\+Eaddr. These are declared inline across cpp files, requiring C++17. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structval__addresses_a0fe118a58a06a6f24181c13f97962e26}\label{structval__addresses_a0fe118a58a06a6f24181c13f97962e26}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!A\+B\+O\+R\+Taddr@{A\+B\+O\+R\+Taddr}}
+\index{A\+B\+O\+R\+Taddr@{A\+B\+O\+R\+Taddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{A\+B\+O\+R\+Taddr}{ABORTaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+A\+B\+O\+R\+Taddr}
+
+Flag to sync abort functions across code forks. If 0, run. If 1, abort. \mbox{\Hypertarget{structval__addresses_aadc43e056f0b10d3c772bd0ed45ae5bc}\label{structval__addresses_aadc43e056f0b10d3c772bd0ed45ae5bc}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!D\+U\+T\+Y\+\_\+\+Aaddr@{D\+U\+T\+Y\+\_\+\+Aaddr}}
+\index{D\+U\+T\+Y\+\_\+\+Aaddr@{D\+U\+T\+Y\+\_\+\+Aaddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{D\+U\+T\+Y\+\_\+\+Aaddr}{DUTY\_Aaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+D\+U\+T\+Y\+\_\+\+Aaddr}
+
+Current duty cycle of motor A. Valid values 0-\/100. \mbox{\Hypertarget{structval__addresses_a3bb48724a49aba39d68249e4714f731c}\label{structval__addresses_a3bb48724a49aba39d68249e4714f731c}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!D\+U\+T\+Y\+\_\+\+Baddr@{D\+U\+T\+Y\+\_\+\+Baddr}}
+\index{D\+U\+T\+Y\+\_\+\+Baddr@{D\+U\+T\+Y\+\_\+\+Baddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{D\+U\+T\+Y\+\_\+\+Baddr}{DUTY\_Baddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+D\+U\+T\+Y\+\_\+\+Baddr}
+
+Current duty cycle of motor B. Valid values 0-\/100. \mbox{\Hypertarget{structval__addresses_aaa663924337345adb7b14897d1e7d1a5}\label{structval__addresses_aaa663924337345adb7b14897d1e7d1a5}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!H\+O\+R\+Z\+\_\+\+D\+I\+Raddr@{H\+O\+R\+Z\+\_\+\+D\+I\+Raddr}}
+\index{H\+O\+R\+Z\+\_\+\+D\+I\+Raddr@{H\+O\+R\+Z\+\_\+\+D\+I\+Raddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{H\+O\+R\+Z\+\_\+\+D\+I\+Raddr}{HORZ\_DIRaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+H\+O\+R\+Z\+\_\+\+D\+I\+Raddr}
+
+Horizontal motion to be applied to motor B. Values\+: 0 = none, 1 = left, 2 = right \mbox{\Hypertarget{structval__addresses_a5a5f6d9a976602675639458fa735c845}\label{structval__addresses_a5a5f6d9a976602675639458fa735c845}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!I\+S\+O\+\_\+\+V\+A\+Laddr@{I\+S\+O\+\_\+\+V\+A\+Laddr}}
+\index{I\+S\+O\+\_\+\+V\+A\+Laddr@{I\+S\+O\+\_\+\+V\+A\+Laddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{I\+S\+O\+\_\+\+V\+A\+Laddr}{ISO\_VALaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+I\+S\+O\+\_\+\+V\+A\+Laddr}
+
+Value of I\+SO selected by the user. Valid values (100, 200, 400, 800) \mbox{\Hypertarget{structval__addresses_a0eb119cb562c1ab4a3d68e513d439fcd}\label{structval__addresses_a0eb119cb562c1ab4a3d68e513d439fcd}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+E\+Raddr@{L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+E\+Raddr}}
+\index{L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+E\+Raddr@{L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+E\+Raddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+E\+Raddr}{LOST\_COUNTERaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+E\+Raddr}
+
+Counter of the number of cycles the moon has been lost. \mbox{\Hypertarget{structval__addresses_a9da32da59ec29598d672ad09003491fd}\label{structval__addresses_a9da32da59ec29598d672ad09003491fd}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!R\+E\+F\+R\+E\+S\+H\+\_\+\+C\+A\+Maddr@{R\+E\+F\+R\+E\+S\+H\+\_\+\+C\+A\+Maddr}}
+\index{R\+E\+F\+R\+E\+S\+H\+\_\+\+C\+A\+Maddr@{R\+E\+F\+R\+E\+S\+H\+\_\+\+C\+A\+Maddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{R\+E\+F\+R\+E\+S\+H\+\_\+\+C\+A\+Maddr}{REFRESH\_CAMaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+R\+E\+F\+R\+E\+S\+H\+\_\+\+C\+A\+Maddr}
+
+Flag to sync camera refreshes across forks. If 0, do nothing. If 1, refresh. \mbox{\Hypertarget{structval__addresses_aae5779146fa4fb188bb9572c20d5da4a}\label{structval__addresses_aae5779146fa4fb188bb9572c20d5da4a}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!R\+U\+N\+\_\+\+M\+O\+D\+Eaddr@{R\+U\+N\+\_\+\+M\+O\+D\+Eaddr}}
+\index{R\+U\+N\+\_\+\+M\+O\+D\+Eaddr@{R\+U\+N\+\_\+\+M\+O\+D\+Eaddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{R\+U\+N\+\_\+\+M\+O\+D\+Eaddr}{RUN\_MODEaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+R\+U\+N\+\_\+\+M\+O\+D\+Eaddr}
+
+Value of the current run mode. Valid values are 0 for preview/manual mode and 1 for recording/automatic mode \mbox{\Hypertarget{structval__addresses_a57ee2cd54ae492b38aae06975b64b0e2}\label{structval__addresses_a57ee2cd54ae492b38aae06975b64b0e2}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!S\+H\+U\+T\+T\+E\+R\+\_\+\+V\+A\+Laddr@{S\+H\+U\+T\+T\+E\+R\+\_\+\+V\+A\+Laddr}}
+\index{S\+H\+U\+T\+T\+E\+R\+\_\+\+V\+A\+Laddr@{S\+H\+U\+T\+T\+E\+R\+\_\+\+V\+A\+Laddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{S\+H\+U\+T\+T\+E\+R\+\_\+\+V\+A\+Laddr}{SHUTTER\_VALaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+S\+H\+U\+T\+T\+E\+R\+\_\+\+V\+A\+Laddr}
+
+Value of the shutter speed selected by the user. Minimum and maximum values are determined by the hardware and limited further by code. \mbox{\Hypertarget{structval__addresses_ae9ae522d433f333dbb15a1ed5ebe70e6}\label{structval__addresses_ae9ae522d433f333dbb15a1ed5ebe70e6}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!S\+T\+O\+P\+\_\+\+D\+I\+Raddr@{S\+T\+O\+P\+\_\+\+D\+I\+Raddr}}
+\index{S\+T\+O\+P\+\_\+\+D\+I\+Raddr@{S\+T\+O\+P\+\_\+\+D\+I\+Raddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{S\+T\+O\+P\+\_\+\+D\+I\+Raddr}{STOP\_DIRaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+S\+T\+O\+P\+\_\+\+D\+I\+Raddr}
+
+Stop motors selected by this flag. Values\+: 0 = none, 1 = horizontal only, 2 = vertical only, 3 = both motors. \mbox{\Hypertarget{structval__addresses_a2dc7beaca139f55cee0def0170611e03}\label{structval__addresses_a2dc7beaca139f55cee0def0170611e03}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!S\+U\+B\+Saddr@{S\+U\+B\+Saddr}}
+\index{S\+U\+B\+Saddr@{S\+U\+B\+Saddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{S\+U\+B\+Saddr}{SUBSaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+S\+U\+B\+Saddr}
+
+Flag for telling the raspivid refresh algorithm if this the original run or subsequent runs being refreshed to elicit appropriate behavior. \mbox{\Hypertarget{structval__addresses_a0bc3ea6915b32a17b4c333b865c81ea9}\label{structval__addresses_a0bc3ea6915b32a17b4c333b865c81ea9}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!V\+E\+R\+T\+\_\+\+D\+I\+Raddr@{V\+E\+R\+T\+\_\+\+D\+I\+Raddr}}
+\index{V\+E\+R\+T\+\_\+\+D\+I\+Raddr@{V\+E\+R\+T\+\_\+\+D\+I\+Raddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{V\+E\+R\+T\+\_\+\+D\+I\+Raddr}{VERT\_DIRaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+V\+E\+R\+T\+\_\+\+D\+I\+Raddr}
+
+Vertical motion to be applied to motor A. Values\+: 0 = none, 1 = up, 2 = down 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{LunAero_8hpp}{Lun\+Aero.\+hpp}\end{DoxyCompactItemize}

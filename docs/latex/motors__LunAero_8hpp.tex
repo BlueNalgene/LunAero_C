@@ -1,0 +1,221 @@
+\hypertarget{motors__LunAero_8hpp}{}\section{motors\+\_\+\+Lun\+Aero.\+hpp File Reference}
+\label{motors__LunAero_8hpp}\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$wiring\+Pi.\+h$>$}\newline
+{\ttfamily \#include $<$soft\+Pwm.\+h$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$ctime$>$}\newline
+{\ttfamily \#include \char`\"{}Lun\+Aero.\+hpp\char`\"{}}\newline
+Include dependency graph for motors\+\_\+\+Lun\+Aero.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{motors__LunAero_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{motors__LunAero_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{motors__LunAero_8hpp_aae799989484868663493555dfc371e21}{D\+U\+TY}~100
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{motors__LunAero_8hpp_aa45655ca1b2477a3a1573e23f397c65f}{gpio\+\_\+pin\+\_\+setup} ()
+\item 
+void \hyperlink{motors__LunAero_8hpp_aa672beb83b7c19a5b2b697915403a37d}{motor\+\_\+handler} ()
+\item 
+void \hyperlink{motors__LunAero_8hpp_a365b16325d3414bc7c455d52e076bafe}{loose\+\_\+wheel} (int wheel\+\_\+dir)
+\item 
+void \hyperlink{motors__LunAero_8hpp_a580856bf1004f7550c52ad12b53d062d}{speed\+\_\+up} (int motor)
+\item 
+void \hyperlink{motors__LunAero_8hpp_aa19b40639f826d7ebacac070bffd3d1c}{final\+\_\+stop} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{motors__LunAero_8hpp_a731dda95d3c6462cecd3979241eef5a1}{A\+P\+I\+NP} = 0
+\item 
+int \hyperlink{motors__LunAero_8hpp_a82b4b34c3965acb80211ac3282b8a7b4}{A\+P\+I\+N1} = 2
+\item 
+int \hyperlink{motors__LunAero_8hpp_a847777a2765405b3d8af1ff677fe0650}{A\+P\+I\+N2} = 3
+\item 
+int \hyperlink{motors__LunAero_8hpp_ae5da38789877669e2db8342a3d8692f4}{B\+P\+I\+N1} = 12
+\item 
+int \hyperlink{motors__LunAero_8hpp_aea1981fb0c75ee28910495ade6c8c592}{B\+P\+I\+N2} = 13
+\item 
+int \hyperlink{motors__LunAero_8hpp_ad67af3ff13c24d7ca610f9a4217bcde9}{B\+P\+I\+NP} = 14
+\item 
+int \hyperlink{motors__LunAero_8hpp_a5788d340bcbf826cbf14b6e38892dbb7}{M\+I\+N\+\_\+\+D\+U\+TY} = 20
+\item 
+int \hyperlink{motors__LunAero_8hpp_a690cc98e01b03a12a99608cc73a4719d}{B\+R\+A\+K\+E\+\_\+\+D\+U\+TY} = 10
+\item 
+int \hyperlink{motors__LunAero_8hpp_a129f1b691f4c7a6269b4fed302fe60b3}{F\+R\+EQ} = 10000
+\item 
+std\+::chrono\+::duration$<$ double $>$ \hyperlink{motors__LunAero_8hpp_a82ec489280f70844bada8cf4a7d29956}{L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON} = (std\+::chrono\+::duration$<$double$>$)2.
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{motors__LunAero_8hpp_aae799989484868663493555dfc371e21}\label{motors__LunAero_8hpp_aae799989484868663493555dfc371e21}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!D\+U\+TY@{D\+U\+TY}}
+\index{D\+U\+TY@{D\+U\+TY}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{D\+U\+TY}{DUTY}}
+{\footnotesize\ttfamily \#define D\+U\+TY~100}
+
+Duty cycle \% range for motors 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{motors__LunAero_8hpp_aa19b40639f826d7ebacac070bffd3d1c}\label{motors__LunAero_8hpp_aa19b40639f826d7ebacac070bffd3d1c}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!final\+\_\+stop@{final\+\_\+stop}}
+\index{final\+\_\+stop@{final\+\_\+stop}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{final\+\_\+stop()}{final\_stop()}}
+{\footnotesize\ttfamily void final\+\_\+stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This funciton performs a hard stop on all motors. This is only called on program exit. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=213pt]{motors__LunAero_8hpp_aa19b40639f826d7ebacac070bffd3d1c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{motors__LunAero_8hpp_aa45655ca1b2477a3a1573e23f397c65f}\label{motors__LunAero_8hpp_aa45655ca1b2477a3a1573e23f397c65f}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!gpio\+\_\+pin\+\_\+setup@{gpio\+\_\+pin\+\_\+setup}}
+\index{gpio\+\_\+pin\+\_\+setup@{gpio\+\_\+pin\+\_\+setup}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{gpio\+\_\+pin\+\_\+setup()}{gpio\_pin\_setup()}}
+{\footnotesize\ttfamily void gpio\+\_\+pin\+\_\+setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function is called when the program starts to initalize the motor code. Since the code uses wiring\+Pi, this must first be initialized. Then, initial stopped values are passed to the relevant motor pins. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{motors__LunAero_8hpp_aa45655ca1b2477a3a1573e23f397c65f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{motors__LunAero_8hpp_a365b16325d3414bc7c455d52e076bafe}\label{motors__LunAero_8hpp_a365b16325d3414bc7c455d52e076bafe}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!loose\+\_\+wheel@{loose\+\_\+wheel}}
+\index{loose\+\_\+wheel@{loose\+\_\+wheel}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{loose\+\_\+wheel()}{loose\_wheel()}}
+{\footnotesize\ttfamily void loose\+\_\+wheel (\begin{DoxyParamCaption}\item[{int}]{wheel\+\_\+dir }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{motors__LunAero_8hpp_aa672beb83b7c19a5b2b697915403a37d}\label{motors__LunAero_8hpp_aa672beb83b7c19a5b2b697915403a37d}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!motor\+\_\+handler@{motor\+\_\+handler}}
+\index{motor\+\_\+handler@{motor\+\_\+handler}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{motor\+\_\+handler()}{motor\_handler()}}
+{\footnotesize\ttfamily void motor\+\_\+handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function handles the motor commands by running in a loop and checking the value from the motor struct. Stopping the motors is handled by S\+T\+O\+P\+\_\+\+D\+IR values, and gradually slows the motor down to prevent abrupt stops shaking the video too much. Next, the function handles vertical and horizontal motor commands sequentially. If the motor command was a positive value and the same as the command in the previous cycle, the function calls speed\+\_\+up. In the case of horizontal motion, if the motor direction abruptly switches, the loose wheel protocol is summoned which forces high speed motion for a number of seconds based on the value L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON in settings.\+cfg. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{motors__LunAero_8hpp_aa672beb83b7c19a5b2b697915403a37d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{motors__LunAero_8hpp_aa672beb83b7c19a5b2b697915403a37d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{motors__LunAero_8hpp_a580856bf1004f7550c52ad12b53d062d}\label{motors__LunAero_8hpp_a580856bf1004f7550c52ad12b53d062d}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!speed\+\_\+up@{speed\+\_\+up}}
+\index{speed\+\_\+up@{speed\+\_\+up}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{speed\+\_\+up()}{speed\_up()}}
+{\footnotesize\ttfamily void speed\+\_\+up (\begin{DoxyParamCaption}\item[{int}]{motor }\end{DoxyParamCaption})}
+
+This function increases the speed of the motor\textquotesingle{}s movement by setting appropriate P\+WM values. The speed never drops below a minimum value (full stops ignore this function). Speed is incremented by one percent P\+WM to a maximum value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & The motor to run speed settings on. 1 = vertical, 2 = horizontal \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{motors__LunAero_8hpp_a580856bf1004f7550c52ad12b53d062d_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{motors__LunAero_8hpp_a82b4b34c3965acb80211ac3282b8a7b4}\label{motors__LunAero_8hpp_a82b4b34c3965acb80211ac3282b8a7b4}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!A\+P\+I\+N1@{A\+P\+I\+N1}}
+\index{A\+P\+I\+N1@{A\+P\+I\+N1}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{A\+P\+I\+N1}{APIN1}}
+{\footnotesize\ttfamily int A\+P\+I\+N1 = 2\hspace{0.3cm}{\ttfamily [inline]}}
+
+Raspberry Pi G\+P\+IO pin for motor A 1 pin. B\+CM equivalent of 2 = 27 Customizable from settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_a847777a2765405b3d8af1ff677fe0650}\label{motors__LunAero_8hpp_a847777a2765405b3d8af1ff677fe0650}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!A\+P\+I\+N2@{A\+P\+I\+N2}}
+\index{A\+P\+I\+N2@{A\+P\+I\+N2}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{A\+P\+I\+N2}{APIN2}}
+{\footnotesize\ttfamily int A\+P\+I\+N2 = 3\hspace{0.3cm}{\ttfamily [inline]}}
+
+Raspberry Pi G\+P\+IO pin for motor A 2 pin. B\+CM equivalent of 3 = 22 Customizable from settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_a731dda95d3c6462cecd3979241eef5a1}\label{motors__LunAero_8hpp_a731dda95d3c6462cecd3979241eef5a1}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!A\+P\+I\+NP@{A\+P\+I\+NP}}
+\index{A\+P\+I\+NP@{A\+P\+I\+NP}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{A\+P\+I\+NP}{APINP}}
+{\footnotesize\ttfamily int A\+P\+I\+NP = 0\hspace{0.3cm}{\ttfamily [inline]}}
+
+Raspberry Pi G\+P\+IO pin for motor A Soft P\+WM. B\+CM equivalent of 0 = 17 Customizable from settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_ae5da38789877669e2db8342a3d8692f4}\label{motors__LunAero_8hpp_ae5da38789877669e2db8342a3d8692f4}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!B\+P\+I\+N1@{B\+P\+I\+N1}}
+\index{B\+P\+I\+N1@{B\+P\+I\+N1}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{B\+P\+I\+N1}{BPIN1}}
+{\footnotesize\ttfamily int B\+P\+I\+N1 = 12\hspace{0.3cm}{\ttfamily [inline]}}
+
+Raspberry Pi G\+P\+IO pin for motor B 1 pin. B\+CM equivalent of 12 = 10 Customizable from settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_aea1981fb0c75ee28910495ade6c8c592}\label{motors__LunAero_8hpp_aea1981fb0c75ee28910495ade6c8c592}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!B\+P\+I\+N2@{B\+P\+I\+N2}}
+\index{B\+P\+I\+N2@{B\+P\+I\+N2}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{B\+P\+I\+N2}{BPIN2}}
+{\footnotesize\ttfamily int B\+P\+I\+N2 = 13\hspace{0.3cm}{\ttfamily [inline]}}
+
+Raspberry Pi G\+P\+IO pin for motor B 2 pin. B\+CM equivalent of 13 = 9 Customizable from settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_ad67af3ff13c24d7ca610f9a4217bcde9}\label{motors__LunAero_8hpp_ad67af3ff13c24d7ca610f9a4217bcde9}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!B\+P\+I\+NP@{B\+P\+I\+NP}}
+\index{B\+P\+I\+NP@{B\+P\+I\+NP}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{B\+P\+I\+NP}{BPINP}}
+{\footnotesize\ttfamily int B\+P\+I\+NP = 14\hspace{0.3cm}{\ttfamily [inline]}}
+
+Raspberry Pi G\+P\+IO pin for motor A Soft P\+WM. B\+CM equivalent of 14 = 11 Customizable from settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_a690cc98e01b03a12a99608cc73a4719d}\label{motors__LunAero_8hpp_a690cc98e01b03a12a99608cc73a4719d}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!B\+R\+A\+K\+E\+\_\+\+D\+U\+TY@{B\+R\+A\+K\+E\+\_\+\+D\+U\+TY}}
+\index{B\+R\+A\+K\+E\+\_\+\+D\+U\+TY@{B\+R\+A\+K\+E\+\_\+\+D\+U\+TY}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{B\+R\+A\+K\+E\+\_\+\+D\+U\+TY}{BRAKE\_DUTY}}
+{\footnotesize\ttfamily int B\+R\+A\+K\+E\+\_\+\+D\+U\+TY = 10\hspace{0.3cm}{\ttfamily [inline]}}
+
+Duty cycle threshold for braking during recording. Customizable from settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_a129f1b691f4c7a6269b4fed302fe60b3}\label{motors__LunAero_8hpp_a129f1b691f4c7a6269b4fed302fe60b3}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!F\+R\+EQ@{F\+R\+EQ}}
+\index{F\+R\+EQ@{F\+R\+EQ}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{F\+R\+EQ}{FREQ}}
+{\footnotesize\ttfamily int F\+R\+EQ = 10000\hspace{0.3cm}{\ttfamily [inline]}}
+
+P\+WM operation frequency in Hz. Customizable from settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_a82ec489280f70844bada8cf4a7d29956}\label{motors__LunAero_8hpp_a82ec489280f70844bada8cf4a7d29956}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON@{L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON}}
+\index{L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON@{L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON}{LOOSE\_WHEEL\_DURATION}}
+{\footnotesize\ttfamily std\+::chrono\+::duration$<$double$>$ L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON = (std\+::chrono\+::duration$<$double$>$)2.\hspace{0.3cm}{\ttfamily [inline]}}
+
+Number of seconds to perform a loose wheel maneuver. This can be customized in settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_a5788d340bcbf826cbf14b6e38892dbb7}\label{motors__LunAero_8hpp_a5788d340bcbf826cbf14b6e38892dbb7}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!M\+I\+N\+\_\+\+D\+U\+TY@{M\+I\+N\+\_\+\+D\+U\+TY}}
+\index{M\+I\+N\+\_\+\+D\+U\+TY@{M\+I\+N\+\_\+\+D\+U\+TY}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{M\+I\+N\+\_\+\+D\+U\+TY}{MIN\_DUTY}}
+{\footnotesize\ttfamily int M\+I\+N\+\_\+\+D\+U\+TY = 20\hspace{0.3cm}{\ttfamily [inline]}}
+
+Minimum allowable duty cycle. Customizable from settings.\+cfg.
+
+Maximumallowable duty cycle. Customizable from settings.\+cfg. 

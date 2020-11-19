@@ -1,0 +1,324 @@
+\hypertarget{LunAero_8cpp}{}\section{Lun\+Aero.\+cpp File Reference}
+\label{LunAero_8cpp}\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+{\ttfamily \#include \char`\"{}Lun\+Aero.\+hpp\char`\"{}}\newline
+Include dependency graph for Lun\+Aero.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{LunAero_8cpp_a49fa3075fdeb7cdf9caffb056710a8d5}{cb\+\_\+framecheck} ()
+\item 
+void \hyperlink{LunAero_8cpp_a4b66d5e31b5dc18b314c8a68163263bd}{cleanup} ()
+\item 
+void \hyperlink{LunAero_8cpp_a58a017eda405c8e5a8fd944c06124eb7}{kill\+\_\+raspivid} ()
+\item 
+int \hyperlink{LunAero_8cpp_a55ed746b51b0932e0442dee77f1f3a09}{create\+\_\+id\+\_\+file} ()
+\item 
+void \hyperlink{LunAero_8cpp_adc77627b7f4e230cbd3e5de43248b3ac}{abort\+\_\+code} ()
+\item 
+std\+::string \hyperlink{LunAero_8cpp_ad16a479f48a31e883d0f658eb35306b3}{current\+\_\+time} (int gmt)
+\item 
+float \hyperlink{LunAero_8cpp_ab68159eefdb77461d343b34fdf99473f}{blur\+\_\+test} ()
+\item 
+bool \hyperlink{LunAero_8cpp_abf2265179e4771bfb0e1c72231b62ada}{bright\+\_\+test} ()
+\item 
+void \hyperlink{LunAero_8cpp_aa6ee07066b693b837fae1ff787494732}{current\+\_\+frame} ()
+\item 
+int \hyperlink{LunAero_8cpp_a9ebc5d0972b7e5bcd57e5986bcd4cec9}{notify\+\_\+handler} (std\+::string input1, std\+::string input2)
+\item 
+int \hyperlink{LunAero_8cpp_a6b3880fb3ba8978b9f04343d9fd0e11a}{startup\+\_\+disk\+\_\+check} ()
+\item 
+int \hyperlink{LunAero_8cpp_aaee2ca25c5f0d375d48ec5b88dd6c1b3}{parse\+\_\+checklist} (std\+::string name, std\+::string value)
+\item 
+int \hyperlink{LunAero_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{LunAero_8cpp_adc77627b7f4e230cbd3e5de43248b3ac}\label{LunAero_8cpp_adc77627b7f4e230cbd3e5de43248b3ac}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!abort\+\_\+code@{abort\+\_\+code}}
+\index{abort\+\_\+code@{abort\+\_\+code}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{abort\+\_\+code()}{abort\_code()}}
+{\footnotesize\ttfamily void abort\+\_\+code (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This is a helper funciton which updates the abort code to end the run across all forks. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_adc77627b7f4e230cbd3e5de43248b3ac_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_ab68159eefdb77461d343b34fdf99473f}\label{LunAero_8cpp_ab68159eefdb77461d343b34fdf99473f}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!blur\+\_\+test@{blur\+\_\+test}}
+\index{blur\+\_\+test@{blur\+\_\+test}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{blur\+\_\+test()}{blur\_test()}}
+{\footnotesize\ttfamily float blur\+\_\+test (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function captures the frame from the preview window (a complicated process involving capturing the V\+C/\+D\+I\+S\+P\+M\+A\+NX screenshot, not the X window screensho), crops it to ignore the G\+TK, and determines how blurry the image is. Blur is computed based on the standard method, running a Laplacian operation on the cropped image and computing the variance of this result.
+
+\begin{DoxyReturn}{Returns}
+blurval A floating point value representing the degree of variation in tbe blur 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_ab68159eefdb77461d343b34fdf99473f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_abf2265179e4771bfb0e1c72231b62ada}\label{LunAero_8cpp_abf2265179e4771bfb0e1c72231b62ada}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!bright\+\_\+test@{bright\+\_\+test}}
+\index{bright\+\_\+test@{bright\+\_\+test}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{bright\+\_\+test()}{bright\_test()}}
+{\footnotesize\ttfamily bool bright\+\_\+test (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function tests our image to determine if the moon appears too bright. This is not a simple test. Since we are looking at a \char`\"{}white\char`\"{} moon, we can expect to see a lot of spots which are bright on their own. So we need to rely on another method to get the brightness saturation. I am using the nearest neighbors of each pixel by iterating a custom $ 3 \times 3$ kernel across the image. Rather than using a simple nearest neighbor kernel like\+: \[ \boldsymbol{I_{neigh}} = \begin{bmatrix} 1 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 1 \end{bmatrix} \] I used two separate $ 3 \times 3$ matrices split into a T and X form\+: \[ \boldsymbol{I_{t}} = \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & 0 \end{bmatrix} , \boldsymbol{I_{x}} = \begin{bmatrix} 1 & 0 & 1 \\ 0 & 0 & 0 \\ 1 & 0 & 1 \end{bmatrix} \] I found empirically that this split more accurately scales with the level of glowing brightness in images by creating sample over-\/bright images. So my method, once the image has been extracted from the V\+C/\+D\+I\+S\+P\+M\+A\+NX screenshotting tool, is to 1) find the area of the largest contour (which is presumably the moon) 2) Convert the input image to the H\+SV color space and extract only the V values (the brightness level) 3) Find the raw brightess (thresholded based on a user set value R\+A\+W\+\_\+\+B\+R\+I\+G\+H\+T\+\_\+\+T\+H\+R\+E\+SH from settings.\+cfg)per area of moon 4) Create a test Mat of values by iterating each kernel over the V channel image 5) Run an or test on the truth value of those Mat\textquotesingle{}s and count the number of \char`\"{}overbright\char`\"{} pixels and correct this based on the observe area of the moon. If the resulting percentages are less than the B\+R\+I\+G\+H\+T\+\_\+\+T\+H\+R\+E\+SH, as declared in settings.\+cfg, then the moon is not too bright to use. Otherwise, a message is issued from the G\+TK loop.
+
+\begin{DoxyReturn}{Returns}
+bright\+\_\+outcome Result of comparing brightness values to B\+R\+I\+G\+H\+T\+\_\+\+T\+H\+R\+E\+SH. True = passed and the image is not too bright, false = failed as the image was too bright. 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_abf2265179e4771bfb0e1c72231b62ada_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_a49fa3075fdeb7cdf9caffb056710a8d5}\label{LunAero_8cpp_a49fa3075fdeb7cdf9caffb056710a8d5}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!cb\+\_\+framecheck@{cb\+\_\+framecheck}}
+\index{cb\+\_\+framecheck@{cb\+\_\+framecheck}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{cb\+\_\+framecheck()}{cb\_framecheck()}}
+{\footnotesize\ttfamily void cb\+\_\+framecheck (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function (called from \hyperlink{gtk__LunAero_8cpp}{gtk\+\_\+\+Lun\+Aero.\+cpp}) handles checking the frame during live operation and processes the L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+ER Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_a49fa3075fdeb7cdf9caffb056710a8d5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_a49fa3075fdeb7cdf9caffb056710a8d5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_a4b66d5e31b5dc18b314c8a68163263bd}\label{LunAero_8cpp_a4b66d5e31b5dc18b314c8a68163263bd}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily void cleanup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function is called on exit to clean up the environment. Primarily used to ensure that the raspivid system call is killed properly. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{LunAero_8cpp_a4b66d5e31b5dc18b314c8a68163263bd_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_a4b66d5e31b5dc18b314c8a68163263bd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_a55ed746b51b0932e0442dee77f1f3a09}\label{LunAero_8cpp_a55ed746b51b0932e0442dee77f1f3a09}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!create\+\_\+id\+\_\+file@{create\+\_\+id\+\_\+file}}
+\index{create\+\_\+id\+\_\+file@{create\+\_\+id\+\_\+file}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{create\+\_\+id\+\_\+file()}{create\_id\_file()}}
+{\footnotesize\ttfamily int create\+\_\+id\+\_\+file (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This funciton creates an ID file to be stored with the recorded video which includes information about the unit the run worked on. The processor id is stored using the cpuinfo unique to the Raspberry Pi.
+
+\begin{DoxyReturn}{Returns}
+status 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{LunAero_8cpp_a55ed746b51b0932e0442dee77f1f3a09_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{LunAero_8cpp_a55ed746b51b0932e0442dee77f1f3a09_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_aa6ee07066b693b837fae1ff787494732}\label{LunAero_8cpp_aa6ee07066b693b837fae1ff787494732}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!current\+\_\+frame@{current\+\_\+frame}}
+\index{current\+\_\+frame@{current\+\_\+frame}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{current\+\_\+frame()}{current\_frame()}}
+{\footnotesize\ttfamily void current\+\_\+frame (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function captures the frame from the preview window (a complicated process involving capturing the V\+C/\+D\+I\+S\+P\+M\+A\+NX screenshot, not the X window screensho), crops it to ignore the G\+TK, and determines how well the moon is centered in the cropped frame. Priority is given to checking whether the moon is touching the side of the cropped image. If the edge is not being touched, threshold limited brightness is used to find the center of mass of the bright spot and comparing it to the target location. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=303pt]{LunAero_8cpp_aa6ee07066b693b837fae1ff787494732_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_aa6ee07066b693b837fae1ff787494732_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_ad16a479f48a31e883d0f658eb35306b3}\label{LunAero_8cpp_ad16a479f48a31e883d0f658eb35306b3}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!current\+\_\+time@{current\+\_\+time}}
+\index{current\+\_\+time@{current\+\_\+time}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{current\+\_\+time()}{current\_time()}}
+{\footnotesize\ttfamily std\+::string current\+\_\+time (\begin{DoxyParamCaption}\item[{int}]{gmt }\end{DoxyParamCaption})}
+
+This function fetches the current time and formats it as a string.
+
+
+\begin{DoxyParams}{Parameters}
+{\em gmt} & plus or minus tmz gmt \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+str the current time formatted as a string 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_ad16a479f48a31e883d0f658eb35306b3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_a58a017eda405c8e5a8fd944c06124eb7}\label{LunAero_8cpp_a58a017eda405c8e5a8fd944c06124eb7}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!kill\+\_\+raspivid@{kill\+\_\+raspivid}}
+\index{kill\+\_\+raspivid@{kill\+\_\+raspivid}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{kill\+\_\+raspivid()}{kill\_raspivid()}}
+{\footnotesize\ttfamily void kill\+\_\+raspivid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function kills raspivid. It does this in an ugly way by finding the process ID of the raspivid instance and killing that P\+ID. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_a58a017eda405c8e5a8fd944c06124eb7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{LunAero_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!main@{main}}
+\index{main@{main}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+Main function
+
+\begin{DoxyReturn}{Returns}
+status 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_a3c04138a5bfe5d72780bb7e82a18e627_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_a9ebc5d0972b7e5bcd57e5986bcd4cec9}\label{LunAero_8cpp_a9ebc5d0972b7e5bcd57e5986bcd4cec9}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!notify\+\_\+handler@{notify\+\_\+handler}}
+\index{notify\+\_\+handler@{notify\+\_\+handler}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{notify\+\_\+handler()}{notify\_handler()}}
+{\footnotesize\ttfamily int notify\+\_\+handler (\begin{DoxyParamCaption}\item[{std\+::string}]{input1,  }\item[{std\+::string}]{input2 }\end{DoxyParamCaption})}
+
+This function takes the two input strings and uses them to issue a notificaiton alert to the Raspian desktop. This is a variation of the linux command {\ttfamily notify-\/send}, and it requires libnotify-\/dev installed on the system.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input1} & The string which should be at the top of the notification \\
+\hline
+{\em input2} & The string\textquotesingle{}s bottomtext, more descriptive. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+status 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{LunAero_8cpp_a9ebc5d0972b7e5bcd57e5986bcd4cec9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_aaee2ca25c5f0d375d48ec5b88dd6c1b3}\label{LunAero_8cpp_aaee2ca25c5f0d375d48ec5b88dd6c1b3}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!parse\+\_\+checklist@{parse\+\_\+checklist}}
+\index{parse\+\_\+checklist@{parse\+\_\+checklist}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{parse\+\_\+checklist()}{parse\_checklist()}}
+{\footnotesize\ttfamily int parse\+\_\+checklist (\begin{DoxyParamCaption}\item[{std\+::string}]{name,  }\item[{std\+::string}]{value }\end{DoxyParamCaption})}
+
+This function handles the strings and values parsed from the settings.\+cfg file and assigns them to the global values.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & String obtained while parsing the settings.\+cfg file \\
+\hline
+{\em value} & The value associated with name from settings.\+cfg file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+status 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{LunAero_8cpp_aaee2ca25c5f0d375d48ec5b88dd6c1b3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{LunAero_8cpp_a6b3880fb3ba8978b9f04343d9fd0e11a}\label{LunAero_8cpp_a6b3880fb3ba8978b9f04343d9fd0e11a}} 
+\index{Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}!startup\+\_\+disk\+\_\+check@{startup\+\_\+disk\+\_\+check}}
+\index{startup\+\_\+disk\+\_\+check@{startup\+\_\+disk\+\_\+check}!Lun\+Aero.\+cpp@{Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{startup\+\_\+disk\+\_\+check()}{startup\_disk\_check()}}
+{\footnotesize\ttfamily int startup\+\_\+disk\+\_\+check (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function checks the save location properties to determine if the location is acceptable for saving video. This only has limited capacity to determine the fitness of the drive. The quality of the save location is determined based on 1) drive is findable 2) valid /proc/mounts file 3) remaining space left on the drive. Remaining space is calculated based on 1000000$\ast$t\+\_\+s where t\+\_\+s is the seconds a video will be recorded based on the settings.\+cfg line R\+E\+C\+O\+R\+D\+\_\+\+D\+U\+R\+A\+T\+I\+ON. If the available space is less than this, the program stops with an error. If it is less than 10 times this value, a warning issued, but the program continues. Reported free space and available space on the drive is recorded in the log.
+
+\begin{DoxyReturn}{Returns}
+status 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=294pt]{LunAero_8cpp_a6b3880fb3ba8978b9f04343d9fd0e11a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=255pt]{LunAero_8cpp_a6b3880fb3ba8978b9f04343d9fd0e11a_icgraph}
+\end{center}
+\end{figure}

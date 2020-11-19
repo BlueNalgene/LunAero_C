@@ -1,0 +1,400 @@
+\hypertarget{camera__LunAero_8hpp}{}\section{camera\+\_\+\+Lun\+Aero.\+hpp File Reference}
+\label{camera__LunAero_8hpp}\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$gtk/gtk.\+h$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include \char`\"{}Lun\+Aero.\+hpp\char`\"{}}\newline
+Include dependency graph for camera\+\_\+\+Lun\+Aero.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{camera__LunAero_8hpp_aa1ba49194500be6a8d8257f10bb98664}{confirm\+\_\+filespace} ()
+\item 
+int \hyperlink{camera__LunAero_8hpp_a04412b2d20fd79cb301ff78b67ece58b}{confirm\+\_\+mmal\+\_\+safety} (int error\+\_\+cnt)
+\item 
+void \hyperlink{camera__LunAero_8hpp_a5828cc9ffb99db33b01fc641613cc59d}{camera\+\_\+preview} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_ae758d181371cae3622978bee489d5853}{camera\+\_\+start} ()
+\item 
+std\+::string \hyperlink{camera__LunAero_8hpp_aec581f7a0627d9324e87241671dcac8b}{command\+\_\+cam\+\_\+start} ()
+\item 
+std\+::string \hyperlink{camera__LunAero_8hpp_a7974714210bd0c046bfe4001f021697e}{command\+\_\+cam\+\_\+preview} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_a02da38125ad204a1c0efc2355499d24c}{write\+\_\+video\+\_\+id} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_aa6d930952628ad620e2a259108de4b2c}{iso\+\_\+cycle} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_ac812e7b1a6d57e7ca306e001c99cf2b6}{first\+\_\+record} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_add493d0baf9631379ba04e6690a3a8c8}{refresh\+\_\+camera} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_a988599eec44c71a7036263c3a7e817ce}{shutter\+\_\+up} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_a10580de6e0551da1e55d05ae761f3950}{shutter\+\_\+down} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_ac5f31346ed6951fa58b11f8e8e8a276a}{shutter\+\_\+up\+\_\+up} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_a527b79b0c862e105cc03bcac5ea85c84}{shutter\+\_\+down\+\_\+down} ()
+\item 
+void \hyperlink{camera__LunAero_8hpp_a36692fd7d4a8ab80af918d722a5b7a31}{reset\+\_\+record} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{camera__LunAero_8hpp_adb112806aaf0c4ac7e5f142ad14cbf0e}{M\+M\+A\+L\+\_\+\+E\+R\+R\+O\+R\+\_\+\+T\+H\+R\+E\+SH} = 100
+\item 
+int \hyperlink{camera__LunAero_8hpp_a5934f6758956d58fc3ea68f9afecf4d5}{R\+P\+I\+\_\+\+F\+PS} = 30
+\item 
+int \hyperlink{camera__LunAero_8hpp_a111b596c8d8085e310d89ced7b3ce74e}{R\+P\+I\+\_\+\+BR} = 8000000
+\item 
+std\+::string \hyperlink{camera__LunAero_8hpp_a36c1dcc02f008386f600ee5024003d36}{R\+P\+I\+\_\+\+EX} = \char`\"{}auto\char`\"{}
+\item 
+int \hyperlink{camera__LunAero_8hpp_a5516a56b19d969ea808eeaf8d1c1da10}{S\+H\+U\+T\+\_\+\+J\+U\+MP} = 100
+\item 
+int \hyperlink{camera__LunAero_8hpp_a8b1e2a5d95b3018ff430d1a10ee3e8f2}{S\+H\+U\+T\+\_\+\+J\+U\+M\+P\+\_\+\+B\+IG} = 1000
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{camera__LunAero_8hpp_a5828cc9ffb99db33b01fc641613cc59d}\label{camera__LunAero_8hpp_a5828cc9ffb99db33b01fc641613cc59d}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!camera\+\_\+preview@{camera\+\_\+preview}}
+\index{camera\+\_\+preview@{camera\+\_\+preview}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{camera\+\_\+preview()}{camera\_preview()}}
+{\footnotesize\ttfamily void camera\+\_\+preview (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This command starts the preview screen using raspivid. The command is constructed based on command\+\_\+cam\+\_\+preview and the M\+M\+AL integrity is checked with mmal\+\_\+safety\+\_\+outcome. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a5828cc9ffb99db33b01fc641613cc59d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a5828cc9ffb99db33b01fc641613cc59d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_ae758d181371cae3622978bee489d5853}\label{camera__LunAero_8hpp_ae758d181371cae3622978bee489d5853}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!camera\+\_\+start@{camera\+\_\+start}}
+\index{camera\+\_\+start@{camera\+\_\+start}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{camera\+\_\+start()}{camera\_start()}}
+{\footnotesize\ttfamily void camera\+\_\+start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This functions ties together multiple functions to 1) confirm\+\_\+filespace 2) confirm\+\_\+mmal\+\_\+safety 3) execute the command constructed by command\+\_\+cam\+\_\+start. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_ae758d181371cae3622978bee489d5853_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_ae758d181371cae3622978bee489d5853_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_a7974714210bd0c046bfe4001f021697e}\label{camera__LunAero_8hpp_a7974714210bd0c046bfe4001f021697e}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!command\+\_\+cam\+\_\+preview@{command\+\_\+cam\+\_\+preview}}
+\index{command\+\_\+cam\+\_\+preview@{command\+\_\+cam\+\_\+preview}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{command\+\_\+cam\+\_\+preview()}{command\_cam\_preview()}}
+{\footnotesize\ttfamily std\+::string command\+\_\+cam\+\_\+preview (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function constructs the command string to call a raspivid preview. The size of the mini screen determined by other functions and used to construct the window.
+
+\begin{DoxyReturn}{Returns}
+commandstring the constructed command formatted as a string 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a7974714210bd0c046bfe4001f021697e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_aec581f7a0627d9324e87241671dcac8b}\label{camera__LunAero_8hpp_aec581f7a0627d9324e87241671dcac8b}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!command\+\_\+cam\+\_\+start@{command\+\_\+cam\+\_\+start}}
+\index{command\+\_\+cam\+\_\+start@{command\+\_\+cam\+\_\+start}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{command\+\_\+cam\+\_\+start()}{command\_cam\_start()}}
+{\footnotesize\ttfamily std\+::string command\+\_\+cam\+\_\+start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function constructs the command string to call a raspivid recording and preview window. The size of the mini screen determined by other functions and used to construct the preview window. The save location of the video is determined by the current timestamp.
+
+\begin{DoxyReturn}{Returns}
+commandstring the constructed command formatted as a string 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{camera__LunAero_8hpp_aec581f7a0627d9324e87241671dcac8b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_aec581f7a0627d9324e87241671dcac8b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_aa1ba49194500be6a8d8257f10bb98664}\label{camera__LunAero_8hpp_aa1ba49194500be6a8d8257f10bb98664}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!confirm\+\_\+filespace@{confirm\+\_\+filespace}}
+\index{confirm\+\_\+filespace@{confirm\+\_\+filespace}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{confirm\+\_\+filespace()}{confirm\_filespace()}}
+{\footnotesize\ttfamily int confirm\+\_\+filespace (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function confirms that there is enought space on the output drive for a new video to be saved. While this is similar to \hyperlink{LunAero_8cpp}{Lun\+Aero.\+cpp}/startup\+\_\+disk\+\_\+check, it only checks the available space rather than the drive integrity. And, it does not predictively check for low hard drive space for future videos. If the check fails, a positive status is returned and the program ends.
+
+\begin{DoxyReturn}{Returns}
+status 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_aa1ba49194500be6a8d8257f10bb98664_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_a04412b2d20fd79cb301ff78b67ece58b}\label{camera__LunAero_8hpp_a04412b2d20fd79cb301ff78b67ece58b}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!confirm\+\_\+mmal\+\_\+safety@{confirm\+\_\+mmal\+\_\+safety}}
+\index{confirm\+\_\+mmal\+\_\+safety@{confirm\+\_\+mmal\+\_\+safety}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{confirm\+\_\+mmal\+\_\+safety()}{confirm\_mmal\_safety()}}
+{\footnotesize\ttfamily int confirm\+\_\+mmal\+\_\+safety (\begin{DoxyParamCaption}\item[{int}]{error\+\_\+cnt }\end{DoxyParamCaption})}
+
+This function checks the integrity of the M\+M\+AL camera connection. This prevents improper restarts of the raspivid program caused by quick successive stops and starts. Originally, on these restarts, the M\+M\+AL may fail for a few microseconds after a shutdown since something had not finished clearing in the background (black magic). This simply handles a few failures before deciding that the M\+M\+AL device is not actually connected and ending the program.
+
+\begin{DoxyReturn}{Returns}
+status 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=305pt]{camera__LunAero_8hpp_a04412b2d20fd79cb301ff78b67ece58b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a04412b2d20fd79cb301ff78b67ece58b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_ac812e7b1a6d57e7ca306e001c99cf2b6}\label{camera__LunAero_8hpp_ac812e7b1a6d57e7ca306e001c99cf2b6}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!first\+\_\+record@{first\+\_\+record}}
+\index{first\+\_\+record@{first\+\_\+record}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{first\+\_\+record()}{first\_record()}}
+{\footnotesize\ttfamily void first\+\_\+record (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function handles the first recording. This is distinct as we need to kill the preview window and ensure that the motors are in an initial state. If we don\textquotesingle{}t set the duty cycles for the motors to the minimum here, the motors start too aggressive and lose the target. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_ac812e7b1a6d57e7ca306e001c99cf2b6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_ac812e7b1a6d57e7ca306e001c99cf2b6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_aa6d930952628ad620e2a259108de4b2c}\label{camera__LunAero_8hpp_aa6d930952628ad620e2a259108de4b2c}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!iso\+\_\+cycle@{iso\+\_\+cycle}}
+\index{iso\+\_\+cycle@{iso\+\_\+cycle}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{iso\+\_\+cycle()}{iso\_cycle()}}
+{\footnotesize\ttfamily void iso\+\_\+cycle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function handles the I\+SO cycle from gtk\+\_\+\+Lun\+Aero. Since there are only 4 valid I\+SO values (100, 200, 400, 800) for the Raspberry Pi camera, it cycles through these values. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_aa6d930952628ad620e2a259108de4b2c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_add493d0baf9631379ba04e6690a3a8c8}\label{camera__LunAero_8hpp_add493d0baf9631379ba04e6690a3a8c8}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!refresh\+\_\+camera@{refresh\+\_\+camera}}
+\index{refresh\+\_\+camera@{refresh\+\_\+camera}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{refresh\+\_\+camera()}{refresh\_camera()}}
+{\footnotesize\ttfamily void refresh\+\_\+camera (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This helper function is called by a G\+TK button and is used to kill the existing preview window and replace it with a new window based on the latest I\+S\+O/\+Shutter values. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_add493d0baf9631379ba04e6690a3a8c8_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_add493d0baf9631379ba04e6690a3a8c8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_a36692fd7d4a8ab80af918d722a5b7a31}\label{camera__LunAero_8hpp_a36692fd7d4a8ab80af918d722a5b7a31}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!reset\+\_\+record@{reset\+\_\+record}}
+\index{reset\+\_\+record@{reset\+\_\+record}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{reset\+\_\+record()}{reset\_record()}}
+{\footnotesize\ttfamily void reset\+\_\+record (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This helper function kills raspivid and starts recording for each video restart subsequent to the initial recording. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a36692fd7d4a8ab80af918d722a5b7a31_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a36692fd7d4a8ab80af918d722a5b7a31_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_a10580de6e0551da1e55d05ae761f3950}\label{camera__LunAero_8hpp_a10580de6e0551da1e55d05ae761f3950}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!shutter\+\_\+down@{shutter\+\_\+down}}
+\index{shutter\+\_\+down@{shutter\+\_\+down}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{shutter\+\_\+down()}{shutter\_down()}}
+{\footnotesize\ttfamily void shutter\+\_\+down (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function called from gtk\+\_\+\+Lun\+Aero handles a request to decrease the shutter value. The minimum shutter value is locked in here and prevents a shutter value from extending below this limit. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a10580de6e0551da1e55d05ae761f3950_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_a527b79b0c862e105cc03bcac5ea85c84}\label{camera__LunAero_8hpp_a527b79b0c862e105cc03bcac5ea85c84}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!shutter\+\_\+down\+\_\+down@{shutter\+\_\+down\+\_\+down}}
+\index{shutter\+\_\+down\+\_\+down@{shutter\+\_\+down\+\_\+down}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{shutter\+\_\+down\+\_\+down()}{shutter\_down\_down()}}
+{\footnotesize\ttfamily void shutter\+\_\+down\+\_\+down (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function called from gtk\+\_\+\+Lun\+Aero handles a request to greatly decrease the shutter value. The minimum shutter value is locked in here and prevents a shutter value from extending below this limit. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a527b79b0c862e105cc03bcac5ea85c84_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_a988599eec44c71a7036263c3a7e817ce}\label{camera__LunAero_8hpp_a988599eec44c71a7036263c3a7e817ce}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!shutter\+\_\+up@{shutter\+\_\+up}}
+\index{shutter\+\_\+up@{shutter\+\_\+up}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{shutter\+\_\+up()}{shutter\_up()}}
+{\footnotesize\ttfamily void shutter\+\_\+up (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function called from gtk\+\_\+\+Lun\+Aero handles a request to increase the shutter value. The maximum shutter value is locked in here and prevents a shutter value from extending beyond this limit. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a988599eec44c71a7036263c3a7e817ce_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_ac5f31346ed6951fa58b11f8e8e8a276a}\label{camera__LunAero_8hpp_ac5f31346ed6951fa58b11f8e8e8a276a}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!shutter\+\_\+up\+\_\+up@{shutter\+\_\+up\+\_\+up}}
+\index{shutter\+\_\+up\+\_\+up@{shutter\+\_\+up\+\_\+up}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{shutter\+\_\+up\+\_\+up()}{shutter\_up\_up()}}
+{\footnotesize\ttfamily void shutter\+\_\+up\+\_\+up (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function called from gtk\+\_\+\+Lun\+Aero handles a request to greatly increase the shutter value. The maximum shutter value is locked in here and prevents a shutter value from extending beyond this limit. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_ac5f31346ed6951fa58b11f8e8e8a276a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{camera__LunAero_8hpp_a02da38125ad204a1c0efc2355499d24c}\label{camera__LunAero_8hpp_a02da38125ad204a1c0efc2355499d24c}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!write\+\_\+video\+\_\+id@{write\+\_\+video\+\_\+id}}
+\index{write\+\_\+video\+\_\+id@{write\+\_\+video\+\_\+id}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{write\+\_\+video\+\_\+id()}{write\_video\_id()}}
+{\footnotesize\ttfamily void write\+\_\+video\+\_\+id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function creates a metadata file for each recording called by Lun\+Aero. The metadata includes the recording values set by the command constructed in command\+\_\+cam\+\_\+start. The file is stored in the same directory as the video. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{camera__LunAero_8hpp_a02da38125ad204a1c0efc2355499d24c_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{camera__LunAero_8hpp_adb112806aaf0c4ac7e5f142ad14cbf0e}\label{camera__LunAero_8hpp_adb112806aaf0c4ac7e5f142ad14cbf0e}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!M\+M\+A\+L\+\_\+\+E\+R\+R\+O\+R\+\_\+\+T\+H\+R\+E\+SH@{M\+M\+A\+L\+\_\+\+E\+R\+R\+O\+R\+\_\+\+T\+H\+R\+E\+SH}}
+\index{M\+M\+A\+L\+\_\+\+E\+R\+R\+O\+R\+\_\+\+T\+H\+R\+E\+SH@{M\+M\+A\+L\+\_\+\+E\+R\+R\+O\+R\+\_\+\+T\+H\+R\+E\+SH}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{M\+M\+A\+L\+\_\+\+E\+R\+R\+O\+R\+\_\+\+T\+H\+R\+E\+SH}{MMAL\_ERROR\_THRESH}}
+{\footnotesize\ttfamily int M\+M\+A\+L\+\_\+\+E\+R\+R\+O\+R\+\_\+\+T\+H\+R\+E\+SH = 100\hspace{0.3cm}{\ttfamily [inline]}}
+
+Threshold of M\+M\+AL errors encountered sequentially before ending the run. Customizable from settings.\+cfg \mbox{\Hypertarget{camera__LunAero_8hpp_a111b596c8d8085e310d89ced7b3ce74e}\label{camera__LunAero_8hpp_a111b596c8d8085e310d89ced7b3ce74e}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!R\+P\+I\+\_\+\+BR@{R\+P\+I\+\_\+\+BR}}
+\index{R\+P\+I\+\_\+\+BR@{R\+P\+I\+\_\+\+BR}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{R\+P\+I\+\_\+\+BR}{RPI\_BR}}
+{\footnotesize\ttfamily int R\+P\+I\+\_\+\+BR = 8000000\hspace{0.3cm}{\ttfamily [inline]}}
+
+Bitrate to record video at. Customizable from settings.\+cfg \mbox{\Hypertarget{camera__LunAero_8hpp_a36c1dcc02f008386f600ee5024003d36}\label{camera__LunAero_8hpp_a36c1dcc02f008386f600ee5024003d36}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!R\+P\+I\+\_\+\+EX@{R\+P\+I\+\_\+\+EX}}
+\index{R\+P\+I\+\_\+\+EX@{R\+P\+I\+\_\+\+EX}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{R\+P\+I\+\_\+\+EX}{RPI\_EX}}
+{\footnotesize\ttfamily std\+::string R\+P\+I\+\_\+\+EX = \char`\"{}auto\char`\"{}\hspace{0.3cm}{\ttfamily [inline]}}
+
+Raspivid exposure mode to use. Customizable from settings.\+cfg \mbox{\Hypertarget{camera__LunAero_8hpp_a5934f6758956d58fc3ea68f9afecf4d5}\label{camera__LunAero_8hpp_a5934f6758956d58fc3ea68f9afecf4d5}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!R\+P\+I\+\_\+\+F\+PS@{R\+P\+I\+\_\+\+F\+PS}}
+\index{R\+P\+I\+\_\+\+F\+PS@{R\+P\+I\+\_\+\+F\+PS}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{R\+P\+I\+\_\+\+F\+PS}{RPI\_FPS}}
+{\footnotesize\ttfamily int R\+P\+I\+\_\+\+F\+PS = 30\hspace{0.3cm}{\ttfamily [inline]}}
+
+Framerate to record video at. Customizable from settings.\+cfg \mbox{\Hypertarget{camera__LunAero_8hpp_a5516a56b19d969ea808eeaf8d1c1da10}\label{camera__LunAero_8hpp_a5516a56b19d969ea808eeaf8d1c1da10}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!S\+H\+U\+T\+\_\+\+J\+U\+MP@{S\+H\+U\+T\+\_\+\+J\+U\+MP}}
+\index{S\+H\+U\+T\+\_\+\+J\+U\+MP@{S\+H\+U\+T\+\_\+\+J\+U\+MP}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{S\+H\+U\+T\+\_\+\+J\+U\+MP}{SHUT\_JUMP}}
+{\footnotesize\ttfamily int S\+H\+U\+T\+\_\+\+J\+U\+MP = 100\hspace{0.3cm}{\ttfamily [inline]}}
+
+Shutter speed increase and decrease when using the up or down buttons. Customziable from settings.\+cfg \mbox{\Hypertarget{camera__LunAero_8hpp_a8b1e2a5d95b3018ff430d1a10ee3e8f2}\label{camera__LunAero_8hpp_a8b1e2a5d95b3018ff430d1a10ee3e8f2}} 
+\index{camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}!S\+H\+U\+T\+\_\+\+J\+U\+M\+P\+\_\+\+B\+IG@{S\+H\+U\+T\+\_\+\+J\+U\+M\+P\+\_\+\+B\+IG}}
+\index{S\+H\+U\+T\+\_\+\+J\+U\+M\+P\+\_\+\+B\+IG@{S\+H\+U\+T\+\_\+\+J\+U\+M\+P\+\_\+\+B\+IG}!camera\+\_\+\+Lun\+Aero.\+hpp@{camera\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{S\+H\+U\+T\+\_\+\+J\+U\+M\+P\+\_\+\+B\+IG}{SHUT\_JUMP\_BIG}}
+{\footnotesize\ttfamily int S\+H\+U\+T\+\_\+\+J\+U\+M\+P\+\_\+\+B\+IG = 1000\hspace{0.3cm}{\ttfamily [inline]}}
+
+Large shutter speed increase and decrease when using the up\+\_\+up or down\+\_\+down buttons. Customizable from settings.\+cfg 

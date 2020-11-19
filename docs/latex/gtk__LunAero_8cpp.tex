@@ -1,0 +1,463 @@
+\hypertarget{gtk__LunAero_8cpp}{}\section{gtk\+\_\+\+Lun\+Aero.\+cpp File Reference}
+\label{gtk__LunAero_8cpp}\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+{\ttfamily \#include \char`\"{}gtk\+\_\+\+Lun\+Aero.\+hpp\char`\"{}}\newline
+Include dependency graph for gtk\+\_\+\+Lun\+Aero.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+gboolean \hyperlink{gtk__LunAero_8cpp_ac253bfe06d7523cbf5ec19eacbfd3436}{refresh\+\_\+text\+\_\+boxes} (gpointer data)
+\item 
+gboolean \hyperlink{gtk__LunAero_8cpp_a5f46419ebd4dfb012b2327e096a63dac}{g\+\_\+framecheck} (gpointer data)
+\item 
+void \hyperlink{gtk__LunAero_8cpp_a5db1bf09071621babb4828759272df5c}{screen\+\_\+size} ()
+\item 
+std\+::string \hyperlink{gtk__LunAero_8cpp_adb72df5ed4fc630244a078d8d8634b1d}{get\+\_\+css\+\_\+string} ()
+\item 
+void \hyperlink{gtk__LunAero_8cpp_a1f4d92b1febba4e5792a59bf9d9e3341}{gtk\+\_\+global\+\_\+setup} (Gtk\+Application $\ast$app, gpointer local\+\_\+val\+\_\+ptr)
+\item 
+void \hyperlink{gtk__LunAero_8cpp_a69f155fbf14cd6831f9326a2c9827537}{mot\+\_\+stop\+\_\+command} ()
+\item 
+void \hyperlink{gtk__LunAero_8cpp_a01f57e0cb4e3700318b9afd117486f40}{mot\+\_\+up\+\_\+command} ()
+\item 
+void \hyperlink{gtk__LunAero_8cpp_a3579f9c4f5a343bc7eda1ea1e611e3d8}{mot\+\_\+down\+\_\+command} ()
+\item 
+void \hyperlink{gtk__LunAero_8cpp_a4d5405c09f5c514e981df9713684dadd}{mot\+\_\+left\+\_\+command} ()
+\item 
+void \hyperlink{gtk__LunAero_8cpp_a50fd5146f11b6b0e706b5abc41be62e3}{mot\+\_\+right\+\_\+command} ()
+\item 
+void \hyperlink{gtk__LunAero_8cpp_aba9adda53abd96f5aaf40be29107e489}{gtk\+\_\+buttons\+\_\+preview} ()
+\item 
+void \hyperlink{gtk__LunAero_8cpp_aa1f473ae14e316932727b28cc70a4dce}{gtk\+\_\+css\+\_\+preview} ()
+\item 
+void \hyperlink{gtk__LunAero_8cpp_ac4ab008bd8e814243a10acf52d081d64}{activate} (Gtk\+Application $\ast$app, gpointer local\+\_\+val\+\_\+ptr)
+\item 
+gboolean \hyperlink{gtk__LunAero_8cpp_abb666b830e27ab984f57f5ffb8b3a4e4}{key\+\_\+event\+\_\+preview} (Gtk\+Widget $\ast$widget, Gdk\+Event\+Key $\ast$event)
+\item 
+gboolean \hyperlink{gtk__LunAero_8cpp_a7f06833fc54e355a9986b60429b753b5}{key\+\_\+event\+\_\+running} (Gtk\+Widget $\ast$widget, Gdk\+Event\+Key $\ast$event)
+\item 
+gboolean \hyperlink{gtk__LunAero_8cpp_a2750298f3b0a2e50ef22012254eb5bda}{abort\+\_\+check} (Gtk\+Widget $\ast$data)
+\item 
+void \hyperlink{gtk__LunAero_8cpp_a8665ac28fcb5db55c256e862f6199088}{first\+\_\+record\+\_\+killer} (Gtk\+Widget $\ast$data)
+\item 
+gboolean \hyperlink{gtk__LunAero_8cpp_aafae350f5d2b26d5747353d472ae4018}{cb\+\_\+subsequent} (Gtk\+Widget $\ast$data)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a2750298f3b0a2e50ef22012254eb5bda}\label{gtk__LunAero_8cpp_a2750298f3b0a2e50ef22012254eb5bda}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!abort\+\_\+check@{abort\+\_\+check}}
+\index{abort\+\_\+check@{abort\+\_\+check}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{abort\+\_\+check()}{abort\_check()}}
+{\footnotesize\ttfamily gboolean abort\+\_\+check (\begin{DoxyParamCaption}\item[{Gtk\+Widget $\ast$}]{data }\end{DoxyParamCaption})}
+
+This function checks whether the A\+B\+O\+RT flag has been set elsewhere in the code. If it is found, the appropriate action is taken. Next, the code checks if the L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+ER has passed the L\+O\+S\+T\+\_\+\+T\+H\+R\+E\+SH. If this value is breached, the moon has been lost by Lun\+Aero and a shutdown is initiated.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & gpointer to data from callback. Not used here. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+gboolean status 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{gtk__LunAero_8cpp_a2750298f3b0a2e50ef22012254eb5bda_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=311pt]{gtk__LunAero_8cpp_a2750298f3b0a2e50ef22012254eb5bda_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_ac4ab008bd8e814243a10acf52d081d64}\label{gtk__LunAero_8cpp_ac4ab008bd8e814243a10acf52d081d64}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!activate@{activate}}
+\index{activate@{activate}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{activate()}{activate()}}
+{\footnotesize\ttfamily void activate (\begin{DoxyParamCaption}\item[{Gtk\+Application $\ast$}]{app,  }\item[{gpointer}]{local\+\_\+val\+\_\+ptr }\end{DoxyParamCaption})}
+
+This is the main function of the G\+TK code, per the G\+TK usage guide. The elements are set up from global definitions, buttons are connected, and the C\+SS is applied. Timeouts are applied which, after a set number of microseconds (or maybe cycles?) the function in G\+\_\+\+S\+O\+U\+R\+C\+E\+\_\+\+F\+U\+NC is called. Keyboard focus is set to one of the fake buttons to prevent accidental button presses. Finally, the actual window is activated.
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$app} & Pointer value to the whole Gtk\+Application \\
+\hline
+{\em local\+\_\+val\+\_\+ptr} & payload passed to this function (unused but passed on) \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_ac4ab008bd8e814243a10acf52d081d64_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=205pt]{gtk__LunAero_8cpp_ac4ab008bd8e814243a10acf52d081d64_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_aafae350f5d2b26d5747353d472ae4018}\label{gtk__LunAero_8cpp_aafae350f5d2b26d5747353d472ae4018}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!cb\+\_\+subsequent@{cb\+\_\+subsequent}}
+\index{cb\+\_\+subsequent@{cb\+\_\+subsequent}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{cb\+\_\+subsequent()}{cb\_subsequent()}}
+{\footnotesize\ttfamily gboolean cb\+\_\+subsequent (\begin{DoxyParamCaption}\item[{Gtk\+Widget $\ast$}]{data }\end{DoxyParamCaption})}
+
+This callback function handles resetting video recording subsequent to the first recording event, which is manually called by the user on mode switch.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & gpointer to data from callback. Not used here. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+gboolean status 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_aafae350f5d2b26d5747353d472ae4018_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{gtk__LunAero_8cpp_aafae350f5d2b26d5747353d472ae4018_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a8665ac28fcb5db55c256e862f6199088}\label{gtk__LunAero_8cpp_a8665ac28fcb5db55c256e862f6199088}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!first\+\_\+record\+\_\+killer@{first\+\_\+record\+\_\+killer}}
+\index{first\+\_\+record\+\_\+killer@{first\+\_\+record\+\_\+killer}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{first\+\_\+record\+\_\+killer()}{first\_record\_killer()}}
+{\footnotesize\ttfamily void first\+\_\+record\+\_\+killer (\begin{DoxyParamCaption}\item[{Gtk\+Widget $\ast$}]{data }\end{DoxyParamCaption})}
+
+This function is called when the mode is switched from preview/manual mode to recording/automatic mode. The code here transitions between the modes by refreshing elements of the screen to be kept and removing functionality from buttons that no longer have function in recording/automatic mode. Keyboard bindings from preview/manual mode are disconnected and the new bindings are set. Finally, a new timeout is added to call g\+\_\+framecheck and begin testing frames for moon centering. The mode flag R\+U\+N\+\_\+\+M\+O\+DE is incremented here.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & gpointer to data from callback. Not used here. \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a8665ac28fcb5db55c256e862f6199088_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a8665ac28fcb5db55c256e862f6199088_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a5f46419ebd4dfb012b2327e096a63dac}\label{gtk__LunAero_8cpp_a5f46419ebd4dfb012b2327e096a63dac}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!g\+\_\+framecheck@{g\+\_\+framecheck}}
+\index{g\+\_\+framecheck@{g\+\_\+framecheck}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{g\+\_\+framecheck()}{g\_framecheck()}}
+{\footnotesize\ttfamily gboolean g\+\_\+framecheck (\begin{DoxyParamCaption}\item[{gpointer}]{data }\end{DoxyParamCaption})}
+
+This callback function is a local holder of the cb\+\_\+framecheck function from \hyperlink{LunAero_8cpp}{Lun\+Aero.\+cpp}
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & gpointer to data from callback. Not used here. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+gboolean status 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a5f46419ebd4dfb012b2327e096a63dac_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a5f46419ebd4dfb012b2327e096a63dac_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_adb72df5ed4fc630244a078d8d8634b1d}\label{gtk__LunAero_8cpp_adb72df5ed4fc630244a078d8d8634b1d}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!get\+\_\+css\+\_\+string@{get\+\_\+css\+\_\+string}}
+\index{get\+\_\+css\+\_\+string@{get\+\_\+css\+\_\+string}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{get\+\_\+css\+\_\+string()}{get\_css\_string()}}
+{\footnotesize\ttfamily std\+::string get\+\_\+css\+\_\+string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function constructs a C\+SS string which is used to format the G\+TK window. This is a hacky way to generate the C\+SS code since we want our screen properties and font size to be dependent on the size of the screen as determined by W\+O\+R\+K\+\_\+\+W\+I\+D\+TH and W\+O\+R\+K\+\_\+\+H\+E\+I\+G\+HT. Therefore, a static C\+SS will not do.
+
+\begin{DoxyReturn}{Returns}
+css\+\_\+string the C\+SS formatting code formatted as a string 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{gtk__LunAero_8cpp_adb72df5ed4fc630244a078d8d8634b1d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_aba9adda53abd96f5aaf40be29107e489}\label{gtk__LunAero_8cpp_aba9adda53abd96f5aaf40be29107e489}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!gtk\+\_\+buttons\+\_\+preview@{gtk\+\_\+buttons\+\_\+preview}}
+\index{gtk\+\_\+buttons\+\_\+preview@{gtk\+\_\+buttons\+\_\+preview}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{gtk\+\_\+buttons\+\_\+preview()}{gtk\_buttons\_preview()}}
+{\footnotesize\ttfamily void gtk\+\_\+buttons\+\_\+preview (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function connects the buttons available during preview/manual mode to the appropriate functions on button behaviors. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_aba9adda53abd96f5aaf40be29107e489_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=348pt]{gtk__LunAero_8cpp_aba9adda53abd96f5aaf40be29107e489_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_aa1f473ae14e316932727b28cc70a4dce}\label{gtk__LunAero_8cpp_aa1f473ae14e316932727b28cc70a4dce}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!gtk\+\_\+css\+\_\+preview@{gtk\+\_\+css\+\_\+preview}}
+\index{gtk\+\_\+css\+\_\+preview@{gtk\+\_\+css\+\_\+preview}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{gtk\+\_\+css\+\_\+preview()}{gtk\_css\_preview()}}
+{\footnotesize\ttfamily void gtk\+\_\+css\+\_\+preview (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function applies the C\+SS style to the elements of the preview/manual mode G\+TK window. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=331pt]{gtk__LunAero_8cpp_aa1f473ae14e316932727b28cc70a4dce_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a1f4d92b1febba4e5792a59bf9d9e3341}\label{gtk__LunAero_8cpp_a1f4d92b1febba4e5792a59bf9d9e3341}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!gtk\+\_\+global\+\_\+setup@{gtk\+\_\+global\+\_\+setup}}
+\index{gtk\+\_\+global\+\_\+setup@{gtk\+\_\+global\+\_\+setup}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{gtk\+\_\+global\+\_\+setup()}{gtk\_global\_setup()}}
+{\footnotesize\ttfamily void gtk\+\_\+global\+\_\+setup (\begin{DoxyParamCaption}\item[{Gtk\+Application $\ast$}]{app,  }\item[{gpointer}]{local\+\_\+val\+\_\+ptr }\end{DoxyParamCaption})}
+
+This function prepares the G\+TK window layout. All widgets available to our G\+TK setup are defined here before being activated. The steps taken are 1) Define the window based on dynamic screen size 2) create table layouts and apply to screen 3) define simple buttons 4) define button boxes to hold the buttons 5) define exit button and box 6) define fake buttons (buttons used to prevent incorrect keyboard focus) and grid 6) define directional button pad and grid 7) define refresh button 8) define camera function buttons using a grid layout 9) define record button and box 10) define text boxes 11) attach these elements to a grid (rudimentary image of layout is in the function comments) 12) expand and align all boxes to fill space.
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$app} & Pointer value to the whole Gtk\+Application \\
+\hline
+{\em local\+\_\+val\+\_\+ptr} & payload passed to this function (unused) \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=331pt]{gtk__LunAero_8cpp_a1f4d92b1febba4e5792a59bf9d9e3341_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_abb666b830e27ab984f57f5ffb8b3a4e4}\label{gtk__LunAero_8cpp_abb666b830e27ab984f57f5ffb8b3a4e4}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!key\+\_\+event\+\_\+preview@{key\+\_\+event\+\_\+preview}}
+\index{key\+\_\+event\+\_\+preview@{key\+\_\+event\+\_\+preview}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{key\+\_\+event\+\_\+preview()}{key\_event\_preview()}}
+{\footnotesize\ttfamily gboolean key\+\_\+event\+\_\+preview (\begin{DoxyParamCaption}\item[{Gtk\+Widget $\ast$}]{widget,  }\item[{Gdk\+Event\+Key $\ast$}]{event }\end{DoxyParamCaption})}
+
+This function defines keyboard button press events for the preview/manual mode. The code here captures button pressed on the user\textquotesingle{}s keyboard and issues the appropriate command.
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$widget} & Pointer value to the associated G\+TK widget \\
+\hline
+{\em $\ast$event} & payload contents of button press event passed to this function. Holds keyvalue. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+gboolean status 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_abb666b830e27ab984f57f5ffb8b3a4e4_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_abb666b830e27ab984f57f5ffb8b3a4e4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a7f06833fc54e355a9986b60429b753b5}\label{gtk__LunAero_8cpp_a7f06833fc54e355a9986b60429b753b5}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!key\+\_\+event\+\_\+running@{key\+\_\+event\+\_\+running}}
+\index{key\+\_\+event\+\_\+running@{key\+\_\+event\+\_\+running}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{key\+\_\+event\+\_\+running()}{key\_event\_running()}}
+{\footnotesize\ttfamily gboolean key\+\_\+event\+\_\+running (\begin{DoxyParamCaption}\item[{Gtk\+Widget $\ast$}]{widget,  }\item[{Gdk\+Event\+Key $\ast$}]{event }\end{DoxyParamCaption})}
+
+This function defines keyboard button press events for the recording/automatic mode. The code here captures button pressed on the user\textquotesingle{}s keyboard and issues the appropriate command.
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$widget} & Pointer value to the associated G\+TK widget \\
+\hline
+{\em $\ast$event} & payload contents of button press event passed to this function. Holds keyvalue. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+gboolean status 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a7f06833fc54e355a9986b60429b753b5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a3579f9c4f5a343bc7eda1ea1e611e3d8}\label{gtk__LunAero_8cpp_a3579f9c4f5a343bc7eda1ea1e611e3d8}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!mot\+\_\+down\+\_\+command@{mot\+\_\+down\+\_\+command}}
+\index{mot\+\_\+down\+\_\+command@{mot\+\_\+down\+\_\+command}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{mot\+\_\+down\+\_\+command()}{mot\_down\_command()}}
+{\footnotesize\ttfamily void mot\+\_\+down\+\_\+command (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function describes the down button response and sets the behavior value to be processed on the next cycle of \hyperlink{motors__LunAero_8cpp}{motors\+\_\+\+Lun\+Aero.\+cpp}/motor\+\_\+handler. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a3579f9c4f5a343bc7eda1ea1e611e3d8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a4d5405c09f5c514e981df9713684dadd}\label{gtk__LunAero_8cpp_a4d5405c09f5c514e981df9713684dadd}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!mot\+\_\+left\+\_\+command@{mot\+\_\+left\+\_\+command}}
+\index{mot\+\_\+left\+\_\+command@{mot\+\_\+left\+\_\+command}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{mot\+\_\+left\+\_\+command()}{mot\_left\_command()}}
+{\footnotesize\ttfamily void mot\+\_\+left\+\_\+command (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function describes the left button response and sets the behavior value to be processed on the next cycle of \hyperlink{motors__LunAero_8cpp}{motors\+\_\+\+Lun\+Aero.\+cpp}/motor\+\_\+handler. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a4d5405c09f5c514e981df9713684dadd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a50fd5146f11b6b0e706b5abc41be62e3}\label{gtk__LunAero_8cpp_a50fd5146f11b6b0e706b5abc41be62e3}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!mot\+\_\+right\+\_\+command@{mot\+\_\+right\+\_\+command}}
+\index{mot\+\_\+right\+\_\+command@{mot\+\_\+right\+\_\+command}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{mot\+\_\+right\+\_\+command()}{mot\_right\_command()}}
+{\footnotesize\ttfamily void mot\+\_\+right\+\_\+command (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function describes the right button response and sets the behavior value to be processed on the next cycle of \hyperlink{motors__LunAero_8cpp}{motors\+\_\+\+Lun\+Aero.\+cpp}/motor\+\_\+handler. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a50fd5146f11b6b0e706b5abc41be62e3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a69f155fbf14cd6831f9326a2c9827537}\label{gtk__LunAero_8cpp_a69f155fbf14cd6831f9326a2c9827537}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!mot\+\_\+stop\+\_\+command@{mot\+\_\+stop\+\_\+command}}
+\index{mot\+\_\+stop\+\_\+command@{mot\+\_\+stop\+\_\+command}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{mot\+\_\+stop\+\_\+command()}{mot\_stop\_command()}}
+{\footnotesize\ttfamily void mot\+\_\+stop\+\_\+command (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function defines the stop button response and tells \hyperlink{motors__LunAero_8cpp}{motors\+\_\+\+Lun\+Aero.\+cpp} to execute a stop on both motors. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a69f155fbf14cd6831f9326a2c9827537_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a01f57e0cb4e3700318b9afd117486f40}\label{gtk__LunAero_8cpp_a01f57e0cb4e3700318b9afd117486f40}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!mot\+\_\+up\+\_\+command@{mot\+\_\+up\+\_\+command}}
+\index{mot\+\_\+up\+\_\+command@{mot\+\_\+up\+\_\+command}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{mot\+\_\+up\+\_\+command()}{mot\_up\_command()}}
+{\footnotesize\ttfamily void mot\+\_\+up\+\_\+command (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function describes the up button response and sets the behavior value to be processed on the next cycle of \hyperlink{motors__LunAero_8cpp}{motors\+\_\+\+Lun\+Aero.\+cpp}/motor\+\_\+handler. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gtk__LunAero_8cpp_a01f57e0cb4e3700318b9afd117486f40_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_ac253bfe06d7523cbf5ec19eacbfd3436}\label{gtk__LunAero_8cpp_ac253bfe06d7523cbf5ec19eacbfd3436}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!refresh\+\_\+text\+\_\+boxes@{refresh\+\_\+text\+\_\+boxes}}
+\index{refresh\+\_\+text\+\_\+boxes@{refresh\+\_\+text\+\_\+boxes}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{refresh\+\_\+text\+\_\+boxes()}{refresh\_text\_boxes()}}
+{\footnotesize\ttfamily gboolean refresh\+\_\+text\+\_\+boxes (\begin{DoxyParamCaption}\item[{gpointer}]{data }\end{DoxyParamCaption})}
+
+This function refreshes the text boxes on the side of the G\+TK window. During preview and manual motor movement mode, this portion of the screen shows the value of the selected S\+H\+U\+T\+T\+E\+R\+\_\+\+V\+AL, I\+SO, and blur value. Note that this does not show the values of the video in the preview screen if the values have been adjusted but not refreshed using the refresh camera button. During normal operation, the box just says \char`\"{}running\char`\"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & gpointer to data from callback. Not used here. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+gboolean status 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{gtk__LunAero_8cpp_ac253bfe06d7523cbf5ec19eacbfd3436_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=341pt]{gtk__LunAero_8cpp_ac253bfe06d7523cbf5ec19eacbfd3436_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{gtk__LunAero_8cpp_a5db1bf09071621babb4828759272df5c}\label{gtk__LunAero_8cpp_a5db1bf09071621babb4828759272df5c}} 
+\index{gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}!screen\+\_\+size@{screen\+\_\+size}}
+\index{screen\+\_\+size@{screen\+\_\+size}!gtk\+\_\+\+Lun\+Aero.\+cpp@{gtk\+\_\+\+Lun\+Aero.\+cpp}}
+\subsubsection{\texorpdfstring{screen\+\_\+size()}{screen\_size()}}
+{\footnotesize\ttfamily void screen\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This funciton, called at program start, measures the available screen size the G\+TK window can occupy. Several globals are defined here, including those of the R\+V\+D\+\_\+ prototype, W\+O\+R\+K\+\_\+\+W\+I\+D\+TH, and W\+O\+R\+K\+\_\+\+H\+E\+I\+G\+HT. If you are having strange behavior related to screen sizing, check here first. Note that some of the values do not always behave well with the V\+C/\+D\+I\+S\+P\+M\+A\+NX screen program, since G\+TK is based on the X window environment and V\+C/\+D\+I\+S\+P\+M\+A\+NX is a unique entity. If the screenshot related functions are experiencing issues, check those functions first rather than starting here. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{gtk__LunAero_8cpp_a5db1bf09071621babb4828759272df5c_icgraph}
+\end{center}
+\end{figure}
