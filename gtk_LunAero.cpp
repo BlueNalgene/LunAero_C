@@ -32,6 +32,7 @@ gboolean refresh_text_boxes(gpointer data) {
 	if (*val_ptr.ABORTaddr == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			float blur_val = blur_test();
+			bool bright_val = bright_test();
 			std::string msg;
 			msg = "Shutter Speed:\n  ";
 			msg += std::to_string(*val_ptr.SHUTTER_VALaddr);
@@ -39,6 +40,9 @@ gboolean refresh_text_boxes(gpointer data) {
 			msg += std::to_string(*val_ptr.ISO_VALaddr);
 			msg += "\nFOCUS VAL:\n";
 			msg += std::to_string(floor(blur_val*100)/100); // float to two dec places
+			if !(bright_val) {
+				msg += "\nToo Bright!\n";
+			}
 			gtk_label_set_text(GTK_LABEL(gtk_class::text_status), msg.c_str());
 		} else {
 			std::string msg;

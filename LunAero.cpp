@@ -315,33 +315,6 @@ float blur_test() {
 	Mat in_image(info.height, info.width, CV_8UC3, image);
 	cvtColor(in_image.clone(), in_image, COLOR_RGB2GRAY);
 	
-	
-	
-	//~ int matrix[local_height][local_width];
-	//~ int wcnt = 0;
-	//~ int hcnt = 0;
-	//~ int wcnt_prime = 0;
-	//~ int hcnt_prime = 0;
-	//~ for (unsigned int i=0; i<imgstr.size(); i=i+3) {
-		//~ if ((wcnt > (local_xcorn)) && (wcnt < (local_xcorn + local_width + 1))) {
-			//~ if ((hcnt > (local_ycorn - 1)) && (hcnt < (local_ycorn + local_height))) {
-				//~ int out;
-				//~ out = 0.30*(int)imgstr[i] + 0.59*(int)imgstr[i+1] + 0.11*(int)imgstr[i+2];
-				//~ matrix[hcnt_prime][wcnt_prime] = out;
-				//~ wcnt_prime += 1;
-				//~ if (wcnt_prime == local_width) {
-					//~ wcnt_prime = 0;
-					//~ hcnt_prime += 1;
-				//~ }
-			//~ }
-		//~ }
-		//~ wcnt += 1;
-		//~ if (wcnt == info.width) {
-			//~ wcnt = 0;
-			//~ hcnt += 1;
-		//~ }
-	//~ }
-	
 	// Cleanup the VC resources
 	if (vc_dispmanx_resource_delete(resource) != 0) {
 		if (DEBUG_COUT) {
@@ -382,6 +355,272 @@ float blur_test() {
 	}
 	
 	return blurval;
+}
+
+/**
+ * This function tests our image to determine if the moon appears too bright.  This is not a simple
+ * test.  Since we are looking at a "white" moon, we can expect to see a lot of spots which are bright
+ * on their own.  So we need to rely on another method to get the brightness saturation.  I am using
+ * the nearest neighbors of each pixel by iterating a custom \f$ 3 \times 3\f$ kernel across the image.
+ * Rather than using a simple nearest neighbor kernel like:
+ * \f[
+ * \boldsymbol{I_{neigh}} =
+ * \begin{bmatrix}
+ * 1 & 1 & 1 \\
+ * 1 & 0 & 1 \\
+ * 1 & 1 & 1
+ * \end{bmatrix}
+ * \f]
+ * I used two separate \f$ 3 \times 3\f$ matrices split into a T and X form:
+ * \f[
+ * \boldsymbol{I_{t}} =
+ * \begin{bmatrix}
+ * 0 & 1 & 0 \\
+ * 1 & 0 & 1 \\
+ * 0 & 1 & 0
+ * \end{bmatrix}
+ * ,
+ * \boldsymbol{I_{x}} =
+ * \begin{bmatrix}
+ * 1 & 0 & 1 \\
+ * 0 & 0 & 0 \\
+ * 1 & 0 & 1
+ * \end{bmatrix}
+ * \f]
+ * I found empirically that this split more accurately scales with the level of glowing brightness
+ * in images by creating sample over-bright images.  So my method, once the image has been extracted
+ * from the VC/DISPMANX screenshotting tool, is to 1) find the area of the largest contour (which is
+ * presumably the moon) 2) Convert the input image to the HSV color space and extract only the V values
+ * (the brightness level) 3) Find the raw brightess (thresholded based on a user set value
+ * RAW_BRIGHT_THRESH from settings.cfg)per area of moon 4) Create a test Mat of values by iterating
+ * each kernel over the V channel image 5) Run an or test on the truth value of those Mat's and count
+ * the number of "overbright" pixels and correct this based on the observe area of the moon.  If the
+ * resulting percentages are less than the BRIGHT_THRESH, as declared in settings.cfg, then the moon is
+ * not too bright to use.  Otherwise, a message is issued from the GTK loop.
+ * 
+ *
+ * @return bright_outcome Result of comparing brightness values to BRIGHT_THRESH.  True = passed and
+ * the image is not too bright, false = failed as the image was too bright.
+ */
+bool bright_test() {
+	bool bright_outcome;
+	// Create kernels
+	float tdata[] = {0, 1, 0, 1, 0, 1, 0, 1, 0};
+	Mat tkernel(3, 3, CV_32F, tdata);
+	float xdata[] = {1, 0, 1, 0, 0, 0, 1, 0, 1};
+	Mat xkernel(3, 3, CV_32F, xdata);
+	
+	// Run a system check to see if raspivid is running, if not, print a warning
+	pid_t thepid = 0;
+	FILE* fpidof = popen("pidof raspivid", "r");
+	if (fpidof) {
+		int p=0;
+		if (fscanf(fpidof, "%d", &p)>0 && p>0) {
+			thepid = (pid_t)p;
+		} else {
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+				LOGGING.close();
+			}
+			return 0;
+		}
+		pclose(fpidof);
+	} else {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+			LOGGING.close();
+		}
+		return 0;
+	}
+	
+	DISPMANX_DISPLAY_HANDLE_T   display = 0;
+	DISPMANX_MODEINFO_T         info;
+	DISPMANX_RESOURCE_HANDLE_T  resource = 0;
+	VC_IMAGE_TYPE_T             type = VC_IMAGE_RGB888;
+	DISPMANX_TRANSFORM_T	    transform = static_cast <DISPMANX_TRANSFORM_T> (0);
+	VC_RECT_T			        rect;
+	
+	void *image;
+	uint32_t vc_image_ptr;
+	uint32_t screen = 0;
+
+	bcm_host_init();
+
+	// Get display info for the screen we are using.
+	display = vc_dispmanx_display_open( screen );
+	if (vc_dispmanx_display_get_info(display, &info) != 0) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to get display info" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+
+	// This holds an image
+	image = calloc( 1, info.width * 3 * info.height );
+	if (!image) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed image assertion" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+
+	// Create space based on the screen info
+	resource = vc_dispmanx_resource_create( type, info.width, info.height, &vc_image_ptr);
+	if (!resource) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to create VC Dispmanx Resource" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+
+	// Take a snapshot of the screen (stored in resource)
+	vc_dispmanx_snapshot(display, resource, transform);
+
+	// Read the rectangular data from resource into the image calloc
+	vc_dispmanx_rect_set(&rect, 0, 0, info.width, info.height);
+	vc_dispmanx_resource_read_data(resource, &rect, image, info.width*3);
+
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< info.width << " x " << info.height << std::endl;
+		LOGGING.close();
+	}
+	std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
+	
+	int local_height = RVD_HEIGHT - 6;
+	int local_width = RVD_WIDTH - 4;
+	int local_xcorn = RVD_XCORN + 2;
+	int local_ycorn = RVD_YCORN + 3;
+	
+	unsigned char * img_data_ptr = (unsigned char*) &image;
+	Mat in_image(info.height, info.width, CV_8UC3, image);
+	cvtColor(in_image.clone(), in_image, COLOR_RGB2GRAY);
+	
+	// Cleanup the VC resources
+	if (vc_dispmanx_resource_delete(resource) != 0) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to delete vc resource" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+	if (vc_dispmanx_display_close(display) != 0) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to close vc display" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+	free(image);
+	
+	
+	// Perform the brightness tests
+	Mat alt_image(in_image.cols, in_image.rows, CV_8U);
+	
+	// Find largest contour
+	cvtColor(in_image, alt_image, COLOR_BGR2GRAY);
+	std::vector <std::vector <Point>> contours;
+	std::vector<Vec4i> hierarchy;
+	int big = 0;
+	double area;
+	findContours(alt_image, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
+	for( size_t i = 0; i< contours.size(); i++ ) {
+		area = contourArea(contours[i]);
+		if (area > big) {
+			big = area;
+		}
+	}
+	
+	// Get just the brightness of the image
+	cvtColor(in_image, alt_image, COLOR_BGR2HSV);
+	Mat1b brights;
+	extractChannel(in_image, brights, 2);
+	
+	int i, j;
+	
+	// Get corrected brightness value
+	float cba = 0.;
+	for (i = 0; i < brights.rows; ++i) {
+		for (j = 0; j < brights.cols; j++) {
+			if ((int)brights.at<uchar>(i, j) > (RAW_BRIGHT_THRESH)) {
+				cba++;
+			}
+		}
+	}
+	cba = cba/big;
+	
+	
+	// Filter based on each kernel
+	int valsum1 = 0;
+	int valsum2 = 0;
+	Mat vals1(Size(alt_image.cols, alt_image.rows), CV_8U);
+	Mat vals2(Size(alt_image.cols, alt_image.rows), CV_8U);
+	filter2D(brights, alt_image, CV_16U, tkernel);
+	for (i = 0; i < alt_image.rows; ++i) {
+		for (j = 0; j < alt_image.cols; j++) {
+			if ((int)alt_image.at<unsigned short>(i, j) > (4*RAW_BRIGHT_THRESH)) {
+				vals1.at<uint8_t>(i, j) = 1;
+				valsum1++;
+			} else {
+				vals1.at<uint8_t>(i, j) = 0;
+			}
+		}
+	}
+	filter2D(brights, alt_image, CV_16U, xkernel);
+	for (i = 0; i < alt_image.rows; ++i) {
+		for (j = 0; j < alt_image.cols; j++) {
+			if (alt_image.at<unsigned short>(i, j) > (4*RAW_BRIGHT_THRESH)) {
+				vals2.at<uint8_t>(i, j) = 1;
+				valsum2++;
+			} else {
+				vals2.at<uint8_t>(i, j) = 0;
+			}
+		}
+	}
+	
+	// Get corrected overbrightness value
+	float coa = 0.;
+	for (i = 0; i < vals1.rows; ++i) {
+		for (j = 0; j < vals1.cols; j++) {
+// 			std::cout << vals1.at<uchar>(i, j) << " " << vals2.at<uchar>(i, j) << std::endl;
+			if ((vals1.at<uint8_t>(i, j) == 1) || (vals2.at<uint8_t>(i, j) == 1)) {
+				coa++;
+			}
+		}
+	}
+	coa = coa/big;
+	
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "Brightness calcs: " << cba << ", " << coa << std::endl;
+		LOGGING.close();
+	}
+	
+	// Test if these values are below our threshold and return boolean result
+	if ((cba < BRIGHT_THRESH) && (coa < BRIGHT_THRESH)) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /**
@@ -942,6 +1181,7 @@ int parse_checklist(std::string name, std::string value) {
 		|| name == "BPINP"
 		|| name == "EMG_DUR"
 		|| name == "LOST_THRESH"
+		|| name == "RAW_BRIGHT_THRESH"
 		) {
 		int result = std::stoi(value);
 		if (name == "FONT_MOD") {
@@ -986,6 +1226,8 @@ int parse_checklist(std::string name, std::string value) {
 			EMG_DUR = result;
 		} else if (name == "LOST_THRESH") {
 			LOST_THRESH = result;
+		} else if (name == "RAW_BRIGHT_THRESH") {
+			RAW_BRIGHT_THRESH = result;
 		}
 	}
 	// Double cases
@@ -999,8 +1241,18 @@ int parse_checklist(std::string name, std::string value) {
 		} else if (name == "LOOSE_WHEEL_DURATION") {
 			LOOSE_WHEEL_DURATION = (std::chrono::duration<double>) result;
 		}
+	}
+	// Float cases
+	else if (
+		name == "BRIGHT_THRESH"
+		 ) {
+		float result = std::stof(value);
+		if (name == "BRIGHT_THRESH") {
+			BRIGHT_THRESH = result;
+		}
+	}
 	// String cases
-	} else if (
+	else if (
 		name == "KV_QUIT"
 		|| name == "KV_RUN"
 		|| name == "KV_LEFT"
@@ -1017,37 +1269,37 @@ int parse_checklist(std::string name, std::string value) {
 		|| name == "RPI_EX"
 		|| name == "DRIVE_NAME"
 		) {
-			if (name == "KV_QUIT") {
-				KV_QUIT = value.c_str();
-			} else if (name == "KV_RUN") {
-				KV_RUN = value.c_str();
-			} else if (name == "KV_LEFT") {
-				KV_LEFT = value.c_str();
-			} else if (name == "KV_RIGHT") {
-				KV_RIGHT = value.c_str();
-			} else if (name == "KV_UP") {
-				KV_UP = value.c_str();
-			} else if (name == "KV_DOWN") {
-				KV_DOWN = value.c_str();
-			} else if (name == "KV_STOP") {
-				KV_STOP = value.c_str();
-			} else if (name == "KV_REFRESH") {
-				KV_REFRESH = value.c_str();
-			} else if (name == "KV_S_UP_UP") {
-				KV_S_UP_UP = value.c_str();
-			} else if (name == "KV_S_DOWN_DOWN") {
-				KV_S_DOWN_DOWN = value.c_str();
-			} else if (name == "KV_S_UP") {
-				KV_S_UP = value.c_str();
-			} else if (name == "KV_S_DOWN") {
-				KV_S_DOWN = value.c_str();
-			} else if (name == "KV_ISO") {
-				KV_ISO = value.c_str();
-			} else if (name == "RPI_EX") {
-				RPI_EX = value;
-			} else if (name == "DRIVE_NAME") {
-				DRIVE_NAME = value;
-			}
+		if (name == "KV_QUIT") {
+			KV_QUIT = value.c_str();
+		} else if (name == "KV_RUN") {
+			KV_RUN = value.c_str();
+		} else if (name == "KV_LEFT") {
+			KV_LEFT = value.c_str();
+		} else if (name == "KV_RIGHT") {
+			KV_RIGHT = value.c_str();
+		} else if (name == "KV_UP") {
+			KV_UP = value.c_str();
+		} else if (name == "KV_DOWN") {
+			KV_DOWN = value.c_str();
+		} else if (name == "KV_STOP") {
+			KV_STOP = value.c_str();
+		} else if (name == "KV_REFRESH") {
+			KV_REFRESH = value.c_str();
+		} else if (name == "KV_S_UP_UP") {
+			KV_S_UP_UP = value.c_str();
+		} else if (name == "KV_S_DOWN_DOWN") {
+			KV_S_DOWN_DOWN = value.c_str();
+		} else if (name == "KV_S_UP") {
+			KV_S_UP = value.c_str();
+		} else if (name == "KV_S_DOWN") {
+			KV_S_DOWN = value.c_str();
+		} else if (name == "KV_ISO") {
+			KV_ISO = value.c_str();
+		} else if (name == "RPI_EX") {
+			RPI_EX = value;
+		} else if (name == "DRIVE_NAME") {
+			DRIVE_NAME = value;
+		}
 	} else {
 		std::cerr << "Did not recognize entry " << name << " in config file, skipping" << std::endl;
 	}

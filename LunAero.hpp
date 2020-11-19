@@ -102,6 +102,17 @@ inline int EDGE_DIVISOR_W = 20;
  */
 inline int EDGE_DIVISOR_H = 20;
 /**
+ * Brightness value between 0-255 to act as the threshold for raw brightness tests.  Customizable from
+ * settings.cfg.
+ */
+inline int RAW_BRIGHT_THRESH = 240;
+/**
+ * Threshold value for the brightness tests.  Outcome of the brightness tests must be below this value,
+ * otherwise the image is deemed "too bright" because the birds might get hidden by the lunar albedo.
+ * Customizable from settings.cfg
+ */
+inline float BRIGHT_THRESH = 0.001;
+/**
  * Drive name given to the external video storage drive.  Customizable from settings.cfg.
  */
 inline std::string DRIVE_NAME = "MOON1";
@@ -195,6 +206,7 @@ inline struct val_addresses {
 int main (int argc, char **argv);
 int startup_disk_check();
 float blur_test();
+bool bright_test();
 void cb_framecheck();
 void cleanup();
 void kill_raspivid();
