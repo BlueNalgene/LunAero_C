@@ -293,10 +293,10 @@ void write_video_id() {
 	<< std::to_string(RPI_BR)
 	<< std::endl
 	<< "    Framerate:     "
-	<< std::to_string(RPI_EX)
+	<< std::to_string(RPI_FPS)
 	<< std::endl
 	<< "    Exposure Mode: "
-	<< RPI_BR
+	<< RPI_EX
 	<< std::endl;
 	
 	idfile.close();

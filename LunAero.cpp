@@ -1139,7 +1139,7 @@ int startup_disk_check() {
 int parse_checklist(std::string name, std::string value) {
 	// Boolean cases
 	if (name == "DEBUG_COUT"
-// 		|| name == "TEST_BOOL_2"
+ 		|| name == "SAVE_DEBUG_IMAGE"
 		) {
 		// Define booleans
 		bool result;
@@ -1154,9 +1154,9 @@ int parse_checklist(std::string name, std::string value) {
 		
 		if (name == "DEBUG_COUT") {
 			DEBUG_COUT = result;
-		}/* else if (name == "TEST_BOOL_2") {
-			TEST_BOOL_2 = result;
-		}*/
+		} else if (name == "SAVE_DEBUG_IMAGE") {
+			SAVE_DEBUG_IMAGE = result;
+		}
 	}
 	// Int cases
 	else if (
@@ -1270,31 +1270,31 @@ int parse_checklist(std::string name, std::string value) {
 		|| name == "DRIVE_NAME"
 		) {
 		if (name == "KV_QUIT") {
-			KV_QUIT = value.c_str();
+			KV_QUIT = value;
 		} else if (name == "KV_RUN") {
-			KV_RUN = value.c_str();
+			KV_RUN = value;
 		} else if (name == "KV_LEFT") {
-			KV_LEFT = value.c_str();
+			KV_LEFT = value;
 		} else if (name == "KV_RIGHT") {
-			KV_RIGHT = value.c_str();
+			KV_RIGHT = value;
 		} else if (name == "KV_UP") {
-			KV_UP = value.c_str();
+			KV_UP = value;
 		} else if (name == "KV_DOWN") {
-			KV_DOWN = value.c_str();
+			KV_DOWN = value;
 		} else if (name == "KV_STOP") {
-			KV_STOP = value.c_str();
+			KV_STOP = value;
 		} else if (name == "KV_REFRESH") {
-			KV_REFRESH = value.c_str();
+			KV_REFRESH = value;
 		} else if (name == "KV_S_UP_UP") {
-			KV_S_UP_UP = value.c_str();
+			KV_S_UP_UP = value;
 		} else if (name == "KV_S_DOWN_DOWN") {
-			KV_S_DOWN_DOWN = value.c_str();
+			KV_S_DOWN_DOWN = value;
 		} else if (name == "KV_S_UP") {
-			KV_S_UP = value.c_str();
+			KV_S_UP = value;
 		} else if (name == "KV_S_DOWN") {
-			KV_S_DOWN = value.c_str();
+			KV_S_DOWN = value;
 		} else if (name == "KV_ISO") {
-			KV_ISO = value.c_str();
+			KV_ISO = value;
 		} else if (name == "RPI_EX") {
 			RPI_EX = value;
 		} else if (name == "DRIVE_NAME") {

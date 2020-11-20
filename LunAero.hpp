@@ -57,9 +57,6 @@ using namespace cv;
 #include "motors_LunAero.hpp"
 #include "camera_LunAero.hpp"
 
-// Globally Defined Constants
-#define LOST_THRESH 30
-#define SAVE_DEBUG_IMAGE 0
 
 /*
  * Recording duration in seconds.  Customizable from settings.cfg.  Default 1800.
@@ -125,6 +122,10 @@ inline int LOST_THRESH = 30;
  * from settings.cfg
  */
 inline int EMG_DUR = 10000;
+/**
+ * Should LunAero save a ppm file of the current raspivid screenshot?
+ */
+ inline bool SAVE_DEBUG_IMAGE = false;
 
 
 inline std::string FILEPATH;

@@ -71,7 +71,7 @@ inline int MIN_DUTY = 20;
 /**
  * Maximumallowable duty cycle.  Customizable from settings.cfg.
  */
-inline int MIN_DUTY = 75;
+inline int MAX_DUTY = 75;
 /**
  * Duty cycle threshold for braking during recording.  Customizable from settings.cfg.
  */

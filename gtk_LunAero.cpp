@@ -40,7 +40,7 @@ gboolean refresh_text_boxes(gpointer data) {
 			msg += std::to_string(*val_ptr.ISO_VALaddr);
 			msg += "\nFOCUS VAL:\n";
 			msg += std::to_string(floor(blur_val*100)/100); // float to two dec places
-			if !(bright_val) {
+			if (!bright_val) {
 				msg += "\nToo Bright!\n";
 			}
 			gtk_label_set_text(GTK_LABEL(gtk_class::text_status), msg.c_str());
@@ -625,57 +625,53 @@ void activate(GtkApplication *app, gpointer local_val_ptr) {
 gboolean key_event_preview(GtkWidget *widget, GdkEventKey *event) {
 
 	gchar* val = gdk_keyval_name (event->keyval);
-	if (strcmp(val, KV_LEFT) == 0) {
+	if (strcmp(val, KV_LEFT.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_left_command();
 		}
-	} else if (strcmp(val, KV_RIGHT) == 0) {
+	} else if (strcmp(val, KV_RIGHT.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_right_command();
 		}
-	} else if (strcmp(val, KV_UP) == 0) {
+	} else if (strcmp(val, KV_UP.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_up_command();
 		}
-	} else if (strcmp(val, KV_DOWN) == 0) {
+	} else if (strcmp(val, KV_DOWN.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_down_command();
 		}
-	} else if (strcmp(val, KV_STOP) == 0) {
+	} else if (strcmp(val, KV_STOP.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			mot_stop_command();
 		}
-	} else if (strcmp(val, KV_REFRESH) == 0) {
+	} else if (strcmp(val, KV_REFRESH.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			refresh_camera();
 		}
-	} else if (strcmp(val, KV_QUIT) == 0) {
+	} else if (strcmp(val, KV_QUIT.c_str()) == 0) {
 		*val_ptr.ABORTaddr = 1;
-	} else if (strcmp(val, KV_S_UP_UP) == 0) {
+	} else if (strcmp(val, KV_S_UP_UP.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			shutter_up_up();
 		}
-	} else if (strcmp(val, KV_S_DOWN_DOWN) == 0) {
+	} else if (strcmp(val, KV_S_DOWN_DOWN.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			shutter_down_down();
 		}
-	} else if (strcmp(val, KV_S_UP) == 0) {
+	} else if (strcmp(val, KV_S_UP.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			shutter_up();
 		}
-	} else if (strcmp(val, KV_S_DOWN) == 0) {
+	} else if (strcmp(val, KV_S_DOWN.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			shutter_down();
 		}
-	} else if (strcmp(val, KV_ISO) == 0) {
+	} else if (strcmp(val, KV_ISO.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			iso_cycle();
 		}
-	//~ } else if (strcmp(val, "p") == 0) {
-		//~ if (*val_ptr.RUN_MODEaddr == 0) {
-			
-		//~ }
-	} else if (strcmp(val, KV_RUN) == 0) {
+	} else if (strcmp(val, KV_RUN.c_str()) == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
 			first_record_killer(NULL);
 		}
@@ -708,7 +704,7 @@ gboolean key_event_running(GtkWidget *widget, GdkEventKey *event) {
 	
 	gchar* val = gdk_keyval_name (event->keyval);
 
-	if (strcmp(val, KV_QUIT) == 0) {
+	if (strcmp(val, KV_QUIT.c_str()) == 0) {
 		sem_wait(&LOCK);
 		*val_ptr.ABORTaddr = 1;
 		sem_post(&LOCK);
