@@ -206,23 +206,29 @@ std::string current_time(int gmt) {
 
 /**
  * This function captures the frame from the preview window (a complicated process involving capturing
- * the VC/DISPMANX screenshot, not the X window screensho), crops it to ignore the GTK,  and determines
- * how blurry the image is.  Blur is computed based on the standard method, running a Laplacian
- * operation on the cropped image and computing the variance of this result.
+ * the VC/DISPMANX screenshot, not the X window screenshot), crops it to ignore the GTK, and determines
+ * image blur and brightness.  Blur is computed based on the standard method, running a Laplacian
+ * operation on the cropped image and computing the variance of this result.  Brightness is a raw
+ * pixel thresholding method.
  *
  * @return blurval A floating point value representing the degree of variation in tbe blur
  */
-float blur_test() {
+int blur_bright() {
+	//~ BLUR_BRIGHT.clear();
 	float blurval = 0;
+	float brightval = 0;
+	
+	// Create kernels
+	float tdata[] = {0, 1, 0, 1, 0, 1, 0, 1, 0};
+	Mat tkernel(3, 3, CV_32F, tdata);
+	float xdata[] = {1, 0, 1, 0, 0, 0, 1, 0, 1};
+	Mat xkernel(3, 3, CV_32F, xdata);
 	
 	// Run a system check to see if raspivid is running, if not, print a warning
-	pid_t thepid = 0;
 	FILE* fpidof = popen("pidof raspivid", "r");
 	if (fpidof) {
 		int p=0;
-		if (fscanf(fpidof, "%d", &p)>0 && p>0) {
-			thepid = (pid_t)p;
-		} else {
+		if (!(fscanf(fpidof, "%d", &p)>0 && p>0)) {
 			if (DEBUG_COUT) {
 				LOGGING.open(LOGOUT, std::ios_base::app);
 				LOGGING
@@ -311,7 +317,261 @@ float blur_test() {
 	int local_xcorn = RVD_XCORN + 2;
 	int local_ycorn = RVD_YCORN + 3;
 	
-	unsigned char * img_data_ptr = (unsigned char*) &image;
+	//~ unsigned char * img_data_ptr = (unsigned char*) &image;
+	Mat temp_image(info.height, info.width, CV_8UC3, image);
+	Mat in_image = temp_image.clone();
+		
+	// Cleanup the VC resources
+	if (vc_dispmanx_resource_delete(resource) != 0) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to delete vc resource" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+	if (vc_dispmanx_display_close(display) != 0) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to close vc display" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+	free(image);
+	
+	// Crop image
+	Mat ROI(in_image, Rect(local_xcorn, local_ycorn, local_width, local_height));
+	Mat cropped_image;
+	ROI.copyTo(cropped_image);
+	
+	// Prep color conversions
+	Mat gray_image, alt_image, va1_image, va2_image;
+	Mat1b brights;
+	cvtColor(in_image.clone(), gray_image, COLOR_RGB2GRAY);
+	cvtColor(in_image.clone(), alt_image, COLOR_RGB2HSV);
+	extractChannel(alt_image, brights, 2);
+	
+	// Run Blur detector
+	// get Laplacian variance on input image
+	Laplacian(gray_image, alt_image, CV_64F);
+	Scalar mean, stddev; // 0:1st channel, 1:2nd channel and 2:3rd channel
+	meanStdDev(alt_image, mean, stddev, Mat());
+	blurval = stddev.val[0] * stddev.val[0];
+	
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "BLURVAL: " << blurval << std::endl;
+		LOGGING.close();
+	}
+	
+	// Run Brightness detector
+	// Find largest contour
+	std::vector <std::vector <Point>> contours;
+	std::vector<Vec4i> hierarchy;
+	int big = 0;
+	double area;
+	findContours(gray_image, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
+	for( size_t i = 0; i< contours.size(); i++ ) {
+		area = contourArea(contours[i]);
+		if (area > big) {
+			big = area;
+		}
+	}
+	
+	// Super simple thresholding
+	float cba = 0.;
+	threshold(gray_image.clone(), gray_image, RAW_BRIGHT_THRESH, 255, THRESH_BINARY);
+	cba = (sum(gray_image)[0])/big;
+	
+	//~ // Get corrected brightness value
+	//~ float cba = 0.;
+	//~ for (int i = 0; i < brights.rows; ++i) {
+		//~ for (int j = 0; j < brights.cols; j++) {
+			//~ if ((int)brights.at<uchar>(i, j) > (RAW_BRIGHT_THRESH)) {
+				//~ cba++;
+			//~ }
+		//~ }
+	//~ }
+	//~ cba = cba/big;
+	
+	//~ // Filter based on each kernel
+	//~ int valsum1 = 0;
+	//~ int valsum2 = 0;
+	//~ Mat vals1(Size(alt_image.cols, alt_image.rows), CV_8U);
+	//~ Mat vals2(Size(alt_image.cols, alt_image.rows), CV_8U);
+	//~ filter2D(brights, va1_image, CV_16U, tkernel);
+	//~ filter2D(brights, va2_image, CV_16U, xkernel);
+	//~ for (int i = 0; i < alt_image.rows; ++i) {
+		//~ for (int j = 0; j < alt_image.cols; j++) {
+			//~ if ((int)va1_image.at<unsigned short>(i, j) > (4*RAW_BRIGHT_THRESH)) {
+				//~ vals1.at<uint8_t>(i, j) = 1;
+				//~ valsum1++;
+			//~ } else {
+				//~ vals1.at<uint8_t>(i, j) = 0;
+			//~ }
+			//~ if (va2_image.at<unsigned short>(i, j) > (4*RAW_BRIGHT_THRESH)) {
+				//~ vals2.at<uint8_t>(i, j) = 1;
+				//~ valsum2++;
+			//~ } else {
+				//~ vals2.at<uint8_t>(i, j) = 0;
+			//~ }
+		//~ }
+	//~ }
+
+	//~ // Get corrected overbrightness value
+	//~ alt_image = vals1 | vals2;
+	//~ float coa = 0.;
+	//~ for (int i = 0; i < alt_image.rows; ++i) {
+		//~ for (int j = 0; j < alt_image.cols; j++) {
+			//~ if (alt_image.at<uint8_t>(i, j) == 1) {
+				//~ coa++;
+			//~ }
+		//~ }
+	//~ }
+	//~ coa = coa/big;
+	//~ if (DEBUG_COUT) {
+		//~ LOGGING.open(LOGOUT, std::ios_base::app);
+		//~ LOGGING
+		//~ << "BRIGHT_VALS: " << cba << ", " << coa << std::endl;
+		//~ LOGGING.close();
+	//~ }
+	
+	
+	// Test if these values are below our threshold and return boolean result
+	bool bright_outcome;
+	
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< "BRIGHT_VAL: " << cba << std::endl;
+		LOGGING.close();
+	}
+	
+	if (cba < BRIGHT_THRESH) {
+		bright_outcome = true;
+	} else {
+		bright_outcome = false;
+	}
+	
+
+	sem_wait(&LOCK);
+	*val_ptr.BLURaddr = blurval;
+	*val_ptr.BRIGHTaddr = bright_outcome;
+	//~ *val_ptr.BRIGHTaddr = false;
+	sem_post(&LOCK);
+	
+	return 0;
+}
+
+/**
+ * This function captures the frame from the preview window (a complicated process involving capturing
+ * the VC/DISPMANX screenshot, not the X window screensho), crops it to ignore the GTK,  and determines
+ * how blurry the image is.  Blur is computed based on the standard method, running a Laplacian
+ * operation on the cropped image and computing the variance of this result.
+ *
+ * @return blurval A floating point value representing the degree of variation in tbe blur
+ */
+float blur_test() {
+	float blurval = 0;
+	
+	// Run a system check to see if raspivid is running, if not, print a warning
+	FILE* fpidof = popen("pidof raspivid", "r");
+	if (fpidof) {
+		int p=0;
+		if (!(fscanf(fpidof, "%d", &p)>0 && p>0)) {
+			if (DEBUG_COUT) {
+				LOGGING.open(LOGOUT, std::ios_base::app);
+				LOGGING
+				<< "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+				LOGGING.close();
+			}
+			return 0;
+		}
+		pclose(fpidof);
+	} else {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "WARNING: cannot detect image focus if Raspivid is not running" << std::endl;
+			LOGGING.close();
+		}
+		return 0;
+	}
+	
+	DISPMANX_DISPLAY_HANDLE_T   display = 0;
+	DISPMANX_MODEINFO_T         info;
+	DISPMANX_RESOURCE_HANDLE_T  resource = 0;
+	VC_IMAGE_TYPE_T             type = VC_IMAGE_RGB888;
+	DISPMANX_TRANSFORM_T	    transform = static_cast <DISPMANX_TRANSFORM_T> (0);
+	VC_RECT_T			        rect;
+	
+	void *image;
+	uint32_t vc_image_ptr;
+	uint32_t screen = 0;
+
+	bcm_host_init();
+
+	// Get display info for the screen we are using.
+	display = vc_dispmanx_display_open( screen );
+	if (vc_dispmanx_display_get_info(display, &info) != 0) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to get display info" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+
+	// This holds an image
+	image = calloc( 1, info.width * 3 * info.height );
+	if (!image) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed image assertion" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+
+	// Create space based on the screen info
+	resource = vc_dispmanx_resource_create( type, info.width, info.height, &vc_image_ptr);
+	if (!resource) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to create VC Dispmanx Resource" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+
+	// Take a snapshot of the screen (stored in resource)
+	vc_dispmanx_snapshot(display, resource, transform);
+
+	// Read the rectangular data from resource into the image calloc
+	vc_dispmanx_rect_set(&rect, 0, 0, info.width, info.height);
+	vc_dispmanx_resource_read_data(resource, &rect, image, info.width*3);
+
+	if (DEBUG_COUT) {
+		LOGGING.open(LOGOUT, std::ios_base::app);
+		LOGGING
+		<< info.width << " x " << info.height << std::endl;
+		LOGGING.close();
+	}
+	std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
+	
+	int local_height = RVD_HEIGHT - 6;
+	int local_width = RVD_WIDTH - 4;
+	int local_xcorn = RVD_XCORN + 2;
+	int local_ycorn = RVD_YCORN + 3;
+	
+	//~ unsigned char * img_data_ptr = (unsigned char*) &image;
 	Mat in_image(info.height, info.width, CV_8UC3, image);
 	cvtColor(in_image.clone(), in_image, COLOR_RGB2GRAY);
 	
@@ -340,7 +600,6 @@ float blur_test() {
 	Mat ROI(in_image, Rect(local_xcorn, local_ycorn, local_width, local_height));
 	Mat cropped_image;
 	ROI.copyTo(cropped_image);
-	imwrite("/home/pi/Documents/LunAero_C/test.png", cropped_image);
 	
 	Laplacian(cropped_image, in_image, CV_64F);
 	Scalar mean, stddev; // 0:1st channel, 1:2nd channel and 2:3rd channel
@@ -402,8 +661,9 @@ float blur_test() {
  * @return bright_outcome Result of comparing brightness values to BRIGHT_THRESH.  True = passed and
  * the image is not too bright, false = failed as the image was too bright.
  */
-bool bright_test() {
-	bool bright_outcome;
+float bright_test() {
+	float bright_outcome;
+	
 	// Create kernels
 	float tdata[] = {0, 1, 0, 1, 0, 1, 0, 1, 0};
 	Mat tkernel(3, 3, CV_32F, tdata);
@@ -411,13 +671,10 @@ bool bright_test() {
 	Mat xkernel(3, 3, CV_32F, xdata);
 	
 	// Run a system check to see if raspivid is running, if not, print a warning
-	pid_t thepid = 0;
 	FILE* fpidof = popen("pidof raspivid", "r");
 	if (fpidof) {
 		int p=0;
-		if (fscanf(fpidof, "%d", &p)>0 && p>0) {
-			thepid = (pid_t)p;
-		} else {
+		if (!(fscanf(fpidof, "%d", &p)>0 && p>0)) {
 			if (DEBUG_COUT) {
 				LOGGING.open(LOGOUT, std::ios_base::app);
 				LOGGING
@@ -499,44 +756,24 @@ bool bright_test() {
 		<< info.width << " x " << info.height << std::endl;
 		LOGGING.close();
 	}
-	std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
+
+	//~ std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
 	
 	int local_height = RVD_HEIGHT - 6;
 	int local_width = RVD_WIDTH - 4;
 	int local_xcorn = RVD_XCORN + 2;
 	int local_ycorn = RVD_YCORN + 3;
-	
-	unsigned char * img_data_ptr = (unsigned char*) &image;
-	Mat in_image(info.height, info.width, CV_8UC3, image);
-	cvtColor(in_image.clone(), in_image, COLOR_RGB2GRAY);
-	
-	// Cleanup the VC resources
-	if (vc_dispmanx_resource_delete(resource) != 0) {
-		if (DEBUG_COUT) {
-			LOGGING.open(LOGOUT, std::ios_base::app);
-			LOGGING
-			<< "ERROR: failed to delete vc resource" << std::endl;
-			LOGGING.close();
-		}
-		*val_ptr.ABORTaddr = 1;
-	}
-	if (vc_dispmanx_display_close(display) != 0) {
-		if (DEBUG_COUT) {
-			LOGGING.open(LOGOUT, std::ios_base::app);
-			LOGGING
-			<< "ERROR: failed to close vc display" << std::endl;
-			LOGGING.close();
-		}
-		*val_ptr.ABORTaddr = 1;
-	}
-	free(image);
+/*c	
+	// Prep OpenCV image
+	Mat alt_image;
+	//~ unsigned char * img_data_ptr = (unsigned char*) &image;
+	Mat temp_image(info.height, info.width, CV_8UC3, image);
+	Mat in_image(temp_image, Rect(local_xcorn, local_ycorn, local_width, local_height));
+	cvtColor(in_image.clone(), alt_image, COLOR_RGB2GRAY);
 	
 	
 	// Perform the brightness tests
-	Mat alt_image(in_image.cols, in_image.rows, CV_8U);
-	
 	// Find largest contour
-	cvtColor(in_image, alt_image, COLOR_BGR2GRAY);
 	std::vector <std::vector <Point>> contours;
 	std::vector<Vec4i> hierarchy;
 	int big = 0;
@@ -550,12 +787,13 @@ bool bright_test() {
 	}
 	
 	// Get just the brightness of the image
-	cvtColor(in_image, alt_image, COLOR_BGR2HSV);
+	cvtColor(in_image, alt_image, COLOR_RGB2HSV);
 	Mat1b brights;
-	extractChannel(in_image, brights, 2);
+	extractChannel(alt_image, brights, 2);
+	imwrite("/media/pi/MOON1/brights.png", brights);
+	
 	
 	int i, j;
-	
 	// Get corrected brightness value
 	float cba = 0.;
 	for (i = 0; i < brights.rows; ++i) {
@@ -566,7 +804,6 @@ bool bright_test() {
 		}
 	}
 	cba = cba/big;
-	
 	
 	// Filter based on each kernel
 	int valsum1 = 0;
@@ -595,32 +832,56 @@ bool bright_test() {
 			}
 		}
 	}
-	
 	// Get corrected overbrightness value
 	float coa = 0.;
 	for (i = 0; i < vals1.rows; ++i) {
 		for (j = 0; j < vals1.cols; j++) {
-// 			std::cout << vals1.at<uchar>(i, j) << " " << vals2.at<uchar>(i, j) << std::endl;
+//			std::cout << std::to_string((int)vals1.at<uint8_t>(i, j)) << " " << std::to_string((int)vals2.at<uint8_t>(i, j)) << std::endl;
 			if ((vals1.at<uint8_t>(i, j) == 1) || (vals2.at<uint8_t>(i, j) == 1)) {
 				coa++;
 			}
 		}
 	}
 	coa = coa/big;
-	
 	if (DEBUG_COUT) {
 		LOGGING.open(LOGOUT, std::ios_base::app);
 		LOGGING
-		<< "Brightness calcs: " << cba << ", " << coa << std::endl;
+		<< "BRIGHT_VALS: " << cba << ", " << coa << std::endl;
 		LOGGING.close();
 	}
+*/	
+	
+	// Cleanup the VC resources
+	if (vc_dispmanx_resource_delete(resource) != 0) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to delete vc resource" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+	if (vc_dispmanx_display_close(display) != 0) {
+		if (DEBUG_COUT) {
+			LOGGING.open(LOGOUT, std::ios_base::app);
+			LOGGING
+			<< "ERROR: failed to close vc display" << std::endl;
+			LOGGING.close();
+		}
+		*val_ptr.ABORTaddr = 1;
+	}
+	free(image);
+	
 	
 	// Test if these values are below our threshold and return boolean result
-	if ((cba < BRIGHT_THRESH) && (coa < BRIGHT_THRESH)) {
-		return true;
-	} else {
-		return false;
-	}
+	//~ if ((cba < BRIGHT_THRESH) && (coa < BRIGHT_THRESH)) {
+		//~ bright_outcome = true;
+	//~ } else {
+		//~ bright_outcome = false;
+	//~ }
+	//~ bright_outcome = (float)max(cba, coa);
+	
+	return bright_outcome;
 }
 
 /**
@@ -641,13 +902,10 @@ void current_frame() {
 	}
 	
 	// Run a system check to see if raspivid is running, if not, print a warning
-	pid_t thepid = 0;
 	FILE* fpidof = popen("pidof raspivid", "r");
 	if (fpidof) {
 		int p=0;
-		if (fscanf(fpidof, "%d", &p)>0 && p>0) {
-			thepid = (pid_t)p;
-		} else {
+		if (!(fscanf(fpidof, "%d", &p)>0 && p>0)) {
 			int local_cnt = *val_ptr.LOST_COUNTERaddr;
 			local_cnt = local_cnt + 1;
 			sem_wait(&LOCK);
@@ -1119,10 +1377,11 @@ int startup_disk_check() {
 			+ std::to_string(tmp.available)
 			+ " bytes of space remaining.");
 		}
-		DISK_OUTPUT.push_back("Free space: " + tmp.free);
-		DISK_OUTPUT.push_back("Available space: " + tmp.available);
+		DISK_OUTPUT.push_back("Free space: " + std::to_string(tmp.free));
+		DISK_OUTPUT.push_back("Available space: " + std::to_string(tmp.available));
 		return 0;
 	} else {
+		std::cout << "1" << std::endl;
 		notify_handler("LunAero Error", "Could not find a drive mounted at " + DEFAULT_FILEPATH);
 		return 3;
 	}
@@ -1347,7 +1606,7 @@ int main (int argc, char **argv) {
 	mkdir(FILEPATH.c_str(), 0700);
 	
 	if (DEBUG_COUT) {
-		LOGOUT = FILEPATH + "log.log";
+		LOGOUT = FILEPATH + "/log.log";
 		LOGGING.open(LOGOUT);
 		LOGGING.close();
 	}
@@ -1389,6 +1648,10 @@ int main (int argc, char **argv) {
 			LOGGING.close();
 		}
 	}
+	
+	val_ptr.BLURaddr = (int *)(mmap(NULL, sizeof(float), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
+	val_ptr.BRIGHTaddr = (int *)(mmap(NULL, sizeof(bool), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
+	*val_ptr.BLURaddr = 0;
 	
 	// Memory values which influence camera commands. Defaults to 0.
 	val_ptr.LOST_COUNTERaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));

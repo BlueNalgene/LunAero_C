@@ -125,8 +125,10 @@ inline int EMG_DUR = 10000;
 /**
  * Should LunAero save a ppm file of the current raspivid screenshot?
  */
- inline bool SAVE_DEBUG_IMAGE = false;
+inline bool SAVE_DEBUG_IMAGE = false;
 
+
+inline vector <float> BLUR_BRIGHT;
 
 inline std::string FILEPATH;
 inline std::string DEFAULT_FILEPATH = "";
@@ -201,13 +203,17 @@ inline struct val_addresses {
 	 * refreshed to elicit appropriate behavior.
 	 */
 	volatile int * SUBSaddr;
+	
+	volatile int * BLURaddr;
+	volatile int * BRIGHTaddr;
 } val_ptr;
 
 // Declare Function Prototypes
 int main (int argc, char **argv);
 int startup_disk_check();
+int blur_bright();
 float blur_test();
-bool bright_test();
+float bright_test();
 void cb_framecheck();
 void cleanup();
 void kill_raspivid();

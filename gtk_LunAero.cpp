@@ -18,6 +18,17 @@
 
 #include "gtk_LunAero.hpp"
 
+gboolean bb_runner(gpointer data) {
+	if (*val_ptr.ABORTaddr == 0) {
+		if (*val_ptr.RUN_MODEaddr == 0) {
+			if (blur_bright()) {
+				std::cerr << "blurbright error" << std::endl;
+			}
+		}
+	}
+	return TRUE;
+}
+
 /**
  * This function refreshes the text boxes on the side of the GTK window.  During preview and manual motor
  * movement mode, this portion of the screen shows the value of the selected SHUTTER_VAL, ISO, and blur
@@ -31,18 +42,29 @@
 gboolean refresh_text_boxes(gpointer data) {
 	if (*val_ptr.ABORTaddr == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
-			float blur_val = blur_test();
-			bool bright_val = bright_test();
+			std::cout << "test" << std::endl;
+			float local_blur;
+			bool local_bright;
+			sem_wait(&LOCK);
+			local_blur = *val_ptr.BLURaddr;
+			local_bright = *val_ptr.BRIGHTaddr;
+			sem_post(&LOCK);
+			std::cout << "passed" << std::endl;
 			std::string msg;
-			msg = "Shutter Speed:\n  ";
+			msg = "Shutter Speed: ";
 			msg += std::to_string(*val_ptr.SHUTTER_VALaddr);
-			msg += "\nISO:\n  ";
+			msg += "\nISO: ";
 			msg += std::to_string(*val_ptr.ISO_VALaddr);
-			msg += "\nFOCUS VAL:\n";
-			msg += std::to_string(floor(blur_val*100)/100); // float to two dec places
-			if (!bright_val) {
-				msg += "\nToo Bright!\n";
+			msg += "\nFOCUS: ";
+			msg += std::to_string(local_blur); // float to two dec places
+			//~ msg += "\nBRIGHT: ";
+			//~ msg += std::to_string(floor(BLUR_BRIGHT[1]*100)/100);
+			if (local_bright) {
+				msg += "\n";
+			} else {
+				msg += "\nTOO BRIGHT";
 			}
+			//~ msg += std::to_string(local_bright);
 			gtk_label_set_text(GTK_LABEL(gtk_class::text_status), msg.c_str());
 		} else {
 			std::string msg;
@@ -604,9 +626,10 @@ void activate(GtkApplication *app, gpointer local_val_ptr) {
 	gtk_css_preview();
 	
 	// Create timeout to refresh
-	g_timeout_add(500, G_SOURCE_FUNC(refresh_text_boxes), NULL);
+	g_timeout_add(100, G_SOURCE_FUNC(refresh_text_boxes), NULL);
 	g_timeout_add(50, G_SOURCE_FUNC(abort_check), NULL);
 	g_timeout_add(60, G_SOURCE_FUNC(cb_subsequent), app);
+	g_timeout_add(700, G_SOURCE_FUNC(bb_runner), NULL);
 	
 	//Activate!
 	//~ refresh_text_boxes(NULL);
@@ -841,7 +864,8 @@ gboolean cb_subsequent(GtkWidget* data) {
 		if (DEBUG_COUT) {
 			LOGGING.open(LOGOUT, std::ios_base::app);
 			LOGGING
-			<< "cb sub 2 " << std::endl;
+			<< "cb sub 2 "
+			<< std::endl;
 			LOGGING.close();
 		}
 		reset_record();
