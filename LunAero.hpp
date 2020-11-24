@@ -203,8 +203,13 @@ inline struct val_addresses {
 	 * refreshed to elicit appropriate behavior.
 	 */
 	volatile int * SUBSaddr;
-	
+	/**
+	 * Current blur value from blur_bright().  Contains a float.
+	 */
 	volatile int * BLURaddr;
+	/**
+	 * Current brightness threshold outcome from blur_bright().  Contains a bool.
+	 */
 	volatile int * BRIGHTaddr;
 } val_ptr;
 
@@ -212,8 +217,6 @@ inline struct val_addresses {
 int main (int argc, char **argv);
 int startup_disk_check();
 int blur_bright();
-float blur_test();
-float bright_test();
 void cb_framecheck();
 void cleanup();
 void kill_raspivid();
