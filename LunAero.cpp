@@ -1096,6 +1096,154 @@ int parse_checklist(std::string name, std::string value) {
 }
 
 /**
+ * This function is called to create a default settings config file.  Creates the file in the current
+ * working directory as ./settings.cfg.  If the file at that path after writing is smaller than 2kb,
+ * this function returns an error status.
+ *
+ * @return status
+ */
+int create_default_config() {
+	std::string config_loc = "./settings.cfg";
+	std::ofstream config_file.open(config_loc);
+	config_file
+	<< "############# settings #############" << std::endl
+	<< "#                                  #" << std::endl
+	<< "#         part of LunAero_C        #" << std::endl
+	<< "#     Wesley T. Honeycutt, 2020    #" << std::endl
+	<< "#                                  #" << std::endl
+	<< "#   Comment lines with octothorpe  #" << std::endl
+	<< "# Code lines must be \\n terminated #" << std::endl
+	<< "#                                  #" << std::endl
+	<< "####################################" << std::endl << std::endl
+	<< "### General settings" << std::endl << std::endl
+	<< "# Save log with debugging output (prints everything verbose)" << std::endl
+	<< "DEBUG_COUT = true" << std::endl << std::endl
+	<< "# Duration to record video before starting a new one (in seconds)" << std::endl
+	<< "RECORD_DURATION = 1800" << std::endl
+	<< "
+	<< "# The name given to your external storage drive for videos" << std::endl
+	<< "DRIVE_NAME = MOON1" << std::endl
+	<< "
+	<< "# Should LunAero save a screenshot from the raspivid output every cycle?" << std::endl
+	<< "# It will be saved to to /your/path/out.ppm" << std::endl
+	<< "SAVE_DEBUG_IMAGE = false" << std::endl << std::endl << std::endl << std::endl << std::endl
+	<< "### Keybindings" << std::endl
+	<< "# If you want to use non-alphabetic keys, check to see what the key value is called before editing." << std::endl << std::endl
+	<< "# Keybinding for quit command" << std::endl
+	<< "KV_QUIT = q" << std::endl << std::endl
+	<< "# Keybinding for beginning the recording/entering automatic mode" << std::endl
+	<< "KV_RUN = Return" << std::endl << std::endl
+	<< "# Keybinding for left manual motor movement." << std::endl
+	<< "KV_LEFT = Left" << std::endl << std::endl
+	<< "# Keybinding for right manual motor movement." << std::endl
+	<< "KV_RIGHT = Right" << std::endl << std::endl
+	<< "# Keybinding for up manual motor movement." << std::endl
+	<< "KV_UP = Up" << std::endl << std::endl
+	<< "# Keybinding for down manual motor movement." << std::endl
+	<< "KV_DOWN = Down" << std::endl << std::endl
+	<< "# Keybinding for motor stop command." << std::endl
+	<< "KV_STOP = space" << std::endl << std::endl
+	<< "# Keybinding for raspivid refresh command." << std::endl
+	<< "KV_REFRESH = z" << std::endl << std::endl
+	<< "# Keybinding for greatly increasing the shutter speed." << std::endl
+	<< "KV_S_UP_UP = g" << std::endl << std::endl
+	<< "# Keybinding for greatly decreasing the shutter speed." << std::endl
+	<< "KV_S_DOWN_DOWN = b" << std::endl << std::endl
+	<< "# Keybinding for increasing the shutter speed." << std::endl
+	<< "KV_S_UP = h" << std::endl << std::endl
+	<< "# Keybinding for decreasing the shutter speed." << std::endl
+	<< "KV_S_DOWN = n" << std::endl << std::endl
+	<< "# Keybinding for cycling the ISO value." << std::endl
+	<< "KV_ISO = i" << std::endl << std::endl << std::endl << std::endl << std::endl
+	<< "### GUI settings" << std::endl << std::endl
+	<< "# Modifier value which effects the font size automatically determined for the GTK window" << std::endl
+	<< "FONT_MOD = 20" << std::endl << std::endl
+	<< "# Number of milliseconds an emergency message should remain on the desktop before disappearing in the" << std::endl
+	<< "# event of certain crash conditions." << std::endl
+	<< "EMG_DUR = 10" << std::endl << std::endl << std::endl << std::endl
+	<< "### Image processing settings" << std::endl << std::endl
+	<< "# Divisor for the number pixels on the top and bottom edges to warrant a move.  Bigger is more sensitive." << std::endl
+	<< "EDGE_DIVISOR_W = 20" << std::endl << std::endl
+	<< "# Divisor for the number pixels on the left and right edges to warrant a move.  Bigger is more sensitive." << std::endl
+	<< "EDGE_DIVISOR_H = 20" << std::endl << std::endl
+	<< "# Brightness value between 0-255 to act as the threshold for raw brightness tests." << std::endl
+	<< "RAW_BRIGHT_THRESH = 240" << std::endl << std::endl
+	<< "# Threshold value for the brightness tests.  Outcome of the brightness tests must be below this value," << std::endl
+	<< "# otherwise the image is deemed \"too bright\" because the birds might get hidden by the lunar albedo." << std::endl
+	<< "BRIGHT_THRESH = 0.01" << std::endl << std::endl
+	<< "# Frequency which the automatic edge detection should occur.  This is a value roughly in milliseconds," << std::endl
+	<< "# dependent on the cycle time of the processor." << std::endl
+	<< "# WARNING Editing this value changes a bunch of behaviors.  You can touch it, but be careful." 
+	<< std::endl
+	<< "FRAMECHECK_FREQ = 50" << std::endl << std::endl << std::endl << std::endl
+	<< "### Raspivid and Camera settings" << std::endl << std::endl
+	<< "# Number of MMAL errors encountered in a row before LunAero should crash with an error because something" << std::endl
+	<< "# has gone wrong with the hardware." << std::endl
+	<< "MMAL_ERROR_THRESH = 100" << std::endl << std::endl
+	<< "# Recording framerate of the raspivid command" << std::endl
+	<< "RPI_FPS = 30" << std::endl << std::endl
+	<< "# Recording bitrate for raspivid command" << std::endl
+	<< "RPI_BR = 8000000" << std::endl << std::endl
+	<< "# Recording exposure mode for raspivid command.  Use a string from this list:" << std::endl
+	<< "# auto: use automatic exposure mode" << std::endl
+	<< "# night: select setting for night shooting" << std::endl
+	<< "# nightpreview:" << std::endl
+	<< "# backlight: select setting for backlit subject" << std::endl
+	<< "# spotlight:" << std::endl
+	<< "# sports: select setting for sports (fast shutter etc.)" << std::endl
+	<< "# snow: select setting optimised for snowy scenery" << std::endl
+	<< "# beach: select setting optimised for beach" << std::endl
+	<< "# verylong: select setting for long exposures" << std::endl
+	<< "# fixedfps: constrain fps to a fixed value" << std::endl
+	<< "# antishake: antishake mode" << std::endl
+	<< "# fireworks: select setting optimised for fireworks" << std::endl
+	<< "RPI_EX = auto" << std::endl << std::endl
+	<< "# Value to adjust the shutter speed when using up or down buttons." << std::endl
+	<< "SHUT_JUMP = 100" << std::endl << std::endl
+	<< "# Value to adjust the shutter speed when using the up-up or down-down buttons." << std::endl
+	<< "# Should be greater than SHUT_JUMP" << std::endl
+	<< "SHUT_JUMP_BIG = 1000" << std::endl << std::endl
+	<< "# Threshold value for number of cycles the moon is "lost" for" << std::endl
+	<< "LOST_THRESH = 30" << std::endl << std::endl << std::endl << std::endl
+	<< "### Motor and Speed settings" << std::endl << std::endl
+	<< "# Number of seconds the left-right motor should force high speed movement to compensate for loose" << std::endl
+	<< "# laser cut gears." << std::endl
+	<< "LOOSE_WHEEL_DURATION = 2" << std::endl << std::endl
+	<< "# PWM operation frequency in Hz" << std::endl
+	<< "FREQ = 10000" << std::endl << std::endl
+	<< "# Minimum allowable PWM duty cycle. Must be integer. Units are percent." << std::endl
+	<< "# This value does not impact the speed during manual mode." << std::endl
+	<< "MIN_DUTY = 20" << std::endl << std::endl
+	<< "# Maximum allowable PWM duty cycle.  Must be integer.  Units are percent." << std::endl
+	<< "# This value does not impact the speed during manual mode." << std::endl
+	<< "MAX_DUTY = 75" << std::endl << std::endl
+	<< "# Duty cycle threshold for slower braking of motors during the run.  Must be integer.  Units are percent." << std::endl
+	<< "# This value does not impact braking during manual mode" << std::endl
+	<< "BRAKE_DUTY = 10" << std::endl << std::endl << std::endl << std::endl
+	<< "### Rasperry Pi GPIO Pin setup" << std::endl << std::endl
+	<< "# Raspberry Pi GPIO pin for motor A Soft PWM.  BCM equivalent of 0 = 17" << std::endl
+	<< "APINP = 0" << std::endl << std::endl
+	<< "# Raspberry Pi GPIO pin for motor A 1 pin.  BCM equivalent of 2 = 27" << std::endl
+	<< "APIN1 = 2" << std::endl << std::endl
+	<< "# Raspberry Pi GPIO pin for motor A 2 pin.  BCM equivalent of 3 = 22" << std::endl
+	<< "APIN2 = 3" << std::endl << std::endl
+	<< "# Raspberry Pi GPIO pin for motor B 1 pin.  BCM equivalent of 12 = 10" << std::endl
+	<< "BPIN1 = 12" << std::endl << std::endl
+	<< "# Raspberry Pi GPIO pin for motor B 2 pin.  BCM equivalent of 13 = 9" << std::endl
+	<< "BPIN2 = 13" << std::endl << std::endl
+	<< "# Raspberry Pi GPIO pin for motor A Soft PWM.  BCM equivalent of 14 = 11" << std::endl
+	<< "BPINP = 14" << std::endl;
+	
+	config_file.close();
+	
+	if (std::filesystem::file_size(config_loc) < 2000) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+/**
  * Main function
  *
  * @return status
@@ -1109,6 +1257,15 @@ int main (int argc, char **argv) {
 	// Parse config file
 	std::string config_file = "./settings.cfg";
 	std::ifstream cFile (config_file);
+	if (access(cFile.c_str(), R_OK) < 0) {
+		std::cerr << "WARNING: default settings file is not readable, creating for you." << std::endl;
+		if (create_default_config()) {
+			std::cerr << "ERROR: Could not read existing or create default settings.cfg" << std::endl;
+			notify_handler("LunAero Error", "Could not read or write a default settings.cfg");
+			return 1;
+		}
+		
+	}
 	if (cFile.is_open()) {
 		std::string line;
 		while(getline(cFile, line)){

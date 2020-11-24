@@ -227,5 +227,6 @@ std::string current_time(int gmt);
 void abort_code();
 int notify_handler(std::string input1, std::string input2);
 int parse_checklist(std::string name, std::string value);
+int create_default_config();
 
 #endif
