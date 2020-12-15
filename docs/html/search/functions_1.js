@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['blur_5ftest',['blur_test',['../LunAero_8cpp.html#ab68159eefdb77461d343b34fdf99473f',1,'blur_test():&#160;LunAero.cpp'],['../LunAero_8hpp.html#ab68159eefdb77461d343b34fdf99473f',1,'blur_test():&#160;LunAero.cpp']]],
-  ['bright_5ftest',['bright_test',['../LunAero_8cpp.html#abf2265179e4771bfb0e1c72231b62ada',1,'bright_test():&#160;LunAero.cpp'],['../LunAero_8hpp.html#abf2265179e4771bfb0e1c72231b62ada',1,'bright_test():&#160;LunAero.cpp']]]
+  ['bb_5frunner',['bb_runner',['../gtk__LunAero_8cpp.html#a792fd677525c6702a572e7378b3d264b',1,'gtk_LunAero.cpp']]],
+  ['blur_5fbright',['blur_bright',['../LunAero_8cpp.html#a192ed5ab64d56ad402cd4bf562cbf2f5',1,'blur_bright():&#160;LunAero.cpp'],['../LunAero_8hpp.html#a192ed5ab64d56ad402cd4bf562cbf2f5',1,'blur_bright():&#160;LunAero.cpp']]]
 ];

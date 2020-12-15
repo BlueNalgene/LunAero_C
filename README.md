@@ -1,4 +1,4 @@
-![The first fully automated lunar bird tracker](https://i.imgur.com/jRGf8h6.jpg "The first fully automated lunar bird tracker")
+![The first fully automated lunar bird tracker](https://i.imgur.com/jRGf8h6h.jpg "The first fully automated lunar bird tracker")
 
 # The LunAero Project
 LunAero is a hardware and software project using OpenCV to automatically

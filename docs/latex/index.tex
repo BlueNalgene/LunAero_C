@@ -1,0 +1,254 @@
+
+
+\section*{The Lun\+Aero Project}
+
+Lun\+Aero is a hardware and software project using Open\+CV to automatically track birds as they migrate in front of the moon. This repository contains information related to the construction of Lun\+Aero hardware and the software required for running the moon tracking program. Bird detection has \char`\"{}migrated\char`\"{} to a new repository at \href{https://github.com/BlueNalgene/CPP_Birdtracker}{\tt https\+://github.\+com/\+Blue\+Nalgene/\+C\+P\+P\+\_\+\+Birdtracker}.
+
+Created by , working in the lab of -\/\+S-\/\+Bridge.
+
+\section*{Lun\+Aero\+\_\+C vs. Lun\+Aero}
+
+The Lun\+Aero\+\_\+C repository is an updated version of the Lun\+Aero robotics software. The previous implementation (archived at \href{https://github.com/BlueNalgene/LunAero}{\tt https\+://github.\+com/\+Blue\+Nalgene/\+Lun\+Aero}) was a Python 3 script which operated hardware based on the O\+D\+R\+O\+ID N2 single board computer. This updated version is C++ code designed for the Raspberry Pi v3, and includes many improvements, additional features, and is generally more mature code.
+
+\subsection*{Hardware Recommendations}
+
+
+\begin{DoxyItemize}
+\item Raspberry Pi v3
+\item U\+SB 3 drive with transfer rate of at least 200 M\+B/s
+\item Raspberry Pi camera module
+\item Motors (2)
+\item T\+B6612\+F\+NG motor controller
+\item 1/4\char`\"{} Acrylic (about 18\char`\"{}x24\char`\"{})
+-\/ 1/8\char`\"{} Acetal (about 3\char`\"{}x3\char`\"{})
+\item Screws and Wires
+\end{DoxyItemize}
+
+This new version of Lun\+Aero requires a Raspberry Pi v3 single board computer. We recommend running this on the Raspbian operating system, although most linux distros should work fine (untested, so use at your own risk). The reason we require v3 hardware is the addition of U\+SB 3 slots over previous versions of the Raspberry Pi which only included U\+SB 2.
+
+A U\+SB 3 drive with a minimum real transfer rate of 200 M\+B/s is required for this hardware. Due to the large size of long term high quality video recorded by Lun\+Aero, this transfer rate is a must. You should check that your drive actually performs at this speed. Some hard disk manufacturers might claim transfer speeds of \char`\"{}up to\char`\"{} the U\+SB 3 maximum rate (625 M\+B/s) without actually being able to get anywhere near this speed.
+
+Unsure of your hard drive transfer rate? On linux systems you can use this command to test it\+: 
+\begin{DoxyCode}
+cat /dev/zero | pv > /path/to/your/drive/junkfile
+\end{DoxyCode}
+ The real-\/time transfer rate is printed on the terminal. Press {\ttfamily ctrl}+{\ttfamily c} to stop the script and use\+: 
+\begin{DoxyCode}
+rm /path/to/your/drive/junkfile
+\end{DoxyCode}
+ to remove the junkfile you created.
+
+Whatever you do, {\bfseries avoid storing video on the SD card!} Even if you have a giant SD card with a ton of space, the technology underlying the SD card is fragile for frequent writes and rewrites. Saving large videos to your SD card is a good way to damage it, corrupting your OS. So {\bfseries avoid storing video on the SD card!}
+
+This installation uses a Raspberry Pi camera module. Currently, there is no implementation for U\+SB cameras and no support for this is planned. The software makes use of Raspbian\textquotesingle{}s {\ttfamily raspivid} command to handle recording video. We have tried v1 and v2 Raspberry Pi camera modules and had no problems. Fancy cameras such as the IR camera module have not been tested.
+
+A T\+B6612\+F\+NG breakout board is required to control two motors. If you don\textquotesingle{}t have one of these laying around (we made our own board in house), you can get them from Sparkfun \href{https://www.sparkfun.com/products/14451}{\tt https\+://www.\+sparkfun.\+com/products/14451}.
+
+This hardware implementation requires two low speed/high torque 5V motors. We used 0.\+5 rpm motors purchased from Amazon (uxcell DC 5V 0.\+5\+R\+PM Worm Gear Motor 6mm Shaft High Torque Turbine Reducer). If you change motors, be sure that the C\+AD designs match the drill holes required for the motor to attach to the plastic.
+
+This project include designs for plastic parts to be cut from 1/4\char`\"{}
+acrylic plastic and 1/8\char`\"{} acetal plastic. You can change these materials if you like. E.\+g. it would be reasonable to swap the acetal for some of the 1/4" acyrlic if you are low on funds. H\+O\+W\+E\+V\+ER, the acetal makes much better gears and will give you much smoother motion.
+
+Hardware updates are planned, but the current version uses most of the original design, which can be found at \href{https://osf.io/k6nfs/}{\tt https\+://osf.\+io/k6nfs/} .
+
+\subsection*{Using the 2D C\+AD files}
+
+The C\+AD files in the 2D C\+AD folder are used to construct parts for Lun\+Aero including gears and mounting brackets. The parts are designed to be cut on a laser C\+NC machine. They can also be used as templates for cutting on a band saw or using another C\+NC machine.
+
+The units are in mm for all parts.
+
+Part files can be found at\+: \href{https://osf.io/k6nfs/}{\tt https\+://osf.\+io/k6nfs/} .
+
+Assembly information can be found at\+: \href{https://osf.io/y2n3j/}{\tt https\+://osf.\+io/y2n3j/} .
+
+\subsection*{Software Install Instructions}
+
+\subsubsection*{Option 1\+: Compile this Repository}
+
+To follow my instructions, you need to use the Linux terminal, where you can copy and paste the following scripts. To open the Linux terminal, press {\ttfamily ctrl}+{\ttfamily alt}+{\ttfamily t} or click the icon on the Raspbian desktop.
+
+When you install this for the first time on to a \textquotesingle{}blank\textquotesingle{} Raspberry Pi, you will need certain repositories installed to make it. Use the following command in your terminal (Note\+: this looks way more daunting than it really is, your Raspberry Pi will have most of these installed with a default Raspbian configuration)\+:
+
+
+\begin{DoxyCode}
+sudo apt update
+sudo apt -y install git libc6-dev libgcc-8-dev libraspberrypi0 wiringpi \(\backslash\)
+libstdc++-8-dev libgtk-3-dev libpango1.0-dev libatk1.0-dev libcairo2-dev \(\backslash\)
+libgdk-pixbuf2.0-dev libglib2.0-dev libopencv-shape-dev \(\backslash\)
+libopencv-stitching-dev libopencv-superres-dev libopencv-videostab-dev \(\backslash\)
+libopencv-contrib-dev libopencv-video-dev libopencv-viz-dev \(\backslash\)
+libopencv-calib3d-dev libopencv-features2d-dev libopencv-flann-dev \(\backslash\)
+libopencv-objdetect-dev libopencv-ml-dev libopencv-highgui-dev \(\backslash\)
+libopencv-videoio-dev libopencv-imgcodecs-dev libopencv-photo-dev \(\backslash\)
+libopencv-imgproc-dev libopencv-core-dev libnotify-dev libc6 libglib2.0-0 \(\backslash\)
+libx11-6 libxi6 libxcomposite1 libxdamage1 libxfixes3 libatk-bridge2.0-0 \(\backslash\)
+libxkbcommon0 libwayland-cursor0 libwayland-egl1 libwayland-client0 \(\backslash\)
+libepoxy0 libharfbuzz0b libpangoft2-1.0-0 libfontconfig1 libfreetype6 \(\backslash\)
+libxinerama1 libxrandr2 libxcursor1 libxext6 libthai0 libfribidi0 \(\backslash\)
+libpixman-1-0 libpng16-16 libxcb-shm0 libxcb1 libxcb-render0 libxrender1 \(\backslash\)
+zlib1g libmount1 libselinux1 libffi6 libpcre3 libtbb2 libhdf5-103 libsz2 \(\backslash\)
+libjpeg62-turbo libtiff5 libvtk6.3 libgl2ps1.4 libglu1-mesa libsm6 \(\backslash\)
+libice6 libxt6 libgl1 libtesseract4 liblept5 libdc1394-22 libgphoto2-6 \(\backslash\)
+libgphoto2-port12 libavcodec58 libavformat58 libavutil56 libswscale5 \(\backslash\)
+libavresample4 libwebp6 libgdcm2.8 libilmbase23 libopenexr23 libgdal20 \(\backslash\)
+libdbus-1-3 libatspi2.0-0 libgraphite2-3 libexpat1 libuuid1 libdatrie1 \(\backslash\)
+libxau6 libxdmcp6 libblkid1 libatomic1 libaec0 libzstd1 liblzma5 libjbig0 \(\backslash\)
+libbsd0 libglvnd0 libglx0 libgomp1 libgif7 libopenjp2-7 libraw1394-11 \(\backslash\)
+libusb-1.0-0 libltdl7 libexif12 libswresample3 libvpx5 libwebpmux3 \(\backslash\)
+librsvg2-2 libzvbi0 libsnappy1v5 libaom0 libcodec2-0.8.1 libgsm1 \(\backslash\)
+libmp3lame0 libopus0 libshine3 libspeex1 libtheora0 libtwolame0 \(\backslash\)
+libvorbis0a libvorbisenc2 libwavpack1 libx264-155 libx265-165 \(\backslash\)
+libxvidcore4 libva2 libxml2 libbz2-1.0 libgme0 libopenmpt0 \(\backslash\)
+libchromaprint1 libbluray2 libgnutls30 libssh-gcrypt-4 libva-drm2 \(\backslash\)
+libva-x11-2 libvdpau1 libdrm2 libcharls2 libjson-c3 libarmadillo9 \(\backslash\)
+libproj13 libpoppler82 libfreexl1 libqhull7 libgeos-c1v5 libepsilon1 \(\backslash\)
+libodbc1 odbcinst1debian2 libkmlbase1 libkmldom1 libkmlengine1 \(\backslash\)
+libkmlxsd1 libkmlregionator1 libxerces-c3.2 libnetcdf13 libhdf4-0-alt \(\backslash\)
+libogdi3.2 libgeotiff2 libpq5 libdapclient6v5 libdapserver7v5 \(\backslash\)
+libdap25 libspatialite7 libcurl3-gnutls libfyba0 libmariadb3 libssl1.1 \(\backslash\)
+libsystemd0 libudev1 libsoxr0 libcroco3 libogg0 libicu63 libmpg123-0 \(\backslash\)
+libvorbisfile3 libp11-kit0 libidn2-0 libunistring2 libtasn1-6 libnettle6 \(\backslash\)
+libhogweed4 libgmp10 libgcrypt20 libgssapi-krb5-2 libarpack2 libsuperlu5 \(\backslash\)
+libnss3 libnspr4 liblcms2-2 libgeos-3.7.1 libpopt0 libminizip1 \(\backslash\)
+liburiparser1 libkmlconvenience1 libldap-2.4-2 libsqlite3-0 \(\backslash\)
+libnghttp2-14 librtmp1 libssh2-1 libpsl5 libkrb5-3 libk5crypto3 \(\backslash\)
+libcom-err2 liblz4-1 libgpg-error0 libkrb5support0 libkeyutils1 \(\backslash\)
+libgfortran5 libsasl2-2 libblas3 
+\end{DoxyCode}
+
+
+Next, use {\ttfamily git} to pull this repository. I recommend saving it to a location to makes sense, so in the following example, I am pulling it to the {\ttfamily Documents} folder in the Raspberry Pi home directory. Once the Lun\+Aero {\ttfamily git} repository is pulled, you can compile it. To do this, execute the lines in the terminal\+:
+
+
+\begin{DoxyCode}
+cd /home/pi/Documents
+git clone https://github.com/BlueNalgene/LunAero\_C.git
+cd LunAero\_C
+\end{DoxyCode}
+
+
+This script downloads the everything you need to compile the program from this {\ttfamily git} repository. Once you have the repository on your Raspberry Pi and have installed all of the relevant packages from the {\ttfamily apt} command above, enter the Lun\+Aero\+\_\+C folder, and issue the following command\+:
+
+
+\begin{DoxyCode}
+make
+\end{DoxyCode}
+
+
+The {\ttfamily make} command follows the instructions from the {\ttfamily Makefile} to compile your program. If you ever make changes to the source material, remember to edit the {\ttfamily Makefile} to reflect changes to the packages used or the required C++ files. If {\ttfamily make} runs correctly, your terminal will print some text that looks like {\ttfamily g++ blah blah -\/o Lun\+Aero\+\_\+\+Moontracker} spanning a few lines. If the output is significantly longer than that and includes words like E\+R\+R\+OR or W\+A\+R\+N\+I\+NG, something may have gone wrong, and you should read the error messages to see if something needs to be fixed.
+
+\subsubsection*{Option 2\+: Custom Raspbian Boot Image}
+
+\subsubsection*{Option 3 (experimental)\+: Download a Pre-\/\+Compiled Binary Release}
+
+\subsection*{Running Lun\+Aero}
+
+Hooray! You compiled a file called {\ttfamily Lun\+Aero\+\_\+\+Moontracker}. When you are ready to run the program, you can type the command\+: 
+\begin{DoxyCode}
+/path/to/LunAero\_C/LunAero\_Moontracker
+\end{DoxyCode}
+ and the program will run. Alternatively, you can create a desktop icon by copying the file {\ttfamily execution\+\_\+script/\+C\+\_\+\+Lun\+Aero\+\_\+\+Moontracker} from this {\ttfamily git} repository to your desktop. Note that this script assumes you pulled this {\ttfamily git} repository to the Documents folder, so you will need to edit the link in the file if you installed things in another location. We recommend the following steps to run the program well\+:
+
+\subsubsection*{Edit the Settings}
+
+A file called {\ttfamily settings.\+cfg} has been provided to give the user the ability to modify settings without needing to recompile. Before running, Lun\+Aero for the first time, it is prudent to check that you are happy with the default settings. This is especially true for the General Settings at to top of the file.
+
+You will likely need to edit the {\ttfamily D\+R\+I\+V\+E\+\_\+\+N\+A\+ME} setting. This should be the name you have assigned to the U\+SB drive you are saving video to. The default is {\ttfamily M\+O\+O\+N1}. This means that the program will try to save video to the drive located at {\ttfamily /media/\$\+U\+S\+ER/\+M\+O\+O\+N1/}. The program won\textquotesingle{}t work if you have this setting incorrect.
+
+\subsubsection*{Time Confirmation}
+
+Before you run Lun\+Aero, you should confirm that the date and time of your system is correct. This is a very important step since Lun\+Aero saves videos based on the system time, and during analysis, an accurate time stamp is necessary. We recommend single second accuracy for of your system time prior to starting. You should also check that your Raspberry Pi is configured for the correct timezone for the location you are operating in. The most reliable way to check these values on Linux is to open a terminal and use\+:
+
+
+\begin{DoxyCode}
+timedatectl
+\end{DoxyCode}
+
+
+The Raspberry Pi v3 automatically updates the system time when connected to the internet. If you are somewhere without access to the internet (out birding in the middle of nowhere maybe), you will need to update the time and date manually. To set the date to July 20th, 1969 at 10\+:56\+:20 pm (The official time that Neil Armstrong stepped on the moon), you would use\+:
+
+
+\begin{DoxyCode}
+sudo date +%Y%m%d -s "19690720"
+sudo date +%T -s "22:56:20"
+\end{DoxyCode}
+
+
+To set the timezone on your Raspberry Pi, you need to enter the config screen, select \char`\"{}\+Localization Options\char`\"{}, and \char`\"{}\+Change Timezone\char`\"{}. To edit the config, use the Raspberry Pi config tool from the terminal with\+:
+
+
+\begin{DoxyCode}
+sudo raspi-config
+\end{DoxyCode}
+
+
+\subsubsection*{Manual Adjustment Mode}
+
+Once you have confirmed the time is correct, run the program. Upon startup, you will enter \char`\"{}manual mode\char`\"{}. In this mode, you are able to adjust the direction your scope is pointing and a few camera settings. In \char`\"{}manual mode\char`\"{}, the bottom center of the screen includes a preview window overlayed on the G\+UI which shows what the camera sees like a viewfinder.
+
+Take the following steps\+:
+
+
+\begin{DoxyItemize}
+\item Find the moon. Use the arrow buttons on the screen with the mouse or the arrow buttons on your keyboard to move the scope up, down, left, and right to find the moon. If you are having a hard time finding the moon, we recommend tilting and rotating the hardware while the motors are N\+OT moving to find approximately the correct left-\/right direction you should be pointing the scope. Then move up or down from that position. It is easier to find the moon if your scope is zoomed out. You can always zoom in once you have found the correct position.
+\item Adjust the zoom of your scope such that the moon fills as much of the preview window as reasonably possible. Do not over zoom such that the edge of the moon appears cut off.
+\item Adjust the brightness of the image by using the I\+SO and Shutter Speed buttons (or associated keyboard keys), and pass these commands to the camera. The I\+SO button cycles through the available I\+SO settings of the Raspberry Pi camera. Your options are 100, 200, 400, and 800. For clear nights, 100 will likely be the best setting. The shutter speed/exposure buttons (pluses and minuses) change the shutter speed. The buttons with a double plus or minus raise the and lower the settings to a greater degree than the single buttons. For a darker image, lower the setting, for a brighter image, raise the setting. None of these buttons update the image in the viewfinder. To use the settings, you must press the \char`\"{}\+Reissue Camera Command\char`\"{}.
+\item Check that Lun\+Aero likes your settings.
+\begin{DoxyItemize}
+\item The value next to \char`\"{}\+F\+O\+C\+U\+S V\+A\+L\char`\"{} is the calculated focus quality of your image. You must adjust the focus of your scope to influence it. For best results, attempt to maximize this value.
+\item If your image on the screen is determined by the software to be too bright, a message \char`\"{}\+T\+O\+O B\+R\+I\+G\+H\+T!\char`\"{} will appear. Adjust your camera settings based on the instructions in the previous step to make this warning disappear.
+\end{DoxyItemize}
+\item Finally, perform any last minute adjustments on the position. The moon should be completely within the preview window, not touching the edge. If you are satisfied with the image...
+\item Press the \char`\"{}▶\char`\"{} button or the {\ttfamily Enter} key.
+\end{DoxyItemize}
+
+\subsubsection*{Automatic Mode}
+
+Once you are happy with the settings, and pressed {\ttfamily Enter} to run automatic mode, just step away. Watch with joy and wonder as the scope automatically follows the moon as it moves across the sky. Lun\+Aero is recording everything that happens in view of the scope now. You can walk away from it and it will continue recording. Be sure to check that the weather is good and you are in a secure location. Members of the Lun\+Aero team are not responsible for anything that happens to your scope if left outside during inclement weather or sticky fingers.
+
+\subsection*{Viewing the Video Output}
+
+Lun\+Aero saves video data to folders on your output U\+SB drive with the following formula\+: {\ttfamily /media/\$\+U\+S\+ER/\+D\+R\+I\+V\+E\+\_\+\+N\+A\+M\+E/\+Y\+Y\+Y\+Y\+M\+M\+D\+D\+H\+Hmm\+S\+S/$\ast$.h264} These output files are raw video footage not in a standard \char`\"{}container\char`\"{}. You need special codecs to view the video. We recommend the program V\+LC (\href{https://www.videolan.org/vlc/}{\tt https\+://www.\+videolan.\+org/vlc/}) for easiest use. This is an open-\/source program available for all OS\textquotesingle{}s. If you would like to view videos on your Raspberry Pi, use the following commands to install it\+:
+
+
+\begin{DoxyCode}
+sudo apt update
+sudo apt -y install vlc
+\end{DoxyCode}
+
+
+\subsection*{When Something Goes Wrong}
+
+Something always goes wrong. It is the way of things. When something inevitably does go wrong with Lun\+Aero program, you should first check the logs. If the setting {\ttfamily D\+E\+B\+U\+G\+\_\+\+C\+O\+UT} in {\ttfamily settings.\+cfg} is set to {\ttfamily true} the program will attempt to save a log file in the same directory where the videos are saved for each run. This is very detailed, so searching for keywords like {\ttfamily W\+A\+R\+N\+I\+NG} and {\ttfamily E\+R\+R\+OR} are suggested.
+
+\subsubsection*{Something Went Wrong... and I can\textquotesingle{}t find a log file}
+
+If there is no log file saved where you would expect it and you have checked that your debug settings are correct, there may have been a problem when writing the log file. Did you see a little notification pop up near the top right of the screen? If you see one of those, it means there was a problem before the log file could be written. Check that you have the correct drive name saved to {\ttfamily D\+R\+I\+V\+E\+\_\+\+N\+A\+ME} in the settings. Check to see if the path looks correct. In terminal type
+
+
+\begin{DoxyCode}
+ls /media/pi/
+\end{DoxyCode}
+ In the output you should see {\ttfamily D\+R\+I\+V\+E\+\_\+\+N\+A\+ME}. If you also see something which looks like {\ttfamily D\+R\+I\+V\+E\+\_\+\+N\+A\+ME}\+\_\+1, then something went wrong mounting the drive. Safely eject and disconnect all drives on the Raspberry Pi. Run the {\ttfamily ls} command again. If you still see {\ttfamily D\+R\+I\+V\+E\+\_\+\+N\+A\+ME} variants W\+I\+TH T\+HE D\+R\+I\+VE N\+OT C\+O\+N\+N\+E\+C\+T\+ED, you need to remove them.
+
+
+\begin{DoxyCode}
+sudo rm -r /path/to/offending/drive
+\end{DoxyCode}
+
+
+Be careful with that command. If drives are still connected, you risk data loss by using it. Once the offending false mount points are removed, try connecting your drive again.
+
+This problem usually occurs when drives are incorrectly removed and re-\/mounted. Linux is very persnickety when it comes to mounting drives. Be sure to eject prior to disconnecting a drive if the Raspberry Pi is running. It is best to have the power disconnected any time you want to remove or add a drive.
+
+\subsubsection*{Something Went Wrong...and it isn\textquotesingle{}t listed here}
+
+If you need help, raise an Issue on this {\ttfamily git} repository with descriptive information so the package maintainer can help you.
+
+\subsection*{Bird Detection Software}
+
+As of June 21st, 2019, the original Python software for tracking birds in video of the moon has been migrated to a new repository at \href{https://github.com/BlueNalgene/Birdtracker_LunAero,}{\tt https\+://github.\+com/\+Blue\+Nalgene/\+Birdtracker\+\_\+\+Lun\+Aero,} although work on this version has been discontinued in favor of C++. The new version may be found at \href{https://github.com/BlueNalgene/CPP_Birdtracker}{\tt https\+://github.\+com/\+Blue\+Nalgene/\+C\+P\+P\+\_\+\+Birdtracker} .
+
+\subsection*{What if I Want to Play with the Source Code?}
+
+The source code is documented with the {\ttfamily Doxygen} standard. Every function and most variables are heavily commented to make it easy for you. You can view the documentation online by going to\+: \href{https://bluenalgene.github.io/LunAero_C/html/index.html}{\tt https\+://bluenalgene.\+github.\+io/\+Lun\+Aero\+\_\+\+C/html/index.\+html} . 

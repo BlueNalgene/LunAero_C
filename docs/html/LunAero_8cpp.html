@@ -92,10 +92,8 @@ Functions</h2></td></tr>
 <tr class="separator:adc77627b7f4e230cbd3e5de43248b3ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad16a479f48a31e883d0f658eb35306b3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="LunAero_8cpp.html#ad16a479f48a31e883d0f658eb35306b3">current_time</a> (int gmt)</td></tr>
 <tr class="separator:ad16a479f48a31e883d0f658eb35306b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab68159eefdb77461d343b34fdf99473f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="LunAero_8cpp.html#ab68159eefdb77461d343b34fdf99473f">blur_test</a> ()</td></tr>
-<tr class="separator:ab68159eefdb77461d343b34fdf99473f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf2265179e4771bfb0e1c72231b62ada"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="LunAero_8cpp.html#abf2265179e4771bfb0e1c72231b62ada">bright_test</a> ()</td></tr>
-<tr class="separator:abf2265179e4771bfb0e1c72231b62ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a192ed5ab64d56ad402cd4bf562cbf2f5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="LunAero_8cpp.html#a192ed5ab64d56ad402cd4bf562cbf2f5">blur_bright</a> ()</td></tr>
+<tr class="separator:a192ed5ab64d56ad402cd4bf562cbf2f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6ee07066b693b837fae1ff787494732"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="LunAero_8cpp.html#aa6ee07066b693b837fae1ff787494732">current_frame</a> ()</td></tr>
 <tr class="separator:aa6ee07066b693b837fae1ff787494732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ebc5d0972b7e5bcd57e5986bcd4cec9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="LunAero_8cpp.html#a9ebc5d0972b7e5bcd57e5986bcd4cec9">notify_handler</a> (std::string input1, std::string input2)</td></tr>
@@ -104,6 +102,8 @@ Functions</h2></td></tr>
 <tr class="separator:a6b3880fb3ba8978b9f04343d9fd0e11a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaee2ca25c5f0d375d48ec5b88dd6c1b3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="LunAero_8cpp.html#aaee2ca25c5f0d375d48ec5b88dd6c1b3">parse_checklist</a> (std::string name, std::string value)</td></tr>
 <tr class="separator:aaee2ca25c5f0d375d48ec5b88dd6c1b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb03f9d48df5f9988cd4bc664c5d7507"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="LunAero_8cpp.html#acb03f9d48df5f9988cd4bc664c5d7507">create_default_config</a> ()</td></tr>
+<tr class="separator:acb03f9d48df5f9988cd4bc664c5d7507"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="LunAero_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -136,65 +136,30 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ab68159eefdb77461d343b34fdf99473f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab68159eefdb77461d343b34fdf99473f">&#9670;&nbsp;</a></span>blur_test()</h2>
+<a id="a192ed5ab64d56ad402cd4bf562cbf2f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a192ed5ab64d56ad402cd4bf562cbf2f5">&#9670;&nbsp;</a></span>blur_bright()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float blur_test </td>
+          <td class="memname">int blur_bright </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function captures the frame from the preview window (a complicated process involving capturing the VC/DISPMANX screenshot, not the X window screensho), crops it to ignore the GTK, and determines how blurry the image is. Blur is computed based on the standard method, running a Laplacian operation on the cropped image and computing the variance of this result.</p>
+<p>This function captures the frame from the preview window (a complicated process involving capturing the VC/DISPMANX screenshot, not the X window screenshot), crops it to ignore the GTK, and determines image blur and brightness. Blur is computed based on the standard method, running a Laplacian operation on the cropped image and computing the variance of this result. Brightness is a raw pixel thresholding method.</p>
 <dl class="section return"><dt>Returns</dt><dd>blurval A floating point value representing the degree of variation in tbe blur </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="LunAero_8cpp_ab68159eefdb77461d343b34fdf99473f_icgraph.png" border="0" usemap="#LunAero_8cpp_ab68159eefdb77461d343b34fdf99473f_icgraph" alt=""/></div>
-<map name="LunAero_8cpp_ab68159eefdb77461d343b34fdf99473f_icgraph" id="LunAero_8cpp_ab68159eefdb77461d343b34fdf99473f_icgraph">
-<area shape="rect" id="node2" href="gtk__LunAero_8cpp.html#ac253bfe06d7523cbf5ec19eacbfd3436" title="refresh_text_boxes" alt="" coords="125,5,259,32"/>
-<area shape="rect" id="node3" href="gtk__LunAero_8hpp.html#adfca91e4388899f97db57d9d1877d27d" title="activate" alt="" coords="307,5,375,32"/>
-<area shape="rect" id="node4" href="LunAero_8hpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title="main" alt="" coords="423,5,473,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="abf2265179e4771bfb0e1c72231b62ada"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf2265179e4771bfb0e1c72231b62ada">&#9670;&nbsp;</a></span>bright_test()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool bright_test </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This function tests our image to determine if the moon appears too bright. This is not a simple test. Since we are looking at a "white" moon, we can expect to see a lot of spots which are bright on their own. So we need to rely on another method to get the brightness saturation. I am using the nearest neighbors of each pixel by iterating a custom <img class="formulaInl" alt="$ 3 \times 3$" src="form_0.png"/> kernel across the image. Rather than using a simple nearest neighbor kernel like: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \boldsymbol{I_{neigh}} = \begin{bmatrix} 1 &amp; 1 &amp; 1 \\ 1 &amp; 0 &amp; 1 \\ 1 &amp; 1 &amp; 1 \end{bmatrix} \]" src="form_1.png"/>
-</p>
-<p> I used two separate <img class="formulaInl" alt="$ 3 \times 3$" src="form_0.png"/> matrices split into a T and X form: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \boldsymbol{I_{t}} = \begin{bmatrix} 0 &amp; 1 &amp; 0 \\ 1 &amp; 0 &amp; 1 \\ 0 &amp; 1 &amp; 0 \end{bmatrix} , \boldsymbol{I_{x}} = \begin{bmatrix} 1 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 1 \end{bmatrix} \]" src="form_2.png"/>
-</p>
-<p> I found empirically that this split more accurately scales with the level of glowing brightness in images by creating sample over-bright images. So my method, once the image has been extracted from the VC/DISPMANX screenshotting tool, is to 1) find the area of the largest contour (which is presumably the moon) 2) Convert the input image to the HSV color space and extract only the V values (the brightness level) 3) Find the raw brightess (thresholded based on a user set value RAW_BRIGHT_THRESH from settings.cfg)per area of moon 4) Create a test Mat of values by iterating each kernel over the V channel image 5) Run an or test on the truth value of those Mat's and count the number of "overbright" pixels and correct this based on the observe area of the moon. If the resulting percentages are less than the BRIGHT_THRESH, as declared in settings.cfg, then the moon is not too bright to use. Otherwise, a message is issued from the GTK loop.</p>
-<dl class="section return"><dt>Returns</dt><dd>bright_outcome Result of comparing brightness values to BRIGHT_THRESH. True = passed and the image is not too bright, false = failed as the image was too bright. </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="LunAero_8cpp_abf2265179e4771bfb0e1c72231b62ada_icgraph.png" border="0" usemap="#LunAero_8cpp_abf2265179e4771bfb0e1c72231b62ada_icgraph" alt=""/></div>
-<map name="LunAero_8cpp_abf2265179e4771bfb0e1c72231b62ada_icgraph" id="LunAero_8cpp_abf2265179e4771bfb0e1c72231b62ada_icgraph">
-<area shape="rect" id="node2" href="gtk__LunAero_8cpp.html#ac253bfe06d7523cbf5ec19eacbfd3436" title="refresh_text_boxes" alt="" coords="136,5,269,32"/>
-<area shape="rect" id="node3" href="gtk__LunAero_8hpp.html#adfca91e4388899f97db57d9d1877d27d" title="activate" alt="" coords="317,5,385,32"/>
-<area shape="rect" id="node4" href="LunAero_8hpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title="main" alt="" coords="433,5,484,32"/>
+<div class="center"><img src="LunAero_8cpp_a192ed5ab64d56ad402cd4bf562cbf2f5_icgraph.png" border="0" usemap="#LunAero_8cpp_a192ed5ab64d56ad402cd4bf562cbf2f5_icgraph" alt=""/></div>
+<map name="LunAero_8cpp_a192ed5ab64d56ad402cd4bf562cbf2f5_icgraph" id="LunAero_8cpp_a192ed5ab64d56ad402cd4bf562cbf2f5_icgraph">
+<area shape="rect" id="node2" href="gtk__LunAero_8cpp.html#a792fd677525c6702a572e7378b3d264b" title="bb_runner" alt="" coords="136,5,215,32"/>
+<area shape="rect" id="node3" href="gtk__LunAero_8hpp.html#adfca91e4388899f97db57d9d1877d27d" title="activate" alt="" coords="263,5,331,32"/>
+<area shape="rect" id="node4" href="LunAero_8hpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title="main" alt="" coords="379,5,429,32"/>
 </map>
 </div>
 
@@ -274,6 +239,33 @@ Here is the caller graph for this function:</div>
 <area shape="rect" id="node2" href="gtk__LunAero_8hpp.html#a2750298f3b0a2e50ef22012254eb5bda" title="abort_check" alt="" coords="120,5,213,32"/>
 <area shape="rect" id="node3" href="gtk__LunAero_8hpp.html#adfca91e4388899f97db57d9d1877d27d" title="activate" alt="" coords="261,5,329,32"/>
 <area shape="rect" id="node4" href="LunAero_8hpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title="main" alt="" coords="377,5,428,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="acb03f9d48df5f9988cd4bc664c5d7507"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb03f9d48df5f9988cd4bc664c5d7507">&#9670;&nbsp;</a></span>create_default_config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int create_default_config </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function is called to create a default settings config file. Creates the file in the current working directory as ./settings.cfg. If the file at that path after writing is smaller than 2kb, this function returns an error status.</p>
+<dl class="section return"><dt>Returns</dt><dd>status </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="LunAero_8cpp_acb03f9d48df5f9988cd4bc664c5d7507_icgraph.png" border="0" usemap="#LunAero_8cpp_acb03f9d48df5f9988cd4bc664c5d7507_icgraph" alt=""/></div>
+<map name="LunAero_8cpp_acb03f9d48df5f9988cd4bc664c5d7507_icgraph" id="LunAero_8cpp_acb03f9d48df5f9988cd4bc664c5d7507_icgraph">
+<area shape="rect" id="node2" href="LunAero_8hpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title="main" alt="" coords="200,5,251,32"/>
 </map>
 </div>
 
@@ -473,53 +465,54 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="LunAero_8cpp_a3c04138a5bfe5d72780bb7e82a18e627_cgraph.png" border="0" usemap="#LunAero_8cpp_a3c04138a5bfe5d72780bb7e82a18e627_cgraph" alt=""/></div>
 <map name="LunAero_8cpp_a3c04138a5bfe5d72780bb7e82a18e627_cgraph" id="LunAero_8cpp_a3c04138a5bfe5d72780bb7e82a18e627_cgraph">
-<area shape="rect" id="node2" href="LunAero_8cpp.html#a6b3880fb3ba8978b9f04343d9fd0e11a" title="startup_disk_check" alt="" coords="104,5,239,32"/>
-<area shape="rect" id="node3" href="LunAero_8cpp.html#a9ebc5d0972b7e5bcd57e5986bcd4cec9" title="notify_handler" alt="" coords="307,31,409,57"/>
-<area shape="rect" id="node4" href="LunAero_8cpp.html#aaee2ca25c5f0d375d48ec5b88dd6c1b3" title="parse_checklist" alt="" coords="115,107,228,133"/>
-<area shape="rect" id="node5" href="LunAero_8cpp.html#ad16a479f48a31e883d0f658eb35306b3" title="current_time" alt="" coords="1458,233,1553,260"/>
-<area shape="rect" id="node6" href="LunAero_8cpp.html#a55ed746b51b0932e0442dee77f1f3a09" title="create_id_file" alt="" coords="1059,208,1157,235"/>
-<area shape="rect" id="node7" href="motors__LunAero_8cpp.html#aa45655ca1b2477a3a1573e23f397c65f" title="gpio_pin_setup" alt="" coords="117,1424,226,1451"/>
-<area shape="rect" id="node8" href="motors__LunAero_8cpp.html#aa672beb83b7c19a5b2b697915403a37d" title="motor_handler" alt="" coords="119,284,223,311"/>
-<area shape="rect" id="node10" href="motors__LunAero_8cpp.html#aa19b40639f826d7ebacac070bffd3d1c" title="final_stop" alt="" coords="132,1475,211,1501"/>
-<area shape="rect" id="node11" href="camera__LunAero_8cpp.html#a5828cc9ffb99db33b01fc641613cc59d" title="camera_preview" alt="" coords="855,1095,972,1121"/>
-<area shape="rect" id="node14" href="LunAero_8cpp.html#a58a017eda405c8e5a8fd944c06124eb7" title="kill_raspivid" alt="" coords="1460,1247,1551,1273"/>
-<area shape="rect" id="node16" href="gtk__LunAero_8cpp.html#ac4ab008bd8e814243a10acf52d081d64" title="activate" alt="" coords="137,1171,205,1197"/>
-<area shape="rect" id="node9" href="motors__LunAero_8cpp.html#a580856bf1004f7550c52ad12b53d062d" title="speed_up" alt="" coords="319,259,397,285"/>
-<area shape="rect" id="node12" href="camera__LunAero_8cpp.html#a7974714210bd0c046bfe4001f021697e" title="command_cam_preview" alt="" coords="1027,1019,1189,1045"/>
-<area shape="rect" id="node13" href="camera__LunAero_8cpp.html#a04412b2d20fd79cb301ff78b67ece58b" title="confirm_mmal_safety" alt="" coords="1237,1069,1384,1096"/>
-<area shape="rect" id="node15" href="camera__LunAero_8cpp.html#a02da38125ad204a1c0efc2355499d24c" title="write_video_id" alt="" coords="1453,1069,1558,1096"/>
-<area shape="rect" id="node17" href="gtk__LunAero_8cpp.html#a1f4d92b1febba4e5792a59bf9d9e3341" title="gtk_global_setup" alt="" coords="298,1323,418,1349"/>
-<area shape="rect" id="node18" href="gtk__LunAero_8cpp.html#aba9adda53abd96f5aaf40be29107e489" title="gtk_buttons_preview" alt="" coords="287,867,429,893"/>
-<area shape="rect" id="node41" href="gtk__LunAero_8cpp.html#aa1f473ae14e316932727b28cc70a4dce" title="gtk_css_preview" alt="" coords="298,1221,418,1248"/>
-<area shape="rect" id="node42" href="gtk__LunAero_8cpp.html#ac253bfe06d7523cbf5ec19eacbfd3436" title="refresh_text_boxes" alt="" coords="291,360,425,387"/>
-<area shape="rect" id="node45" href="gtk__LunAero_8cpp.html#a2750298f3b0a2e50ef22012254eb5bda" title="abort_check" alt="" coords="311,1272,405,1299"/>
-<area shape="rect" id="node47" href="gtk__LunAero_8cpp.html#aafae350f5d2b26d5747353d472ae4018" title="cb_subsequent" alt="" coords="489,1272,600,1299"/>
-<area shape="rect" id="node19" href="LunAero_8cpp.html#adc77627b7f4e230cbd3e5de43248b3ac" title="abort_code" alt="" coords="501,1120,588,1147"/>
-<area shape="rect" id="node20" href="gtk__LunAero_8cpp.html#a69f155fbf14cd6831f9326a2c9827537" title="mot_stop_command" alt="" coords="660,1019,800,1045"/>
-<area shape="rect" id="node21" href="gtk__LunAero_8cpp.html#a01f57e0cb4e3700318b9afd117486f40" title="mot_up_command" alt="" coords="1441,620,1570,647"/>
-<area shape="rect" id="node22" href="gtk__LunAero_8cpp.html#a3579f9c4f5a343bc7eda1ea1e611e3d8" title="mot_down_command" alt="" coords="1432,721,1579,748"/>
-<area shape="rect" id="node23" href="gtk__LunAero_8cpp.html#a4d5405c09f5c514e981df9713684dadd" title="mot_left_command" alt="" coords="1439,917,1572,944"/>
-<area shape="rect" id="node24" href="gtk__LunAero_8cpp.html#a50fd5146f11b6b0e706b5abc41be62e3" title="mot_right_command" alt="" coords="1435,772,1575,799"/>
-<area shape="rect" id="node25" href="camera__LunAero_8cpp.html#a988599eec44c71a7036263c3a7e817ce" title="shutter_up" alt="" coords="689,563,771,589"/>
-<area shape="rect" id="node26" href="camera__LunAero_8cpp.html#a10580de6e0551da1e55d05ae761f3950" title="shutter_down" alt="" coords="680,613,780,640"/>
-<area shape="rect" id="node27" href="camera__LunAero_8cpp.html#ac5f31346ed6951fa58b11f8e8e8a276a" title="shutter_up_up" alt="" coords="678,664,782,691"/>
-<area shape="rect" id="node28" href="camera__LunAero_8cpp.html#a527b79b0c862e105cc03bcac5ea85c84" title="shutter_down_down" alt="" coords="661,917,799,944"/>
-<area shape="rect" id="node29" href="camera__LunAero_8cpp.html#aa6d930952628ad620e2a259108de4b2c" title="iso_cycle" alt="" coords="691,968,769,995"/>
-<area shape="rect" id="node30" href="camera__LunAero_8cpp.html#add493d0baf9631379ba04e6690a3a8c8" title="refresh_camera" alt="" coords="674,1171,786,1197"/>
-<area shape="rect" id="node31" href="gtk__LunAero_8cpp.html#a8665ac28fcb5db55c256e862f6199088" title="first_record_killer" alt="" coords="669,1069,791,1096"/>
-<area shape="rect" id="node40" href="gtk__LunAero_8cpp.html#abb666b830e27ab984f57f5ffb8b3a4e4" title="key_event_preview" alt="" coords="477,816,612,843"/>
-<area shape="rect" id="node32" href="gtk__LunAero_8cpp.html#a7f06833fc54e355a9986b60429b753b5" title="key_event_running" alt="" coords="848,993,979,1020"/>
-<area shape="rect" id="node33" href="gtk__LunAero_8cpp.html#a5f46419ebd4dfb012b2327e096a63dac" title="g_framecheck" alt="" coords="861,867,965,893"/>
-<area shape="rect" id="node36" href="camera__LunAero_8cpp.html#ac812e7b1a6d57e7ca306e001c99cf2b6" title="first_record" alt="" coords="870,1145,957,1172"/>
-<area shape="rect" id="node34" href="LunAero_8cpp.html#a49fa3075fdeb7cdf9caffb056710a8d5" title="cb_framecheck" alt="" coords="1053,867,1163,893"/>
-<area shape="rect" id="node35" href="LunAero_8cpp.html#aa6ee07066b693b837fae1ff787494732" title="current_frame" alt="" coords="1259,772,1362,799"/>
-<area shape="rect" id="node37" href="camera__LunAero_8cpp.html#ae758d181371cae3622978bee489d5853" title="camera_start" alt="" coords="1059,1120,1157,1147"/>
-<area shape="rect" id="node38" href="camera__LunAero_8cpp.html#aec581f7a0627d9324e87241671dcac8b" title="command_cam_start" alt="" coords="1239,461,1383,488"/>
-<area shape="rect" id="node39" href="camera__LunAero_8cpp.html#aa1ba49194500be6a8d8257f10bb98664" title="confirm_filespace" alt="" coords="1249,1120,1373,1147"/>
-<area shape="rect" id="node43" href="LunAero_8cpp.html#ab68159eefdb77461d343b34fdf99473f" title="blur_test" alt="" coords="509,360,581,387"/>
-<area shape="rect" id="node44" href="LunAero_8cpp.html#abf2265179e4771bfb0e1c72231b62ada" title="bright_test" alt="" coords="503,309,586,336"/>
-<area shape="rect" id="node46" href="LunAero_8cpp.html#a4b66d5e31b5dc18b314c8a68163263bd" title="cleanup" alt="" coords="1075,1323,1141,1349"/>
-<area shape="rect" id="node48" href="camera__LunAero_8cpp.html#a36692fd7d4a8ab80af918d722a5b7a31" title="reset_record" alt="" coords="866,1272,961,1299"/>
+<area shape="rect" id="node2" href="LunAero_8cpp.html#a6b3880fb3ba8978b9f04343d9fd0e11a" title="startup_disk_check" alt="" coords="110,49,245,76"/>
+<area shape="rect" id="node3" href="LunAero_8cpp.html#a9ebc5d0972b7e5bcd57e5986bcd4cec9" title="notify_handler" alt="" coords="319,24,421,50"/>
+<area shape="rect" id="node4" href="LunAero_8cpp.html#acb03f9d48df5f9988cd4bc664c5d7507" title="create_default_config" alt="" coords="104,100,251,126"/>
+<area shape="rect" id="node5" href="LunAero_8cpp.html#aaee2ca25c5f0d375d48ec5b88dd6c1b3" title="parse_checklist" alt="" coords="121,150,234,177"/>
+<area shape="rect" id="node6" href="LunAero_8cpp.html#ad16a479f48a31e883d0f658eb35306b3" title="current_time" alt="" coords="1470,277,1565,304"/>
+<area shape="rect" id="node7" href="LunAero_8cpp.html#a55ed746b51b0932e0442dee77f1f3a09" title="create_id_file" alt="" coords="1071,252,1169,278"/>
+<area shape="rect" id="node8" href="motors__LunAero_8cpp.html#aa45655ca1b2477a3a1573e23f397c65f" title="gpio_pin_setup" alt="" coords="123,809,232,836"/>
+<area shape="rect" id="node9" href="motors__LunAero_8cpp.html#aa672beb83b7c19a5b2b697915403a37d" title="motor_handler" alt="" coords="125,302,229,329"/>
+<area shape="rect" id="node11" href="motors__LunAero_8cpp.html#aa19b40639f826d7ebacac070bffd3d1c" title="final_stop" alt="" coords="138,860,217,886"/>
+<area shape="rect" id="node12" href="camera__LunAero_8cpp.html#a5828cc9ffb99db33b01fc641613cc59d" title="camera_preview" alt="" coords="867,556,984,582"/>
+<area shape="rect" id="node15" href="LunAero_8cpp.html#a58a017eda405c8e5a8fd944c06124eb7" title="kill_raspivid" alt="" coords="1472,530,1563,557"/>
+<area shape="rect" id="node17" href="gtk__LunAero_8cpp.html#ac4ab008bd8e814243a10acf52d081d64" title="activate" alt="" coords="143,581,211,608"/>
+<area shape="rect" id="node10" href="motors__LunAero_8cpp.html#a580856bf1004f7550c52ad12b53d062d" title="speed_up" alt="" coords="331,353,409,380"/>
+<area shape="rect" id="node13" href="camera__LunAero_8cpp.html#a7974714210bd0c046bfe4001f021697e" title="command_cam_preview" alt="" coords="1039,556,1201,582"/>
+<area shape="rect" id="node14" href="camera__LunAero_8cpp.html#a04412b2d20fd79cb301ff78b67ece58b" title="confirm_mmal_safety" alt="" coords="1249,708,1396,734"/>
+<area shape="rect" id="node16" href="camera__LunAero_8cpp.html#a02da38125ad204a1c0efc2355499d24c" title="write_video_id" alt="" coords="1465,708,1570,734"/>
+<area shape="rect" id="node18" href="gtk__LunAero_8cpp.html#a1f4d92b1febba4e5792a59bf9d9e3341" title="gtk_global_setup" alt="" coords="310,657,430,684"/>
+<area shape="rect" id="node19" href="gtk__LunAero_8cpp.html#aba9adda53abd96f5aaf40be29107e489" title="gtk_buttons_preview" alt="" coords="299,1113,441,1140"/>
+<area shape="rect" id="node42" href="gtk__LunAero_8cpp.html#aa1f473ae14e316932727b28cc70a4dce" title="gtk_css_preview" alt="" coords="310,708,430,734"/>
+<area shape="rect" id="node43" href="gtk__LunAero_8cpp.html#ac253bfe06d7523cbf5ec19eacbfd3436" title="refresh_text_boxes" alt="" coords="303,606,437,633"/>
+<area shape="rect" id="node44" href="gtk__LunAero_8cpp.html#a2750298f3b0a2e50ef22012254eb5bda" title="abort_check" alt="" coords="323,454,417,481"/>
+<area shape="rect" id="node46" href="gtk__LunAero_8cpp.html#aafae350f5d2b26d5747353d472ae4018" title="cb_subsequent" alt="" coords="501,505,612,532"/>
+<area shape="rect" id="node48" href="gtk__LunAero_8cpp.html#a792fd677525c6702a572e7378b3d264b" title="bb_runner" alt="" coords="331,556,409,582"/>
+<area shape="rect" id="node20" href="LunAero_8cpp.html#adc77627b7f4e230cbd3e5de43248b3ac" title="abort_code" alt="" coords="513,1214,600,1241"/>
+<area shape="rect" id="node21" href="gtk__LunAero_8cpp.html#a69f155fbf14cd6831f9326a2c9827537" title="mot_stop_command" alt="" coords="672,1417,812,1444"/>
+<area shape="rect" id="node22" href="gtk__LunAero_8cpp.html#a01f57e0cb4e3700318b9afd117486f40" title="mot_up_command" alt="" coords="1453,1088,1582,1114"/>
+<area shape="rect" id="node23" href="gtk__LunAero_8cpp.html#a3579f9c4f5a343bc7eda1ea1e611e3d8" title="mot_down_command" alt="" coords="1444,1240,1591,1266"/>
+<area shape="rect" id="node24" href="gtk__LunAero_8cpp.html#a4d5405c09f5c514e981df9713684dadd" title="mot_left_command" alt="" coords="1451,986,1584,1013"/>
+<area shape="rect" id="node25" href="gtk__LunAero_8cpp.html#a50fd5146f11b6b0e706b5abc41be62e3" title="mot_right_command" alt="" coords="1447,1341,1587,1368"/>
+<area shape="rect" id="node26" href="camera__LunAero_8cpp.html#a988599eec44c71a7036263c3a7e817ce" title="shutter_up" alt="" coords="701,910,783,937"/>
+<area shape="rect" id="node27" href="camera__LunAero_8cpp.html#a10580de6e0551da1e55d05ae761f3950" title="shutter_down" alt="" coords="692,961,792,988"/>
+<area shape="rect" id="node28" href="camera__LunAero_8cpp.html#ac5f31346ed6951fa58b11f8e8e8a276a" title="shutter_up_up" alt="" coords="690,1012,794,1038"/>
+<area shape="rect" id="node29" href="camera__LunAero_8cpp.html#a527b79b0c862e105cc03bcac5ea85c84" title="shutter_down_down" alt="" coords="673,1316,811,1342"/>
+<area shape="rect" id="node30" href="camera__LunAero_8cpp.html#aa6d930952628ad620e2a259108de4b2c" title="iso_cycle" alt="" coords="703,1366,781,1393"/>
+<area shape="rect" id="node31" href="camera__LunAero_8cpp.html#add493d0baf9631379ba04e6690a3a8c8" title="refresh_camera" alt="" coords="686,758,798,785"/>
+<area shape="rect" id="node32" href="gtk__LunAero_8cpp.html#a8665ac28fcb5db55c256e862f6199088" title="first_record_killer" alt="" coords="681,1164,803,1190"/>
+<area shape="rect" id="node41" href="gtk__LunAero_8cpp.html#abb666b830e27ab984f57f5ffb8b3a4e4" title="key_event_preview" alt="" coords="489,1113,624,1140"/>
+<area shape="rect" id="node33" href="gtk__LunAero_8cpp.html#a7f06833fc54e355a9986b60429b753b5" title="key_event_running" alt="" coords="860,1189,991,1216"/>
+<area shape="rect" id="node34" href="gtk__LunAero_8cpp.html#a5f46419ebd4dfb012b2327e096a63dac" title="g_framecheck" alt="" coords="873,1138,977,1165"/>
+<area shape="rect" id="node37" href="camera__LunAero_8cpp.html#ac812e7b1a6d57e7ca306e001c99cf2b6" title="first_record" alt="" coords="882,758,969,785"/>
+<area shape="rect" id="node35" href="LunAero_8cpp.html#a49fa3075fdeb7cdf9caffb056710a8d5" title="cb_framecheck" alt="" coords="1065,1138,1175,1165"/>
+<area shape="rect" id="node36" href="LunAero_8cpp.html#aa6ee07066b693b837fae1ff787494732" title="current_frame" alt="" coords="1271,1138,1374,1165"/>
+<area shape="rect" id="node38" href="camera__LunAero_8cpp.html#ae758d181371cae3622978bee489d5853" title="camera_start" alt="" coords="1071,657,1169,684"/>
+<area shape="rect" id="node39" href="camera__LunAero_8cpp.html#aec581f7a0627d9324e87241671dcac8b" title="command_cam_start" alt="" coords="1251,606,1395,633"/>
+<area shape="rect" id="node40" href="camera__LunAero_8cpp.html#aa1ba49194500be6a8d8257f10bb98664" title="confirm_filespace" alt="" coords="1261,657,1385,684"/>
+<area shape="rect" id="node45" href="LunAero_8cpp.html#a4b66d5e31b5dc18b314c8a68163263bd" title="cleanup" alt="" coords="523,454,590,481"/>
+<area shape="rect" id="node47" href="camera__LunAero_8cpp.html#a36692fd7d4a8ab80af918d722a5b7a31" title="reset_record" alt="" coords="878,505,973,532"/>
+<area shape="rect" id="node49" href="LunAero_8cpp.html#a192ed5ab64d56ad402cd4bf562cbf2f5" title="blur_bright" alt="" coords="515,556,598,582"/>
 </map>
 </div>
 

@@ -1,10 +1,13 @@
 var searchData=
 [
+  ['blur_5fbright',['BLUR_BRIGHT',['../LunAero_8hpp.html#a733ad8467e160bd489ac5001a8389f10',1,'LunAero.hpp']]],
+  ['bluraddr',['BLURaddr',['../structval__addresses.html#a09b67aa417beb6f5592192cb7a54de2a',1,'val_addresses']]],
   ['bpin1',['BPIN1',['../motors__LunAero_8hpp.html#ae5da38789877669e2db8342a3d8692f4',1,'motors_LunAero.hpp']]],
   ['bpin2',['BPIN2',['../motors__LunAero_8hpp.html#aea1981fb0c75ee28910495ade6c8c592',1,'motors_LunAero.hpp']]],
   ['bpinp',['BPINP',['../motors__LunAero_8hpp.html#ad67af3ff13c24d7ca610f9a4217bcde9',1,'motors_LunAero.hpp']]],
   ['brake_5fduty',['BRAKE_DUTY',['../motors__LunAero_8hpp.html#a690cc98e01b03a12a99608cc73a4719d',1,'motors_LunAero.hpp']]],
   ['bright_5fthresh',['BRIGHT_THRESH',['../LunAero_8hpp.html#ab5ba7d06b6b0a920d55b01ce19fa03bd',1,'LunAero.hpp']]],
+  ['brightaddr',['BRIGHTaddr',['../structval__addresses.html#a6eaa61e0b52e12b72dd17ff8bdaa2ac5',1,'val_addresses']]],
   ['button_5fbox_5factivate',['button_box_activate',['../classgtk__class.html#a0234a576c91f5d8999260eac4b6968b7',1,'gtk_class']]],
   ['button_5fbox_5fdirgrid',['button_box_dirgrid',['../classgtk__class.html#aa310a332eba52f28d8819f1d419c3ca7',1,'gtk_class']]],
   ['button_5fbox_5ffakes',['button_box_fakes',['../classgtk__class.html#a4816355ec87898c40b8a3a450c7a0a75',1,'gtk_class']]],

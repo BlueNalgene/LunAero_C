@@ -40,6 +40,10 @@ volatile int $\ast$ \hyperlink{structval__addresses_aadc43e056f0b10d3c772bd0ed45
 volatile int $\ast$ \hyperlink{structval__addresses_a3bb48724a49aba39d68249e4714f731c}{D\+U\+T\+Y\+\_\+\+Baddr}
 \item 
 volatile int $\ast$ \hyperlink{structval__addresses_a2dc7beaca139f55cee0def0170611e03}{S\+U\+B\+Saddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a09b67aa417beb6f5592192cb7a54de2a}{B\+L\+U\+Raddr}
+\item 
+volatile int $\ast$ \hyperlink{structval__addresses_a6eaa61e0b52e12b72dd17ff8bdaa2ac5}{B\+R\+I\+G\+H\+Taddr}
 \end{DoxyCompactItemize}
 
 
@@ -53,7 +57,19 @@ Struct of addresses used across forks to store important values. Call these valu
 \subsubsection{\texorpdfstring{A\+B\+O\+R\+Taddr}{ABORTaddr}}
 {\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+A\+B\+O\+R\+Taddr}
 
-Flag to sync abort functions across code forks. If 0, run. If 1, abort. \mbox{\Hypertarget{structval__addresses_aadc43e056f0b10d3c772bd0ed45ae5bc}\label{structval__addresses_aadc43e056f0b10d3c772bd0ed45ae5bc}} 
+Flag to sync abort functions across code forks. If 0, run. If 1, abort. \mbox{\Hypertarget{structval__addresses_a09b67aa417beb6f5592192cb7a54de2a}\label{structval__addresses_a09b67aa417beb6f5592192cb7a54de2a}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!B\+L\+U\+Raddr@{B\+L\+U\+Raddr}}
+\index{B\+L\+U\+Raddr@{B\+L\+U\+Raddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{B\+L\+U\+Raddr}{BLURaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+B\+L\+U\+Raddr}
+
+Current blur value from \hyperlink{LunAero_8cpp_a192ed5ab64d56ad402cd4bf562cbf2f5}{blur\+\_\+bright()}. Contains a float. \mbox{\Hypertarget{structval__addresses_a6eaa61e0b52e12b72dd17ff8bdaa2ac5}\label{structval__addresses_a6eaa61e0b52e12b72dd17ff8bdaa2ac5}} 
+\index{val\+\_\+addresses@{val\+\_\+addresses}!B\+R\+I\+G\+H\+Taddr@{B\+R\+I\+G\+H\+Taddr}}
+\index{B\+R\+I\+G\+H\+Taddr@{B\+R\+I\+G\+H\+Taddr}!val\+\_\+addresses@{val\+\_\+addresses}}
+\subsubsection{\texorpdfstring{B\+R\+I\+G\+H\+Taddr}{BRIGHTaddr}}
+{\footnotesize\ttfamily volatile int$\ast$ val\+\_\+addresses\+::\+B\+R\+I\+G\+H\+Taddr}
+
+Current brightness threshold outcome from \hyperlink{LunAero_8cpp_a192ed5ab64d56ad402cd4bf562cbf2f5}{blur\+\_\+bright()}. Contains a bool. \mbox{\Hypertarget{structval__addresses_aadc43e056f0b10d3c772bd0ed45ae5bc}\label{structval__addresses_aadc43e056f0b10d3c772bd0ed45ae5bc}} 
 \index{val\+\_\+addresses@{val\+\_\+addresses}!D\+U\+T\+Y\+\_\+\+Aaddr@{D\+U\+T\+Y\+\_\+\+Aaddr}}
 \index{D\+U\+T\+Y\+\_\+\+Aaddr@{D\+U\+T\+Y\+\_\+\+Aaddr}!val\+\_\+addresses@{val\+\_\+addresses}}
 \subsubsection{\texorpdfstring{D\+U\+T\+Y\+\_\+\+Aaddr}{DUTY\_Aaddr}}

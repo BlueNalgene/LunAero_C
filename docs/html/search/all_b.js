@@ -1,6 +1,7 @@
 var searchData=
 [
   ['main',['main',['../LunAero_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;LunAero.cpp'],['../LunAero_8hpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;LunAero.cpp']]],
+  ['max_5fduty',['MAX_DUTY',['../motors__LunAero_8hpp.html#af0f2b556c20fe7afd0cd714d30e38e7c',1,'motors_LunAero.hpp']]],
   ['min_5fduty',['MIN_DUTY',['../motors__LunAero_8hpp.html#a5788d340bcbf826cbf14b6e38892dbb7',1,'motors_LunAero.hpp']]],
   ['mmal_5ferror_5fthresh',['MMAL_ERROR_THRESH',['../camera__LunAero_8hpp.html#adb112806aaf0c4ac7e5f142ad14cbf0e',1,'camera_LunAero.hpp']]],
   ['mot_5fdown_5fcommand',['mot_down_command',['../gtk__LunAero_8cpp.html#a3579f9c4f5a343bc7eda1ea1e611e3d8',1,'mot_down_command():&#160;gtk_LunAero.cpp'],['../gtk__LunAero_8hpp.html#a3579f9c4f5a343bc7eda1ea1e611e3d8',1,'mot_down_command():&#160;gtk_LunAero.cpp']]],

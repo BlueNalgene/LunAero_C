@@ -7,16 +7,14 @@
 {\ttfamily \#include $<$chrono$>$}\newline
 {\ttfamily \#include $<$ctime$>$}\newline
 {\ttfamily \#include \char`\"{}Lun\+Aero.\+hpp\char`\"{}}\newline
-Include dependency graph for motors\+\_\+\+Lun\+Aero.\+hpp\+:
-\nopagebreak
+Include dependency graph for motors\+\_\+\+Lun\+Aero.\+hpp\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{motors__LunAero_8hpp__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -58,6 +56,8 @@ int \hyperlink{motors__LunAero_8hpp_ad67af3ff13c24d7ca610f9a4217bcde9}{B\+P\+I\+
 \item 
 int \hyperlink{motors__LunAero_8hpp_a5788d340bcbf826cbf14b6e38892dbb7}{M\+I\+N\+\_\+\+D\+U\+TY} = 20
 \item 
+int \hyperlink{motors__LunAero_8hpp_af0f2b556c20fe7afd0cd714d30e38e7c}{M\+A\+X\+\_\+\+D\+U\+TY} = 75
+\item 
 int \hyperlink{motors__LunAero_8hpp_a690cc98e01b03a12a99608cc73a4719d}{B\+R\+A\+K\+E\+\_\+\+D\+U\+TY} = 10
 \item 
 int \hyperlink{motors__LunAero_8hpp_a129f1b691f4c7a6269b4fed302fe60b3}{F\+R\+EQ} = 10000
@@ -82,8 +82,7 @@ Duty cycle \% range for motors
 \subsubsection{\texorpdfstring{final\+\_\+stop()}{final\_stop()}}
 {\footnotesize\ttfamily void final\+\_\+stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This funciton performs a hard stop on all motors. This is only called on program exit. Here is the caller graph for this function\+:
-\nopagebreak
+This funciton performs a hard stop on all motors. This is only called on program exit. Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -96,8 +95,7 @@ This funciton performs a hard stop on all motors. This is only called on program
 \subsubsection{\texorpdfstring{gpio\+\_\+pin\+\_\+setup()}{gpio\_pin\_setup()}}
 {\footnotesize\ttfamily void gpio\+\_\+pin\+\_\+setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function is called when the program starts to initalize the motor code. Since the code uses wiring\+Pi, this must first be initialized. Then, initial stopped values are passed to the relevant motor pins. Here is the caller graph for this function\+:
-\nopagebreak
+This function is called when the program starts to initalize the motor code. Since the code uses wiring\+Pi, this must first be initialized. Then, initial stopped values are passed to the relevant motor pins. Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -116,16 +114,14 @@ This function is called when the program starts to initalize the motor code. Sin
 \subsubsection{\texorpdfstring{motor\+\_\+handler()}{motor\_handler()}}
 {\footnotesize\ttfamily void motor\+\_\+handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function handles the motor commands by running in a loop and checking the value from the motor struct. Stopping the motors is handled by S\+T\+O\+P\+\_\+\+D\+IR values, and gradually slows the motor down to prevent abrupt stops shaking the video too much. Next, the function handles vertical and horizontal motor commands sequentially. If the motor command was a positive value and the same as the command in the previous cycle, the function calls speed\+\_\+up. In the case of horizontal motion, if the motor direction abruptly switches, the loose wheel protocol is summoned which forces high speed motion for a number of seconds based on the value L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON in settings.\+cfg. Here is the call graph for this function\+:
-\nopagebreak
+This function handles the motor commands by running in a loop and checking the value from the motor struct. Stopping the motors is handled by S\+T\+O\+P\+\_\+\+D\+IR values, and gradually slows the motor down to prevent abrupt stops shaking the video too much. Next, the function handles vertical and horizontal motor commands sequentially. If the motor command was a positive value and the same as the command in the previous cycle, the function calls speed\+\_\+up. In the case of horizontal motion, if the motor direction abruptly switches, the loose wheel protocol is summoned which forces high speed motion for a number of seconds based on the value L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON in settings.\+cfg. Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=265pt]{motors__LunAero_8hpp_aa672beb83b7c19a5b2b697915403a37d_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -145,8 +141,7 @@ This function increases the speed of the motor\textquotesingle{}s movement by se
 {\em motor} & The motor to run speed settings on. 1 = vertical, 2 = horizontal \\
 \hline
 \end{DoxyParams}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -210,12 +205,16 @@ P\+WM operation frequency in Hz. Customizable from settings.\+cfg. \mbox{\Hypert
 \subsubsection{\texorpdfstring{L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON}{LOOSE\_WHEEL\_DURATION}}
 {\footnotesize\ttfamily std\+::chrono\+::duration$<$double$>$ L\+O\+O\+S\+E\+\_\+\+W\+H\+E\+E\+L\+\_\+\+D\+U\+R\+A\+T\+I\+ON = (std\+::chrono\+::duration$<$double$>$)2.\hspace{0.3cm}{\ttfamily [inline]}}
 
-Number of seconds to perform a loose wheel maneuver. This can be customized in settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_a5788d340bcbf826cbf14b6e38892dbb7}\label{motors__LunAero_8hpp_a5788d340bcbf826cbf14b6e38892dbb7}} 
+Number of seconds to perform a loose wheel maneuver. This can be customized in settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_af0f2b556c20fe7afd0cd714d30e38e7c}\label{motors__LunAero_8hpp_af0f2b556c20fe7afd0cd714d30e38e7c}} 
+\index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!M\+A\+X\+\_\+\+D\+U\+TY@{M\+A\+X\+\_\+\+D\+U\+TY}}
+\index{M\+A\+X\+\_\+\+D\+U\+TY@{M\+A\+X\+\_\+\+D\+U\+TY}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+D\+U\+TY}{MAX\_DUTY}}
+{\footnotesize\ttfamily int M\+A\+X\+\_\+\+D\+U\+TY = 75\hspace{0.3cm}{\ttfamily [inline]}}
+
+Maximumallowable duty cycle. Customizable from settings.\+cfg. \mbox{\Hypertarget{motors__LunAero_8hpp_a5788d340bcbf826cbf14b6e38892dbb7}\label{motors__LunAero_8hpp_a5788d340bcbf826cbf14b6e38892dbb7}} 
 \index{motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}!M\+I\+N\+\_\+\+D\+U\+TY@{M\+I\+N\+\_\+\+D\+U\+TY}}
 \index{M\+I\+N\+\_\+\+D\+U\+TY@{M\+I\+N\+\_\+\+D\+U\+TY}!motors\+\_\+\+Lun\+Aero.\+hpp@{motors\+\_\+\+Lun\+Aero.\+hpp}}
 \subsubsection{\texorpdfstring{M\+I\+N\+\_\+\+D\+U\+TY}{MIN\_DUTY}}
 {\footnotesize\ttfamily int M\+I\+N\+\_\+\+D\+U\+TY = 20\hspace{0.3cm}{\ttfamily [inline]}}
 
-Minimum allowable duty cycle. Customizable from settings.\+cfg.
-
-Maximumallowable duty cycle. Customizable from settings.\+cfg. 
+Minimum allowable duty cycle. Customizable from settings.\+cfg. 
