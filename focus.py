@@ -108,7 +108,7 @@ if DEBUG:
 def calculate_picamera_window():
 	"""
 	"""
-	local_h = int(CURR_H * 0.85)
+	local_h = int(CURR_H * 0.95)
 	ratio = CURR_W/CURR_H
 	local_w = int(local_h * ratio)
 	if DEBUG:
@@ -119,6 +119,7 @@ def calculate_picamera_window():
 def mot_down():
 	if DEBUG:
 		print("moving down")
+	PWMA.ChangeDutyCycle(100)
 	GPIO.output(APIN1, GPIO.HIGH)
 	GPIO.output(APIN2, GPIO.LOW)
 	return
@@ -126,6 +127,7 @@ def mot_down():
 def mot_up():
 	if DEBUG:
 		print("moving up")
+	PWMA.ChangeDutyCycle(100)
 	GPIO.output(APIN1, GPIO.LOW)
 	GPIO.output(APIN2, GPIO.HIGH)
 	return
@@ -133,6 +135,7 @@ def mot_up():
 def mot_right():
 	if DEBUG:
 		print("moving right")
+	PWMB.ChangeDutyCycle(100)
 	GPIO.output(BPIN1, GPIO.HIGH)
 	GPIO.output(BPIN2, GPIO.LOW)
 	return
@@ -140,11 +143,14 @@ def mot_right():
 def mot_left():
 	if DEBUG:
 		print("moving left")
+	PWMB.ChangeDutyCycle(100)
 	GPIO.output(BPIN1, GPIO.LOW)
 	GPIO.output(BPIN2, GPIO.HIGH)
 	return
 
 def mot_stop():
+	global DCA
+	global DCB
 	if DEBUG:
 		print("stopping",)
 	while DCA > 0 or DCB > 0:
@@ -168,6 +174,7 @@ def mot_stop():
 def cycle_iso():
 	"""
 	"""
+	global ISO
 	if ISO < 800:
 		ISO = ISO * 2
 	else:
@@ -180,8 +187,8 @@ def cycle_iso():
 def decrease_exposure():
 	"""
 	"""
-	
-	if EXP < DIFF_EXP:
+	global EXP
+	if EXP < DIFF_EXP+1:
 		EXP = 10
 	else:
 		EXP = EXP - DIFF_EXP
@@ -193,8 +200,8 @@ def decrease_exposure():
 def increase_exposure():
 	"""
 	"""
-	
-	if EXP > MAX_EXP:
+	global EXP
+	if EXP > MAX_EXP-1:
 		EXP = MAX_EXP
 	else:
 		EXP = EXP + DIFF_EXP
@@ -235,13 +242,13 @@ def ops_screen(screen, font, margin, font_size):
 	"""
 	"""
 	# display text
-	screen.blit(font.render("q=exit, g/b=exp, i=iso, dir move, space=stop", True, RED, (1, 1)))
+	screen.blit(font.render("q=exit, g/b=exp, i=iso, dir move, space=stop", True, RED), (1, 1))
 	
 	# call camera on bottom left of screen
 	prev_w, prev_h = calculate_picamera_window()
 	CAM.start_preview(fullscreen=False, window=(0, CURR_H-prev_h, prev_w, prev_h))
 	
-	pygame.draw.rect(screen, RED, (0, CURR_H-prev_h-int(font_size/5), prev_w+int(font_size/5), prev_h))
+	pygame.draw.rect(screen, RED, (0, CURR_H-prev_h-int(font_size/10), prev_w+int(font_size/5), prev_h))
 	
 	return
 
@@ -269,7 +276,7 @@ def main():
 
 	# Prep the window
 	pygame.display.set_caption("Picamera Focus")
-	screen = pygame.display.set_mode([CURR_W, CURR_H])
+	screen = pygame.display.set_mode([CURR_W, CURR_H], pygame.FULLSCREEN)
 
 	# Blackout
 	screen.fill(BLACK)
@@ -319,7 +326,7 @@ def main():
 				if event.key == pygame.K_RIGHT:
 					mot_right()
 				if event.key == pygame.K_DOWN:
-					motdown()
+					mot_down()
 				if event.key == pygame.K_LEFT:
 					mot_left()
 				if event.key == pygame.K_SPACE:
