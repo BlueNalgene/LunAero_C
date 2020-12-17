@@ -1,0 +1,459 @@
+\hypertarget{namespacefocus}{}\section{focus Namespace Reference}
+\label{namespacefocus}\index{focus@{focus}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacefocus_ace593fb72d9a91bc93d3a25614a365d0}{calculate\+\_\+picamera\+\_\+window} ()
+\begin{DoxyCompactList}\small\item\em This function calculates how large to create the camera preview window for the user. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_ab92c9c6869b0af6ce3a5920ef8554190}{mot\+\_\+down} ()
+\begin{DoxyCompactList}\small\item\em Void function to set the motor bits to decrease the scope\textquotesingle{}s altitude. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_ad0102bfe821a43392640e33721246a8c}{mot\+\_\+up} ()
+\begin{DoxyCompactList}\small\item\em Void function to set the motor bits to increase the scope\textquotesingle{}s altitude. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a9939d6f9388d8eb82625bd8e3af6f894}{mot\+\_\+right} ()
+\begin{DoxyCompactList}\small\item\em Void function to set the motor bits for clockwise azimuth adjustment. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_ace370021c60f38a82ce96e69a482cbe3}{mot\+\_\+left} ()
+\begin{DoxyCompactList}\small\item\em Void function to set the motor bits for counter-\/clockwise azimuth adjustment. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a19641d526d4c19ab6b10fc8ca9e8fe86}{mot\+\_\+stop} ()
+\begin{DoxyCompactList}\small\item\em Void function to stop the motors. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_aa9bf3f199d1bf68a1e49ec229dcf8c38}{cycle\+\_\+iso} ()
+\begin{DoxyCompactList}\small\item\em Void function which cycles the I\+SO value for the picamera to the next valid cycle (100, 200, 400, 800) \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a8fb78b10ef91e414ac6707d45fcd0e5b}{decrease\+\_\+exposure} ()
+\begin{DoxyCompactList}\small\item\em Void function which decreases the exposure without letting it get all the way to 0. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a4dd9a598e7bc093873342c129ba80c98}{increase\+\_\+exposure} ()
+\begin{DoxyCompactList}\small\item\em Void function which increases the exposure without letting it get all the way to our arbitrary M\+A\+X\+\_\+\+E\+XP. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a7c48f36dcbc8deec93ed615925469176}{directions\+\_\+screen} (screen, font, margin, font\+\_\+size)
+\begin{DoxyCompactList}\small\item\em This is the generator for the initial directions screen. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a30f8dfb1f7d958ee49491a2e359ea3e2}{ops\+\_\+screen} (screen, font, font\+\_\+size)
+\begin{DoxyCompactList}\small\item\em This is the generator for the operating window. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a813bbce9c83fa23eae05039332cf3d8a}{main} ()
+\begin{DoxyCompactList}\small\item\em This is the main execution script. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{namespacefocus_a95643fc1eae4f9b190d9e91d48185206}{D\+E\+B\+UG} = True
+\item 
+int \hyperlink{namespacefocus_a9f8a2660e7de2a492738e587878c2b7a}{F\+R\+EQ} = 10000
+\item 
+int \hyperlink{namespacefocus_aea3f9d81f82a645ab78f964477e8f30a}{D\+CA} = 0
+\item 
+int \hyperlink{namespacefocus_a7f3ad02c7918179b1964892572df8fc9}{D\+CB} = 0
+\item 
+tuple \hyperlink{namespacefocus_a87a409792b8a912c225495a99b855b51}{B\+L\+A\+CK} = (0, 0, 0)
+\item 
+tuple \hyperlink{namespacefocus_acc5e8b5ab47d18ad8776c429e3a3a4b7}{R\+ED} = (255, 0, 0)
+\item 
+int \hyperlink{namespacefocus_a358eaeffe0790a67619dfd820f2d66b5}{A\+P\+I\+NP} = 17
+\item 
+int \hyperlink{namespacefocus_a4b9a0e4629814a6b99bd65e3200fe3bd}{A\+P\+I\+N1} = 27
+\item 
+int \hyperlink{namespacefocus_aa7f17fd9c88f9bc5cf789df5cc73a20a}{A\+P\+I\+N2} = 22
+\item 
+int \hyperlink{namespacefocus_a9234861385a237ef6a50b00f5ab54f1c}{B\+P\+I\+N1} = 10
+\item 
+int \hyperlink{namespacefocus_ae83fcc832e2b5c6a0281655870eae658}{B\+P\+I\+N2} = 9
+\item 
+int \hyperlink{namespacefocus_a88336729338c9d4ef54e14f02f406c1b}{B\+P\+I\+NP} = 11
+\item 
+int \hyperlink{namespacefocus_ac7e622de99a123967bedbb1f5927ac40}{I\+SO} = 200
+\item 
+int \hyperlink{namespacefocus_a40e81481d1b661338eda552bc7dc5513}{E\+XP} = 10000
+\item 
+int \hyperlink{namespacefocus_af9cd2a2921f660052cb32a72a681c63e}{D\+I\+F\+F\+\_\+\+E\+XP} = 1000
+\item 
+int \hyperlink{namespacefocus_a3c4a2866356f68ceb6834b38951c16a0}{M\+A\+X\+\_\+\+E\+XP} = 30000
+\item 
+\hyperlink{namespacefocus_a2cf00646d7ebef8c88685295c224630e}{C\+U\+R\+R\+\_\+W} = P\+Y\+G\+\_\+\+I\+N\+F.\+current\+\_\+w
+\item 
+\hyperlink{namespacefocus_a577e326aeb1867de857503429538fca3}{C\+U\+R\+R\+\_\+H} = P\+Y\+G\+\_\+\+I\+N\+F.\+current\+\_\+h
+\item 
+\hyperlink{namespacefocus_a2418021a7b6b394da695928f0d8cd16b}{P\+W\+MA} = G\+P\+I\+O.\+P\+WM(\hyperlink{namespacefocus_a358eaeffe0790a67619dfd820f2d66b5}{A\+P\+I\+NP}, \hyperlink{namespacefocus_a9f8a2660e7de2a492738e587878c2b7a}{F\+R\+EQ})
+\item 
+\hyperlink{namespacefocus_a9e16a63e33dd8dd160996df16dacb633}{P\+W\+MB} = G\+P\+I\+O.\+P\+WM(\hyperlink{namespacefocus_a88336729338c9d4ef54e14f02f406c1b}{B\+P\+I\+NP}, \hyperlink{namespacefocus_a9f8a2660e7de2a492738e587878c2b7a}{F\+R\+EQ})
+\item 
+\hyperlink{namespacefocus_a2c64f595bbe297e961b55c735e7023c5}{C\+AM} = picamera.\+Pi\+Camera()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacefocus_ace593fb72d9a91bc93d3a25614a365d0}\label{namespacefocus_ace593fb72d9a91bc93d3a25614a365d0}} 
+\index{focus@{focus}!calculate\+\_\+picamera\+\_\+window@{calculate\+\_\+picamera\+\_\+window}}
+\index{calculate\+\_\+picamera\+\_\+window@{calculate\+\_\+picamera\+\_\+window}!focus@{focus}}
+\subsubsection{\texorpdfstring{calculate\+\_\+picamera\+\_\+window()}{calculate\_picamera\_window()}}
+{\footnotesize\ttfamily def focus.\+calculate\+\_\+picamera\+\_\+window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This function calculates how large to create the camera preview window for the user. 
+
+We want it to be as large as possible, but leaving a little room for text reminders. The size is based on 95\% of one dimensions, and the second dimension is calculated based on the actual camera output size ratio.
+
+\begin{DoxyReturn}{Returns}
+\mbox{[}local\+\_\+w, local\+\_\+h\mbox{]}, a list containing the calculated values for width and height. 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacefocus_ace593fb72d9a91bc93d3a25614a365d0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_aa9bf3f199d1bf68a1e49ec229dcf8c38}\label{namespacefocus_aa9bf3f199d1bf68a1e49ec229dcf8c38}} 
+\index{focus@{focus}!cycle\+\_\+iso@{cycle\+\_\+iso}}
+\index{cycle\+\_\+iso@{cycle\+\_\+iso}!focus@{focus}}
+\subsubsection{\texorpdfstring{cycle\+\_\+iso()}{cycle\_iso()}}
+{\footnotesize\ttfamily def focus.\+cycle\+\_\+iso (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Void function which cycles the I\+SO value for the picamera to the next valid cycle (100, 200, 400, 800) 
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=266pt]{namespacefocus_aa9bf3f199d1bf68a1e49ec229dcf8c38_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_a8fb78b10ef91e414ac6707d45fcd0e5b}\label{namespacefocus_a8fb78b10ef91e414ac6707d45fcd0e5b}} 
+\index{focus@{focus}!decrease\+\_\+exposure@{decrease\+\_\+exposure}}
+\index{decrease\+\_\+exposure@{decrease\+\_\+exposure}!focus@{focus}}
+\subsubsection{\texorpdfstring{decrease\+\_\+exposure()}{decrease\_exposure()}}
+{\footnotesize\ttfamily def focus.\+decrease\+\_\+exposure (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Void function which decreases the exposure without letting it get all the way to 0. 
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=309pt]{namespacefocus_a8fb78b10ef91e414ac6707d45fcd0e5b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_a7c48f36dcbc8deec93ed615925469176}\label{namespacefocus_a7c48f36dcbc8deec93ed615925469176}} 
+\index{focus@{focus}!directions\+\_\+screen@{directions\+\_\+screen}}
+\index{directions\+\_\+screen@{directions\+\_\+screen}!focus@{focus}}
+\subsubsection{\texorpdfstring{directions\+\_\+screen()}{directions\_screen()}}
+{\footnotesize\ttfamily def focus.\+directions\+\_\+screen (\begin{DoxyParamCaption}\item[{}]{screen,  }\item[{}]{font,  }\item[{}]{margin,  }\item[{}]{font\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+This is the generator for the initial directions screen. 
+
+Prints red text on the black screen, and returns nothing. The blit changes are not activated until the pygame.\+display.\+update() is called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em screen} & Pygame object representing the display we are operating on \\
+\hline
+{\em font} & Pygame object holding the font information \\
+\hline
+{\em margin} & int value of how far to space text lines (our margins). Additionally, this influences text position. \\
+\hline
+{\em font\+\_\+size} & int value for how large our font should be. Additionally, this influences text position. \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=301pt]{namespacefocus_a7c48f36dcbc8deec93ed615925469176_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_a4dd9a598e7bc093873342c129ba80c98}\label{namespacefocus_a4dd9a598e7bc093873342c129ba80c98}} 
+\index{focus@{focus}!increase\+\_\+exposure@{increase\+\_\+exposure}}
+\index{increase\+\_\+exposure@{increase\+\_\+exposure}!focus@{focus}}
+\subsubsection{\texorpdfstring{increase\+\_\+exposure()}{increase\_exposure()}}
+{\footnotesize\ttfamily def focus.\+increase\+\_\+exposure (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Void function which increases the exposure without letting it get all the way to our arbitrary M\+A\+X\+\_\+\+E\+XP. 
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{namespacefocus_a4dd9a598e7bc093873342c129ba80c98_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_a813bbce9c83fa23eae05039332cf3d8a}\label{namespacefocus_a813bbce9c83fa23eae05039332cf3d8a}} 
+\index{focus@{focus}!main@{main}}
+\index{main@{main}!focus@{focus}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily def focus.\+main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This is the main execution script. 
+
+The windows are called in order. Pygame events are used to capture keypresses from the user. These are hardcoded key bindings. Once the code is complete, or in System\+Exit conditions, cleanup methods are called for G\+P\+IO, picamera, and pygame if they were initialized previously. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacefocus_a813bbce9c83fa23eae05039332cf3d8a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_ab92c9c6869b0af6ce3a5920ef8554190}\label{namespacefocus_ab92c9c6869b0af6ce3a5920ef8554190}} 
+\index{focus@{focus}!mot\+\_\+down@{mot\+\_\+down}}
+\index{mot\+\_\+down@{mot\+\_\+down}!focus@{focus}}
+\subsubsection{\texorpdfstring{mot\+\_\+down()}{mot\_down()}}
+{\footnotesize\ttfamily def focus.\+mot\+\_\+down (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Void function to set the motor bits to decrease the scope\textquotesingle{}s altitude. 
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=270pt]{namespacefocus_ab92c9c6869b0af6ce3a5920ef8554190_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_ace370021c60f38a82ce96e69a482cbe3}\label{namespacefocus_ace370021c60f38a82ce96e69a482cbe3}} 
+\index{focus@{focus}!mot\+\_\+left@{mot\+\_\+left}}
+\index{mot\+\_\+left@{mot\+\_\+left}!focus@{focus}}
+\subsubsection{\texorpdfstring{mot\+\_\+left()}{mot\_left()}}
+{\footnotesize\ttfamily def focus.\+mot\+\_\+left (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Void function to set the motor bits for counter-\/clockwise azimuth adjustment. 
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{namespacefocus_ace370021c60f38a82ce96e69a482cbe3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_a9939d6f9388d8eb82625bd8e3af6f894}\label{namespacefocus_a9939d6f9388d8eb82625bd8e3af6f894}} 
+\index{focus@{focus}!mot\+\_\+right@{mot\+\_\+right}}
+\index{mot\+\_\+right@{mot\+\_\+right}!focus@{focus}}
+\subsubsection{\texorpdfstring{mot\+\_\+right()}{mot\_right()}}
+{\footnotesize\ttfamily def focus.\+mot\+\_\+right (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Void function to set the motor bits for clockwise azimuth adjustment. 
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{namespacefocus_a9939d6f9388d8eb82625bd8e3af6f894_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_a19641d526d4c19ab6b10fc8ca9e8fe86}\label{namespacefocus_a19641d526d4c19ab6b10fc8ca9e8fe86}} 
+\index{focus@{focus}!mot\+\_\+stop@{mot\+\_\+stop}}
+\index{mot\+\_\+stop@{mot\+\_\+stop}!focus@{focus}}
+\subsubsection{\texorpdfstring{mot\+\_\+stop()}{mot\_stop()}}
+{\footnotesize\ttfamily def focus.\+mot\+\_\+stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Void function to stop the motors. 
+
+At high duty cycles, jumps to 10\%. At low duty cycles, the output duty cycle is decreased by 1\% each loop until reaching zero. This gradual speed reduction prevents jerky motion which may mess with the hardware. Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{namespacefocus_a19641d526d4c19ab6b10fc8ca9e8fe86_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_ad0102bfe821a43392640e33721246a8c}\label{namespacefocus_ad0102bfe821a43392640e33721246a8c}} 
+\index{focus@{focus}!mot\+\_\+up@{mot\+\_\+up}}
+\index{mot\+\_\+up@{mot\+\_\+up}!focus@{focus}}
+\subsubsection{\texorpdfstring{mot\+\_\+up()}{mot\_up()}}
+{\footnotesize\ttfamily def focus.\+mot\+\_\+up (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Void function to set the motor bits to increase the scope\textquotesingle{}s altitude. 
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=257pt]{namespacefocus_ad0102bfe821a43392640e33721246a8c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacefocus_a30f8dfb1f7d958ee49491a2e359ea3e2}\label{namespacefocus_a30f8dfb1f7d958ee49491a2e359ea3e2}} 
+\index{focus@{focus}!ops\+\_\+screen@{ops\+\_\+screen}}
+\index{ops\+\_\+screen@{ops\+\_\+screen}!focus@{focus}}
+\subsubsection{\texorpdfstring{ops\+\_\+screen()}{ops\_screen()}}
+{\footnotesize\ttfamily def focus.\+ops\+\_\+screen (\begin{DoxyParamCaption}\item[{}]{screen,  }\item[{}]{font,  }\item[{}]{font\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+This is the generator for the operating window. 
+
+Prints red text at the tippy top of the screen, and makes a red rectangle slightly larger than the expected preview window size. Also calls the camera to start the preview window. The blit changes are not activated until the pygame.\+display.\+update() is called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em screen} & Pygame object representing the display we are operating on \\
+\hline
+{\em font} & Pygame object holding the font information \\
+\hline
+{\em font\+\_\+size} & int value for how large our font should be. In this screen, it is used to add margins to the red rectangle. \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=338pt]{namespacefocus_a30f8dfb1f7d958ee49491a2e359ea3e2_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=275pt]{namespacefocus_a30f8dfb1f7d958ee49491a2e359ea3e2_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacefocus_a4b9a0e4629814a6b99bd65e3200fe3bd}\label{namespacefocus_a4b9a0e4629814a6b99bd65e3200fe3bd}} 
+\index{focus@{focus}!A\+P\+I\+N1@{A\+P\+I\+N1}}
+\index{A\+P\+I\+N1@{A\+P\+I\+N1}!focus@{focus}}
+\subsubsection{\texorpdfstring{A\+P\+I\+N1}{APIN1}}
+{\footnotesize\ttfamily int focus.\+A\+P\+I\+N1 = 27}
+
+\mbox{\Hypertarget{namespacefocus_aa7f17fd9c88f9bc5cf789df5cc73a20a}\label{namespacefocus_aa7f17fd9c88f9bc5cf789df5cc73a20a}} 
+\index{focus@{focus}!A\+P\+I\+N2@{A\+P\+I\+N2}}
+\index{A\+P\+I\+N2@{A\+P\+I\+N2}!focus@{focus}}
+\subsubsection{\texorpdfstring{A\+P\+I\+N2}{APIN2}}
+{\footnotesize\ttfamily int focus.\+A\+P\+I\+N2 = 22}
+
+\mbox{\Hypertarget{namespacefocus_a358eaeffe0790a67619dfd820f2d66b5}\label{namespacefocus_a358eaeffe0790a67619dfd820f2d66b5}} 
+\index{focus@{focus}!A\+P\+I\+NP@{A\+P\+I\+NP}}
+\index{A\+P\+I\+NP@{A\+P\+I\+NP}!focus@{focus}}
+\subsubsection{\texorpdfstring{A\+P\+I\+NP}{APINP}}
+{\footnotesize\ttfamily int focus.\+A\+P\+I\+NP = 17}
+
+\mbox{\Hypertarget{namespacefocus_a87a409792b8a912c225495a99b855b51}\label{namespacefocus_a87a409792b8a912c225495a99b855b51}} 
+\index{focus@{focus}!B\+L\+A\+CK@{B\+L\+A\+CK}}
+\index{B\+L\+A\+CK@{B\+L\+A\+CK}!focus@{focus}}
+\subsubsection{\texorpdfstring{B\+L\+A\+CK}{BLACK}}
+{\footnotesize\ttfamily tuple focus.\+B\+L\+A\+CK = (0, 0, 0)}
+
+\mbox{\Hypertarget{namespacefocus_a9234861385a237ef6a50b00f5ab54f1c}\label{namespacefocus_a9234861385a237ef6a50b00f5ab54f1c}} 
+\index{focus@{focus}!B\+P\+I\+N1@{B\+P\+I\+N1}}
+\index{B\+P\+I\+N1@{B\+P\+I\+N1}!focus@{focus}}
+\subsubsection{\texorpdfstring{B\+P\+I\+N1}{BPIN1}}
+{\footnotesize\ttfamily int focus.\+B\+P\+I\+N1 = 10}
+
+\mbox{\Hypertarget{namespacefocus_ae83fcc832e2b5c6a0281655870eae658}\label{namespacefocus_ae83fcc832e2b5c6a0281655870eae658}} 
+\index{focus@{focus}!B\+P\+I\+N2@{B\+P\+I\+N2}}
+\index{B\+P\+I\+N2@{B\+P\+I\+N2}!focus@{focus}}
+\subsubsection{\texorpdfstring{B\+P\+I\+N2}{BPIN2}}
+{\footnotesize\ttfamily int focus.\+B\+P\+I\+N2 = 9}
+
+\mbox{\Hypertarget{namespacefocus_a88336729338c9d4ef54e14f02f406c1b}\label{namespacefocus_a88336729338c9d4ef54e14f02f406c1b}} 
+\index{focus@{focus}!B\+P\+I\+NP@{B\+P\+I\+NP}}
+\index{B\+P\+I\+NP@{B\+P\+I\+NP}!focus@{focus}}
+\subsubsection{\texorpdfstring{B\+P\+I\+NP}{BPINP}}
+{\footnotesize\ttfamily int focus.\+B\+P\+I\+NP = 11}
+
+\mbox{\Hypertarget{namespacefocus_a2c64f595bbe297e961b55c735e7023c5}\label{namespacefocus_a2c64f595bbe297e961b55c735e7023c5}} 
+\index{focus@{focus}!C\+AM@{C\+AM}}
+\index{C\+AM@{C\+AM}!focus@{focus}}
+\subsubsection{\texorpdfstring{C\+AM}{CAM}}
+{\footnotesize\ttfamily focus.\+C\+AM = picamera.\+Pi\+Camera()}
+
+\mbox{\Hypertarget{namespacefocus_a577e326aeb1867de857503429538fca3}\label{namespacefocus_a577e326aeb1867de857503429538fca3}} 
+\index{focus@{focus}!C\+U\+R\+R\+\_\+H@{C\+U\+R\+R\+\_\+H}}
+\index{C\+U\+R\+R\+\_\+H@{C\+U\+R\+R\+\_\+H}!focus@{focus}}
+\subsubsection{\texorpdfstring{C\+U\+R\+R\+\_\+H}{CURR\_H}}
+{\footnotesize\ttfamily focus.\+C\+U\+R\+R\+\_\+H = P\+Y\+G\+\_\+\+I\+N\+F.\+current\+\_\+h}
+
+\mbox{\Hypertarget{namespacefocus_a2cf00646d7ebef8c88685295c224630e}\label{namespacefocus_a2cf00646d7ebef8c88685295c224630e}} 
+\index{focus@{focus}!C\+U\+R\+R\+\_\+W@{C\+U\+R\+R\+\_\+W}}
+\index{C\+U\+R\+R\+\_\+W@{C\+U\+R\+R\+\_\+W}!focus@{focus}}
+\subsubsection{\texorpdfstring{C\+U\+R\+R\+\_\+W}{CURR\_W}}
+{\footnotesize\ttfamily focus.\+C\+U\+R\+R\+\_\+W = P\+Y\+G\+\_\+\+I\+N\+F.\+current\+\_\+w}
+
+\mbox{\Hypertarget{namespacefocus_aea3f9d81f82a645ab78f964477e8f30a}\label{namespacefocus_aea3f9d81f82a645ab78f964477e8f30a}} 
+\index{focus@{focus}!D\+CA@{D\+CA}}
+\index{D\+CA@{D\+CA}!focus@{focus}}
+\subsubsection{\texorpdfstring{D\+CA}{DCA}}
+{\footnotesize\ttfamily int focus.\+D\+CA = 0}
+
+\mbox{\Hypertarget{namespacefocus_a7f3ad02c7918179b1964892572df8fc9}\label{namespacefocus_a7f3ad02c7918179b1964892572df8fc9}} 
+\index{focus@{focus}!D\+CB@{D\+CB}}
+\index{D\+CB@{D\+CB}!focus@{focus}}
+\subsubsection{\texorpdfstring{D\+CB}{DCB}}
+{\footnotesize\ttfamily int focus.\+D\+CB = 0}
+
+\mbox{\Hypertarget{namespacefocus_a95643fc1eae4f9b190d9e91d48185206}\label{namespacefocus_a95643fc1eae4f9b190d9e91d48185206}} 
+\index{focus@{focus}!D\+E\+B\+UG@{D\+E\+B\+UG}}
+\index{D\+E\+B\+UG@{D\+E\+B\+UG}!focus@{focus}}
+\subsubsection{\texorpdfstring{D\+E\+B\+UG}{DEBUG}}
+{\footnotesize\ttfamily bool focus.\+D\+E\+B\+UG = True}
+
+\mbox{\Hypertarget{namespacefocus_af9cd2a2921f660052cb32a72a681c63e}\label{namespacefocus_af9cd2a2921f660052cb32a72a681c63e}} 
+\index{focus@{focus}!D\+I\+F\+F\+\_\+\+E\+XP@{D\+I\+F\+F\+\_\+\+E\+XP}}
+\index{D\+I\+F\+F\+\_\+\+E\+XP@{D\+I\+F\+F\+\_\+\+E\+XP}!focus@{focus}}
+\subsubsection{\texorpdfstring{D\+I\+F\+F\+\_\+\+E\+XP}{DIFF\_EXP}}
+{\footnotesize\ttfamily int focus.\+D\+I\+F\+F\+\_\+\+E\+XP = 1000}
+
+\mbox{\Hypertarget{namespacefocus_a40e81481d1b661338eda552bc7dc5513}\label{namespacefocus_a40e81481d1b661338eda552bc7dc5513}} 
+\index{focus@{focus}!E\+XP@{E\+XP}}
+\index{E\+XP@{E\+XP}!focus@{focus}}
+\subsubsection{\texorpdfstring{E\+XP}{EXP}}
+{\footnotesize\ttfamily int focus.\+E\+XP = 10000}
+
+\mbox{\Hypertarget{namespacefocus_a9f8a2660e7de2a492738e587878c2b7a}\label{namespacefocus_a9f8a2660e7de2a492738e587878c2b7a}} 
+\index{focus@{focus}!F\+R\+EQ@{F\+R\+EQ}}
+\index{F\+R\+EQ@{F\+R\+EQ}!focus@{focus}}
+\subsubsection{\texorpdfstring{F\+R\+EQ}{FREQ}}
+{\footnotesize\ttfamily int focus.\+F\+R\+EQ = 10000}
+
+\mbox{\Hypertarget{namespacefocus_ac7e622de99a123967bedbb1f5927ac40}\label{namespacefocus_ac7e622de99a123967bedbb1f5927ac40}} 
+\index{focus@{focus}!I\+SO@{I\+SO}}
+\index{I\+SO@{I\+SO}!focus@{focus}}
+\subsubsection{\texorpdfstring{I\+SO}{ISO}}
+{\footnotesize\ttfamily int focus.\+I\+SO = 200}
+
+\mbox{\Hypertarget{namespacefocus_a3c4a2866356f68ceb6834b38951c16a0}\label{namespacefocus_a3c4a2866356f68ceb6834b38951c16a0}} 
+\index{focus@{focus}!M\+A\+X\+\_\+\+E\+XP@{M\+A\+X\+\_\+\+E\+XP}}
+\index{M\+A\+X\+\_\+\+E\+XP@{M\+A\+X\+\_\+\+E\+XP}!focus@{focus}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+E\+XP}{MAX\_EXP}}
+{\footnotesize\ttfamily int focus.\+M\+A\+X\+\_\+\+E\+XP = 30000}
+
+\mbox{\Hypertarget{namespacefocus_a2418021a7b6b394da695928f0d8cd16b}\label{namespacefocus_a2418021a7b6b394da695928f0d8cd16b}} 
+\index{focus@{focus}!P\+W\+MA@{P\+W\+MA}}
+\index{P\+W\+MA@{P\+W\+MA}!focus@{focus}}
+\subsubsection{\texorpdfstring{P\+W\+MA}{PWMA}}
+{\footnotesize\ttfamily focus.\+P\+W\+MA = G\+P\+I\+O.\+P\+WM(\hyperlink{namespacefocus_a358eaeffe0790a67619dfd820f2d66b5}{A\+P\+I\+NP}, \hyperlink{namespacefocus_a9f8a2660e7de2a492738e587878c2b7a}{F\+R\+EQ})}
+
+\mbox{\Hypertarget{namespacefocus_a9e16a63e33dd8dd160996df16dacb633}\label{namespacefocus_a9e16a63e33dd8dd160996df16dacb633}} 
+\index{focus@{focus}!P\+W\+MB@{P\+W\+MB}}
+\index{P\+W\+MB@{P\+W\+MB}!focus@{focus}}
+\subsubsection{\texorpdfstring{P\+W\+MB}{PWMB}}
+{\footnotesize\ttfamily focus.\+P\+W\+MB = G\+P\+I\+O.\+P\+WM(\hyperlink{namespacefocus_a88336729338c9d4ef54e14f02f406c1b}{B\+P\+I\+NP}, \hyperlink{namespacefocus_a9f8a2660e7de2a492738e587878c2b7a}{F\+R\+EQ})}
+
+\mbox{\Hypertarget{namespacefocus_acc5e8b5ab47d18ad8776c429e3a3a4b7}\label{namespacefocus_acc5e8b5ab47d18ad8776c429e3a3a4b7}} 
+\index{focus@{focus}!R\+ED@{R\+ED}}
+\index{R\+ED@{R\+ED}!focus@{focus}}
+\subsubsection{\texorpdfstring{R\+ED}{RED}}
+{\footnotesize\ttfamily tuple focus.\+R\+ED = (255, 0, 0)}
+

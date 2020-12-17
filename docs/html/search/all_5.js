@@ -10,8 +10,10 @@ var searchData=
   ['final_5fstop',['final_stop',['../motors__LunAero_8cpp.html#aa19b40639f826d7ebacac070bffd3d1c',1,'final_stop():&#160;motors_LunAero.cpp'],['../motors__LunAero_8hpp.html#aa19b40639f826d7ebacac070bffd3d1c',1,'final_stop():&#160;motors_LunAero.cpp']]],
   ['first_5frecord',['first_record',['../camera__LunAero_8cpp.html#ac812e7b1a6d57e7ca306e001c99cf2b6',1,'first_record():&#160;camera_LunAero.cpp'],['../camera__LunAero_8hpp.html#ac812e7b1a6d57e7ca306e001c99cf2b6',1,'first_record():&#160;camera_LunAero.cpp']]],
   ['first_5frecord_5fkiller',['first_record_killer',['../gtk__LunAero_8cpp.html#a8665ac28fcb5db55c256e862f6199088',1,'first_record_killer(GtkWidget *data):&#160;gtk_LunAero.cpp'],['../gtk__LunAero_8hpp.html#a8665ac28fcb5db55c256e862f6199088',1,'first_record_killer(GtkWidget *data):&#160;gtk_LunAero.cpp']]],
+  ['focus',['focus',['../namespacefocus.html',1,'']]],
+  ['focus_2epy',['focus.py',['../focus_8py.html',1,'']]],
   ['font_5fmod',['FONT_MOD',['../gtk__LunAero_8hpp.html#acf357661cb88bbd19bb593e940dc5771',1,'gtk_LunAero.hpp']]],
   ['framecheck_5ffreq',['FRAMECHECK_FREQ',['../gtk__LunAero_8hpp.html#aed0e471b8db885153e5995ccc76159ea',1,'gtk_LunAero.hpp']]],
-  ['freq',['FREQ',['../motors__LunAero_8hpp.html#a129f1b691f4c7a6269b4fed302fe60b3',1,'motors_LunAero.hpp']]],
+  ['freq',['FREQ',['../namespacefocus.html#a9f8a2660e7de2a492738e587878c2b7a',1,'focus.FREQ()'],['../motors__LunAero_8hpp.html#a129f1b691f4c7a6269b4fed302fe60b3',1,'FREQ():&#160;motors_LunAero.hpp']]],
   ['funcgrid',['funcgrid',['../classgtk__class.html#abd69dffa09078b21b628725bf1733682',1,'gtk_class']]]
 ];

@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['calculate_5fpicamera_5fwindow',['calculate_picamera_window',['../namespacefocus.html#ace593fb72d9a91bc93d3a25614a365d0',1,'focus']]],
+  ['cam',['CAM',['../namespacefocus.html#a2c64f595bbe297e961b55c735e7023c5',1,'focus']]],
   ['camera_5flunaero_2ecpp',['camera_LunAero.cpp',['../camera__LunAero_8cpp.html',1,'']]],
   ['camera_5flunaero_2ehpp',['camera_LunAero.hpp',['../camera__LunAero_8hpp.html',1,'']]],
   ['camera_5fpreview',['camera_preview',['../camera__LunAero_8cpp.html#a5828cc9ffb99db33b01fc641613cc59d',1,'camera_preview():&#160;camera_LunAero.cpp'],['../camera__LunAero_8hpp.html#a5828cc9ffb99db33b01fc641613cc59d',1,'camera_preview():&#160;camera_LunAero.cpp']]],
@@ -14,6 +16,9 @@ var searchData=
   ['create_5fdefault_5fconfig',['create_default_config',['../LunAero_8cpp.html#acb03f9d48df5f9988cd4bc664c5d7507',1,'create_default_config():&#160;LunAero.cpp'],['../LunAero_8hpp.html#acb03f9d48df5f9988cd4bc664c5d7507',1,'create_default_config():&#160;LunAero.cpp']]],
   ['create_5fid_5ffile',['create_id_file',['../LunAero_8cpp.html#a55ed746b51b0932e0442dee77f1f3a09',1,'create_id_file():&#160;LunAero.cpp'],['../LunAero_8hpp.html#a55ed746b51b0932e0442dee77f1f3a09',1,'create_id_file():&#160;LunAero.cpp']]],
   ['css_5fstring',['css_string',['../classgtk__class.html#a5cb715b2c56782b35912923c022cb08e',1,'gtk_class']]],
+  ['curr_5fh',['CURR_H',['../namespacefocus.html#a577e326aeb1867de857503429538fca3',1,'focus']]],
+  ['curr_5fw',['CURR_W',['../namespacefocus.html#a2cf00646d7ebef8c88685295c224630e',1,'focus']]],
   ['current_5fframe',['current_frame',['../LunAero_8cpp.html#aa6ee07066b693b837fae1ff787494732',1,'current_frame():&#160;LunAero.cpp'],['../LunAero_8hpp.html#aa6ee07066b693b837fae1ff787494732',1,'current_frame():&#160;LunAero.cpp']]],
-  ['current_5ftime',['current_time',['../LunAero_8cpp.html#ad16a479f48a31e883d0f658eb35306b3',1,'current_time(int gmt):&#160;LunAero.cpp'],['../LunAero_8hpp.html#ad16a479f48a31e883d0f658eb35306b3',1,'current_time(int gmt):&#160;LunAero.cpp']]]
+  ['current_5ftime',['current_time',['../LunAero_8cpp.html#ad16a479f48a31e883d0f658eb35306b3',1,'current_time(int gmt):&#160;LunAero.cpp'],['../LunAero_8hpp.html#ad16a479f48a31e883d0f658eb35306b3',1,'current_time(int gmt):&#160;LunAero.cpp']]],
+  ['cycle_5fiso',['cycle_iso',['../namespacefocus.html#aa9bf3f199d1bf68a1e49ec229dcf8c38',1,'focus']]]
 ];

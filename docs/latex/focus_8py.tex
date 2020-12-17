@@ -1,0 +1,99 @@
+\hypertarget{focus_8py}{}\section{focus.\+py File Reference}
+\label{focus_8py}\index{focus.\+py@{focus.\+py}}
+
+
+Script to preview the camera output for focus and brightness adjustment prior to Lun\+Aero run.  
+
+
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacefocus}{focus}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacefocus_ace593fb72d9a91bc93d3a25614a365d0}{focus.\+calculate\+\_\+picamera\+\_\+window} ()
+\begin{DoxyCompactList}\small\item\em This function calculates how large to create the camera preview window for the user. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_ab92c9c6869b0af6ce3a5920ef8554190}{focus.\+mot\+\_\+down} ()
+\begin{DoxyCompactList}\small\item\em Void function to set the motor bits to decrease the scope\textquotesingle{}s altitude. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_ad0102bfe821a43392640e33721246a8c}{focus.\+mot\+\_\+up} ()
+\begin{DoxyCompactList}\small\item\em Void function to set the motor bits to increase the scope\textquotesingle{}s altitude. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a9939d6f9388d8eb82625bd8e3af6f894}{focus.\+mot\+\_\+right} ()
+\begin{DoxyCompactList}\small\item\em Void function to set the motor bits for clockwise azimuth adjustment. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_ace370021c60f38a82ce96e69a482cbe3}{focus.\+mot\+\_\+left} ()
+\begin{DoxyCompactList}\small\item\em Void function to set the motor bits for counter-\/clockwise azimuth adjustment. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a19641d526d4c19ab6b10fc8ca9e8fe86}{focus.\+mot\+\_\+stop} ()
+\begin{DoxyCompactList}\small\item\em Void function to stop the motors. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_aa9bf3f199d1bf68a1e49ec229dcf8c38}{focus.\+cycle\+\_\+iso} ()
+\begin{DoxyCompactList}\small\item\em Void function which cycles the I\+SO value for the picamera to the next valid cycle (100, 200, 400, 800) \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a8fb78b10ef91e414ac6707d45fcd0e5b}{focus.\+decrease\+\_\+exposure} ()
+\begin{DoxyCompactList}\small\item\em Void function which decreases the exposure without letting it get all the way to 0. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a4dd9a598e7bc093873342c129ba80c98}{focus.\+increase\+\_\+exposure} ()
+\begin{DoxyCompactList}\small\item\em Void function which increases the exposure without letting it get all the way to our arbitrary M\+A\+X\+\_\+\+E\+XP. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a7c48f36dcbc8deec93ed615925469176}{focus.\+directions\+\_\+screen} (screen, font, margin, font\+\_\+size)
+\begin{DoxyCompactList}\small\item\em This is the generator for the initial directions screen. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a30f8dfb1f7d958ee49491a2e359ea3e2}{focus.\+ops\+\_\+screen} (screen, font, font\+\_\+size)
+\begin{DoxyCompactList}\small\item\em This is the generator for the operating window. \end{DoxyCompactList}\item 
+def \hyperlink{namespacefocus_a813bbce9c83fa23eae05039332cf3d8a}{focus.\+main} ()
+\begin{DoxyCompactList}\small\item\em This is the main execution script. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{namespacefocus_a95643fc1eae4f9b190d9e91d48185206}{focus.\+D\+E\+B\+UG} = True
+\item 
+int \hyperlink{namespacefocus_a9f8a2660e7de2a492738e587878c2b7a}{focus.\+F\+R\+EQ} = 10000
+\item 
+int \hyperlink{namespacefocus_aea3f9d81f82a645ab78f964477e8f30a}{focus.\+D\+CA} = 0
+\item 
+int \hyperlink{namespacefocus_a7f3ad02c7918179b1964892572df8fc9}{focus.\+D\+CB} = 0
+\item 
+tuple \hyperlink{namespacefocus_a87a409792b8a912c225495a99b855b51}{focus.\+B\+L\+A\+CK} = (0, 0, 0)
+\item 
+tuple \hyperlink{namespacefocus_acc5e8b5ab47d18ad8776c429e3a3a4b7}{focus.\+R\+ED} = (255, 0, 0)
+\item 
+int \hyperlink{namespacefocus_a358eaeffe0790a67619dfd820f2d66b5}{focus.\+A\+P\+I\+NP} = 17
+\item 
+int \hyperlink{namespacefocus_a4b9a0e4629814a6b99bd65e3200fe3bd}{focus.\+A\+P\+I\+N1} = 27
+\item 
+int \hyperlink{namespacefocus_aa7f17fd9c88f9bc5cf789df5cc73a20a}{focus.\+A\+P\+I\+N2} = 22
+\item 
+int \hyperlink{namespacefocus_a9234861385a237ef6a50b00f5ab54f1c}{focus.\+B\+P\+I\+N1} = 10
+\item 
+int \hyperlink{namespacefocus_ae83fcc832e2b5c6a0281655870eae658}{focus.\+B\+P\+I\+N2} = 9
+\item 
+int \hyperlink{namespacefocus_a88336729338c9d4ef54e14f02f406c1b}{focus.\+B\+P\+I\+NP} = 11
+\item 
+int \hyperlink{namespacefocus_ac7e622de99a123967bedbb1f5927ac40}{focus.\+I\+SO} = 200
+\item 
+int \hyperlink{namespacefocus_a40e81481d1b661338eda552bc7dc5513}{focus.\+E\+XP} = 10000
+\item 
+int \hyperlink{namespacefocus_af9cd2a2921f660052cb32a72a681c63e}{focus.\+D\+I\+F\+F\+\_\+\+E\+XP} = 1000
+\item 
+int \hyperlink{namespacefocus_a3c4a2866356f68ceb6834b38951c16a0}{focus.\+M\+A\+X\+\_\+\+E\+XP} = 30000
+\item 
+\hyperlink{namespacefocus_a2cf00646d7ebef8c88685295c224630e}{focus.\+C\+U\+R\+R\+\_\+W} = P\+Y\+G\+\_\+\+I\+N\+F.\+current\+\_\+w
+\item 
+\hyperlink{namespacefocus_a577e326aeb1867de857503429538fca3}{focus.\+C\+U\+R\+R\+\_\+H} = P\+Y\+G\+\_\+\+I\+N\+F.\+current\+\_\+h
+\item 
+\hyperlink{namespacefocus_a2418021a7b6b394da695928f0d8cd16b}{focus.\+P\+W\+MA} = G\+P\+I\+O.\+P\+WM(\hyperlink{motors__LunAero_8hpp_a731dda95d3c6462cecd3979241eef5a1}{A\+P\+I\+NP}, \hyperlink{motors__LunAero_8hpp_a129f1b691f4c7a6269b4fed302fe60b3}{F\+R\+EQ})
+\item 
+\hyperlink{namespacefocus_a9e16a63e33dd8dd160996df16dacb633}{focus.\+P\+W\+MB} = G\+P\+I\+O.\+P\+WM(\hyperlink{motors__LunAero_8hpp_ad67af3ff13c24d7ca610f9a4217bcde9}{B\+P\+I\+NP}, \hyperlink{motors__LunAero_8hpp_a129f1b691f4c7a6269b4fed302fe60b3}{F\+R\+EQ})
+\item 
+\hyperlink{namespacefocus_a2c64f595bbe297e961b55c735e7023c5}{focus.\+C\+AM} = picamera.\+Pi\+Camera()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Script to preview the camera output for focus and brightness adjustment prior to Lun\+Aero run. 
+
+This script uses pygame to create a simple previewing environment for the Lun\+Aero hardware output. A fullscreen window is created, calculating the display size of the unit\textquotesingle{}s monitor. Instructions are printed on an initial view to inform the user of the functions available to them and the associated key bindings. Upon confirmation, the window updates, removing the full instructions, leaving only a limited version of the instructions. This window leaves much more space for the video. A raspberry pi camera preview window is called and placed over this screen. A red rectangle in the back makes it easier for the user to recognize the edges of this window in dark conditions. Motor commands, camera I\+SO settings, and shutter speed settings are available to the user. The user is encouraged to focus his or her scope during this phase. Pressing q exits.\hypertarget{focus_8py_example_focus}{}\subsection{Usage Example}\label{focus_8py_example_focus}
+\begin{DoxyVerb}python3 ./focus.py
+\end{DoxyVerb}
+\hypertarget{focus_8py_libraries_focus}{}\subsection{Libraries/\+Modules}\label{focus_8py_libraries_focus}
+
+\begin{DoxyItemize}
+\item pygame (tested with version 1.\+9.\+4.\+post1)
+\item picamera (tested with version 1.\+13)
+\item R\+Pi.\+G\+P\+IO (tested with version 0.\+7.\+0) 
+\end{DoxyItemize}

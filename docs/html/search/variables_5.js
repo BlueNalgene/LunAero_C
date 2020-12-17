@@ -9,6 +9,6 @@ var searchData=
   ['filepath',['FILEPATH',['../LunAero_8hpp.html#a5aa6f1ed0a1a3957ae4c7931868013a5',1,'LunAero.hpp']]],
   ['font_5fmod',['FONT_MOD',['../gtk__LunAero_8hpp.html#acf357661cb88bbd19bb593e940dc5771',1,'gtk_LunAero.hpp']]],
   ['framecheck_5ffreq',['FRAMECHECK_FREQ',['../gtk__LunAero_8hpp.html#aed0e471b8db885153e5995ccc76159ea',1,'gtk_LunAero.hpp']]],
-  ['freq',['FREQ',['../motors__LunAero_8hpp.html#a129f1b691f4c7a6269b4fed302fe60b3',1,'motors_LunAero.hpp']]],
+  ['freq',['FREQ',['../namespacefocus.html#a9f8a2660e7de2a492738e587878c2b7a',1,'focus.FREQ()'],['../motors__LunAero_8hpp.html#a129f1b691f4c7a6269b4fed302fe60b3',1,'FREQ():&#160;motors_LunAero.hpp']]],
   ['funcgrid',['funcgrid',['../classgtk__class.html#abd69dffa09078b21b628725bf1733682',1,'gtk_class']]]
 ];

@@ -159,8 +159,7 @@ This function captures the frame from the preview window (a complicated process 
 \begin{DoxyReturn}{Returns}
 blurval A floating point value representing the degree of variation in tbe blur 
 \end{DoxyReturn}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -173,16 +172,14 @@ Here is the caller graph for this function\+:
 \subsubsection{\texorpdfstring{cb\+\_\+framecheck()}{cb\_framecheck()}}
 {\footnotesize\ttfamily void cb\+\_\+framecheck (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function (called from \hyperlink{gtk__LunAero_8cpp}{gtk\+\_\+\+Lun\+Aero.\+cpp}) handles checking the frame during live operation and processes the L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+ER Here is the call graph for this function\+:
-\nopagebreak
+This function (called from \hyperlink{gtk__LunAero_8cpp}{gtk\+\_\+\+Lun\+Aero.\+cpp}) handles checking the frame during live operation and processes the L\+O\+S\+T\+\_\+\+C\+O\+U\+N\+T\+ER Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{LunAero_8hpp_a49fa3075fdeb7cdf9caffb056710a8d5_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -195,16 +192,14 @@ Here is the caller graph for this function\+:
 \subsubsection{\texorpdfstring{cleanup()}{cleanup()}}
 {\footnotesize\ttfamily void cleanup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function is called on exit to clean up the environment. Primarily used to ensure that the raspivid system call is killed properly. Here is the call graph for this function\+:
-\nopagebreak
+This function is called on exit to clean up the environment. Primarily used to ensure that the raspivid system call is killed properly. Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=234pt]{LunAero_8hpp_a4b66d5e31b5dc18b314c8a68163263bd_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -222,8 +217,7 @@ This function is called to create a default settings config file. Creates the fi
 \begin{DoxyReturn}{Returns}
 status 
 \end{DoxyReturn}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -241,16 +235,14 @@ This funciton creates an ID file to be stored with the recorded video which incl
 \begin{DoxyReturn}{Returns}
 status 
 \end{DoxyReturn}
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=261pt]{LunAero_8hpp_a55ed746b51b0932e0442dee77f1f3a09_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -263,16 +255,14 @@ Here is the caller graph for this function\+:
 \subsubsection{\texorpdfstring{current\+\_\+frame()}{current\_frame()}}
 {\footnotesize\ttfamily void current\+\_\+frame (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function captures the frame from the preview window (a complicated process involving capturing the V\+C/\+D\+I\+S\+P\+M\+A\+NX screenshot, not the X window screensho), crops it to ignore the G\+TK, and determines how well the moon is centered in the cropped frame. Priority is given to checking whether the moon is touching the side of the cropped image. If the edge is not being touched, threshold limited brightness is used to find the center of mass of the bright spot and comparing it to the target location. Here is the call graph for this function\+:
-\nopagebreak
+This function captures the frame from the preview window (a complicated process involving capturing the V\+C/\+D\+I\+S\+P\+M\+A\+NX screenshot, not the X window screensho), crops it to ignore the G\+TK, and determines how well the moon is centered in the cropped frame. Priority is given to checking whether the moon is touching the side of the cropped image. If the edge is not being touched, threshold limited brightness is used to find the center of mass of the bright spot and comparing it to the target location. Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=303pt]{LunAero_8hpp_aa6ee07066b693b837fae1ff787494732_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -295,8 +285,7 @@ This function fetches the current time and formats it as a string.
 \begin{DoxyReturn}{Returns}
 str the current time formatted as a string 
 \end{DoxyReturn}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -309,8 +298,7 @@ Here is the caller graph for this function\+:
 \subsubsection{\texorpdfstring{kill\+\_\+raspivid()}{kill\_raspivid()}}
 {\footnotesize\ttfamily void kill\+\_\+raspivid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function kills raspivid. It does this in an ugly way by finding the process ID of the raspivid instance and killing that P\+ID. Here is the caller graph for this function\+:
-\nopagebreak
+This function kills raspivid. It does this in an ugly way by finding the process ID of the raspivid instance and killing that P\+ID. Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -328,8 +316,7 @@ Main function
 \begin{DoxyReturn}{Returns}
 status 
 \end{DoxyReturn}
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -354,8 +341,7 @@ This function takes the two input strings and uses them to issue a notificaiton 
 \begin{DoxyReturn}{Returns}
 status 
 \end{DoxyReturn}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -380,8 +366,7 @@ This function handles the strings and values parsed from the settings.\+cfg file
 \begin{DoxyReturn}{Returns}
 status 
 \end{DoxyReturn}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -399,16 +384,14 @@ This function checks the save location properties to determine if the location i
 \begin{DoxyReturn}{Returns}
 status 
 \end{DoxyReturn}
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=294pt]{LunAero_8hpp_a6b3880fb3ba8978b9f04343d9fd0e11a_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

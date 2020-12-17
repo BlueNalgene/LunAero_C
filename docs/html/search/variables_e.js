@@ -2,6 +2,7 @@ var searchData=
 [
   ['raw_5fbright_5fthresh',['RAW_BRIGHT_THRESH',['../LunAero_8hpp.html#a5b1b762a9cef0f882c9f0f7920a12a10',1,'LunAero.hpp']]],
   ['record_5fduration',['RECORD_DURATION',['../LunAero_8hpp.html#a6acefd4e2ee6bbec93d53aa534e3190a',1,'LunAero.hpp']]],
+  ['red',['RED',['../namespacefocus.html#acc5e8b5ab47d18ad8776c429e3a3a4b7',1,'focus']]],
   ['refresh_5fcamaddr',['REFRESH_CAMaddr',['../structval__addresses.html#a9da32da59ec29598d672ad09003491fd',1,'val_addresses']]],
   ['rpi_5fbr',['RPI_BR',['../camera__LunAero_8hpp.html#a111b596c8d8085e310d89ced7b3ce74e',1,'camera_LunAero.hpp']]],
   ['rpi_5fex',['RPI_EX',['../camera__LunAero_8hpp.html#a36c1dcc02f008386f600ee5024003d36',1,'camera_LunAero.hpp']]],
