@@ -272,6 +272,33 @@ sudo raspi-config
 ```
 
 
+### Focus Helper
+
+On small screens, similar to the ones recommended by the LunAero
+hardware specs, it may be difficult to see how "good" your video
+looks using only `LunAero_Moontracker`.  This is because the preview
+window in `LunAero_Moontracker` is only 1/4 the size of the display!
+For your convenience, we have added a small Python script which shows
+a much larger preview window.  In your terminal, execute:
+
+```sh
+python3 /path/to/LunAero_C/focus.py
+```
+
+The first screen displays instructions for how to use this script.
+You are able to use directional keys to adjust the scope position,
+<kbd>space</kbd> to stop the movement, <kbd>i</kbd> to cycle the
+ISO setting of the camera, and the keys <kbd>g</kbd> and <kbd>b</kbd>
+to increase and decrease the shutter speed, respectively.  Press
+<kbd>q</kbd> at any time to exit the script.  Use the large preview
+window which the script shows to adjust your scope for zoom and focus.
+The image should be as sharp as possible, and the moon should not be
+larger than the preview window.  A red border is present on the
+preview to assist you in finding the edge of the screen, useful
+when you are comparing a night sky to the black background of the
+screen.
+
+
 ### Manual Adjustment Mode
 
 Once you have confirmed the time is correct, run the program.  Upon
