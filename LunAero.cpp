@@ -204,215 +204,6 @@ std::string current_time(int gmt) {
 	return str;
 }
 
-// /**
-//  * This function captures the frame from the preview window (a complicated process involving capturing
-//  * the VC/DISPMANX screenshot, not the X window screenshot), crops it to ignore the GTK, and determines
-//  * image blur and brightness.  Blur is computed based on the standard method, running a Laplacian
-//  * operation on the cropped image and computing the variance of this result.  Brightness is a raw
-//  * pixel thresholding method.
-//  *
-//  * @return blurval A floating point value representing the degree of variation in tbe blur
-//  */
-// int blur_bright() {
-// 	//~ BLUR_BRIGHT.clear();
-// 	float blurval = 0;
-// 	float brightval = 0;
-// 	
-// 	// Run a system check to see if raspivid is running, if not, print a warning
-// 	FILE* fpidof = popen("pidof raspivid", "r");
-// 	if (fpidof) {
-// 		int p=0;
-// 		if (!(fscanf(fpidof, "%d", &p)>0 && p>0)) {
-// 			if (DEBUG_COUT) {
-// 				LOGGING.open(LOGOUT, std::ios_base::app);
-// 				LOGGING
-// 				<< "WARNING: cannot detect image quality if Raspivid is not running" << std::endl;
-// 				LOGGING.close();
-// 			}
-// 			return 0;
-// 		}
-// 		pclose(fpidof);
-// 	} else {
-// 		if (DEBUG_COUT) {
-// 			LOGGING.open(LOGOUT, std::ios_base::app);
-// 			LOGGING
-// 			<< "WARNING: cannot detect image quality if Raspivid is not running" << std::endl;
-// 			LOGGING.close();
-// 		}
-// 		return 0;
-// 	}
-// 	
-// 	DISPMANX_DISPLAY_HANDLE_T   display = 0;
-// 	DISPMANX_MODEINFO_T         info;
-// 	DISPMANX_RESOURCE_HANDLE_T  resource = 0;
-// 	VC_IMAGE_TYPE_T             type = VC_IMAGE_RGB888;
-// 	DISPMANX_TRANSFORM_T	    transform = static_cast <DISPMANX_TRANSFORM_T> (0);
-// 	VC_RECT_T			        rect;
-// 	
-// 	void *image;
-// 	uint32_t vc_image_ptr;
-// 	uint32_t screen = 0;
-// 
-// 	bcm_host_init();
-// 
-// 	// Get display info for the screen we are using.
-// 	display = vc_dispmanx_display_open( screen );
-// 	if (vc_dispmanx_display_get_info(display, &info) != 0) {
-// 		if (DEBUG_COUT) {
-// 			LOGGING.open(LOGOUT, std::ios_base::app);
-// 			LOGGING
-// 			<< "ERROR: failed to get display info" << std::endl;
-// 			LOGGING.close();
-// 		}
-// 		*val_ptr.ABORTaddr = 1;
-// 		return 1;
-// 	}
-// 
-// 	// This holds an image
-// 	image = calloc( 1, info.width * 3 * info.height );
-// 	if (!image) {
-// 		if (DEBUG_COUT) {
-// 			LOGGING.open(LOGOUT, std::ios_base::app);
-// 			LOGGING
-// 			<< "ERROR: failed image assertion" << std::endl;
-// 			LOGGING.close();
-// 		}
-// 		*val_ptr.ABORTaddr = 1;
-// 		return 1;
-// 	}
-// 
-// 	// Create space based on the screen info
-// 	resource = vc_dispmanx_resource_create( type, info.width, info.height, &vc_image_ptr);
-// 	if (!resource) {
-// 		if (DEBUG_COUT) {
-// 			LOGGING.open(LOGOUT, std::ios_base::app);
-// 			LOGGING
-// 			<< "ERROR: failed to create VC Dispmanx Resource" << std::endl;
-// 			LOGGING.close();
-// 		}
-// 		*val_ptr.ABORTaddr = 1;
-// 		return 1;
-// 	}
-// 
-// 	// Take a snapshot of the screen (stored in resource)
-// 	vc_dispmanx_snapshot(display, resource, transform);
-// 
-// 	// Read the rectangular data from resource into the image calloc
-// 	vc_dispmanx_rect_set(&rect, 0, 0, info.width, info.height);
-// 	vc_dispmanx_resource_read_data(resource, &rect, image, info.width*3);
-// 
-// 	if (DEBUG_COUT) {
-// 		LOGGING.open(LOGOUT, std::ios_base::app);
-// 		LOGGING
-// 		<< info.width << " x " << info.height << std::endl;
-// 		LOGGING.close();
-// 	}
-// 	std::string imgstr(static_cast<char*>(image), info.width*3*info.height);
-// 	
-// 	int local_height = RVD_HEIGHT - 6;
-// 	int local_width = RVD_WIDTH - 4;
-// 	int local_xcorn = RVD_XCORN + 2;
-// 	int local_ycorn = RVD_YCORN + 3;
-// 	
-// 	//~ unsigned char * img_data_ptr = (unsigned char*) &image;
-// 	Mat temp_image(info.height, info.width, CV_8UC3, image);
-// 	Mat in_image = temp_image.clone();
-// 		
-// 	// Cleanup the VC resources
-// 	if (vc_dispmanx_resource_delete(resource) != 0) {
-// 		if (DEBUG_COUT) {
-// 			LOGGING.open(LOGOUT, std::ios_base::app);
-// 			LOGGING
-// 			<< "ERROR: failed to delete vc resource" << std::endl;
-// 			LOGGING.close();
-// 		}
-// 		*val_ptr.ABORTaddr = 1;
-// 		return 1;
-// 	}
-// 	if (vc_dispmanx_display_close(display) != 0) {
-// 		if (DEBUG_COUT) {
-// 			LOGGING.open(LOGOUT, std::ios_base::app);
-// 			LOGGING
-// 			<< "ERROR: failed to close vc display" << std::endl;
-// 			LOGGING.close();
-// 		}
-// 		*val_ptr.ABORTaddr = 1;
-// 		return 1;
-// 	}
-// 	free(image);
-// 	
-// 	// Crop image
-// 	Mat ROI(in_image, Rect(local_xcorn, local_ycorn, local_width, local_height));
-// 	Mat cropped_image;
-// 	ROI.copyTo(cropped_image);
-// 	
-// 	// Prep color conversions
-// 	Mat gray_image, alt_image, va1_image, va2_image;
-// 	Mat1b brights;
-// 	cvtColor(in_image.clone(), gray_image, COLOR_RGB2GRAY);
-// 	cvtColor(in_image.clone(), alt_image, COLOR_RGB2HSV);
-// 	extractChannel(alt_image, brights, 2);
-// 	
-// 	// Run Blur detector
-// 	// get Laplacian variance on input image
-// 	Laplacian(gray_image, alt_image, CV_64F);
-// 	Scalar mean, stddev; // 0:1st channel, 1:2nd channel and 2:3rd channel
-// 	meanStdDev(alt_image, mean, stddev, Mat());
-// 	blurval = stddev.val[0] * stddev.val[0];
-// 	
-// 	if (DEBUG_COUT) {
-// 		LOGGING.open(LOGOUT, std::ios_base::app);
-// 		LOGGING
-// 		<< "BLURVAL: " << blurval << std::endl;
-// 		LOGGING.close();
-// 	}
-// 	
-// 	// Run Brightness detector
-// 	// Find largest contour
-// 	std::vector <std::vector <Point>> contours;
-// 	std::vector<Vec4i> hierarchy;
-// 	int big = 0;
-// 	double area;
-// 	findContours(gray_image, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
-// 	for( size_t i = 0; i< contours.size(); i++ ) {
-// 		area = contourArea(contours[i]);
-// 		if (area > big) {
-// 			big = area;
-// 		}
-// 	}
-// 	
-// 	// Super simple thresholding
-// 	float cba = 0.;
-// 	threshold(gray_image.clone(), gray_image, RAW_BRIGHT_THRESH, 255, THRESH_BINARY);
-// 	cba = (sum(gray_image)[0])/big;
-// 	
-// 	
-// 	// Test if these values are below our threshold and return boolean result
-// 	bool bright_outcome;
-// 	
-// 	if (DEBUG_COUT) {
-// 		LOGGING.open(LOGOUT, std::ios_base::app);
-// 		LOGGING
-// 		<< "BRIGHT_VAL: " << cba << std::endl;
-// 		LOGGING.close();
-// 	}
-// 	
-// 	if (cba < BRIGHT_THRESH) {
-// 		bright_outcome = true;
-// 	} else {
-// 		bright_outcome = false;
-// 	}
-// 	
-// 
-// 	sem_wait(&LOCK);
-// 	*val_ptr.BLURaddr = blurval;
-// 	*val_ptr.BRIGHTaddr = bright_outcome;
-// 	//~ *val_ptr.BRIGHTaddr = false;
-// 	sem_post(&LOCK);
-// 	
-// 	return 0;
-// }
-
 
 /**
  * This function captures the frame from the preview window (a complicated process involving capturing
@@ -1104,7 +895,8 @@ int parse_checklist(std::string name, std::string value) {
  */
 int create_default_config() {
 	std::string config_loc = "./settings.cfg";
-	std::ofstream config_file.open(config_loc);
+	std::ofstream config_file;
+	config_file.open(config_loc);
 	config_file
 	<< "############# settings #############" << std::endl
 	<< "#                                  #" << std::endl
@@ -1120,10 +912,10 @@ int create_default_config() {
 	<< "DEBUG_COUT = true" << std::endl << std::endl
 	<< "# Duration to record video before starting a new one (in seconds)" << std::endl
 	<< "RECORD_DURATION = 1800" << std::endl
-	<< "
+	<< ""
 	<< "# The name given to your external storage drive for videos" << std::endl
 	<< "DRIVE_NAME = MOON1" << std::endl
-	<< "
+	<< ""
 	<< "# Should LunAero save a screenshot from the raspivid output every cycle?" << std::endl
 	<< "# It will be saved to to /your/path/out.ppm" << std::endl
 	<< "SAVE_DEBUG_IMAGE = false" << std::endl << std::endl << std::endl << std::endl << std::endl
@@ -1166,11 +958,6 @@ int create_default_config() {
 	<< "EDGE_DIVISOR_W = 20" << std::endl << std::endl
 	<< "# Divisor for the number pixels on the left and right edges to warrant a move.  Bigger is more sensitive." << std::endl
 	<< "EDGE_DIVISOR_H = 20" << std::endl << std::endl
-	<< "# Brightness value between 0-255 to act as the threshold for raw brightness tests." << std::endl
-	<< "RAW_BRIGHT_THRESH = 240" << std::endl << std::endl
-	<< "# Threshold value for the brightness tests.  Outcome of the brightness tests must be below this value," << std::endl
-	<< "# otherwise the image is deemed \"too bright\" because the birds might get hidden by the lunar albedo." << std::endl
-	<< "BRIGHT_THRESH = 0.01" << std::endl << std::endl
 	<< "# Frequency which the automatic edge detection should occur.  This is a value roughly in milliseconds," << std::endl
 	<< "# dependent on the cycle time of the processor." << std::endl
 	<< "# WARNING Editing this value changes a bunch of behaviors.  You can touch it, but be careful." 
@@ -1203,7 +990,7 @@ int create_default_config() {
 	<< "# Value to adjust the shutter speed when using the up-up or down-down buttons." << std::endl
 	<< "# Should be greater than SHUT_JUMP" << std::endl
 	<< "SHUT_JUMP_BIG = 1000" << std::endl << std::endl
-	<< "# Threshold value for number of cycles the moon is "lost" for" << std::endl
+	<< "# Threshold value for number of cycles the moon is \"lost\" for" << std::endl
 	<< "LOST_THRESH = 30" << std::endl << std::endl << std::endl << std::endl
 	<< "### Motor and Speed settings" << std::endl << std::endl
 	<< "# Number of seconds the left-right motor should force high speed movement to compensate for loose" << std::endl
@@ -1257,7 +1044,7 @@ int main (int argc, char **argv) {
 	// Parse config file
 	std::string config_file = "./settings.cfg";
 	std::ifstream cFile (config_file);
-	if (access(cFile.c_str(), R_OK) < 0) {
+	if (access(config_file.c_str(), R_OK) < 0) {
 		std::cerr << "WARNING: default settings file is not readable, creating for you." << std::endl;
 		if (create_default_config()) {
 			std::cerr << "ERROR: Could not read existing or create default settings.cfg" << std::endl;
@@ -1335,11 +1122,6 @@ int main (int argc, char **argv) {
 			LOGGING.close();
 		}
 	}
-	
-	// Memory values which influence image quality detection.  Float and bool.
-	val_ptr.BLURaddr = (int *)(mmap(NULL, sizeof(float), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
-	val_ptr.BRIGHTaddr = (int *)(mmap(NULL, sizeof(bool), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));
-	*val_ptr.BLURaddr = 0.;
 	
 	// Memory values which influence camera commands. Defaults to 0.
 	val_ptr.LOST_COUNTERaddr = (int *)(mmap(NULL, sizeof(int), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0));

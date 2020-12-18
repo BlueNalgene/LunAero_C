@@ -18,20 +18,6 @@
 
 #include "gtk_LunAero.hpp"
 
-gboolean bb_runner(gpointer data) {
-	if (*val_ptr.ABORTaddr == 0) {
-		if (*val_ptr.RUN_MODEaddr == 0) {
-// 			if (blur_bright()) {
-// 				std::cerr << "ERROR: Encountered error running blur_bright" << std::endl;
-// 				sem_wait(&LOCK);
-// 				*val_ptr.ABORTaddr = 1;
-// 				sem_post(&LOCK);
-// 			}
-		}
-	}
-	return TRUE;
-}
-
 /**
  * This function refreshes the text boxes on the side of the GTK window.  During preview and manual motor
  * movement mode, this portion of the screen shows the value of the selected SHUTTER_VAL, ISO, and blur
@@ -45,31 +31,12 @@ gboolean bb_runner(gpointer data) {
 gboolean refresh_text_boxes(gpointer data) {
 	if (*val_ptr.ABORTaddr == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
-// 			// Capture blur and brightness float and bool, respectively.
-// 			float local_blur;
-// 			bool local_bright;
-// 			sem_wait(&LOCK);
-// 			local_blur = *val_ptr.BLURaddr;
-// 			local_bright = *val_ptr.BRIGHTaddr;
-// 			sem_post(&LOCK);
-// 			// Remove extraneous decimal points from float
-// 			std::string mod_blur;
-// 			mod_blur = std::to_string((int)floor(local_blur));
-// 			mod_blur += ".";
-// 			mod_blur += std::to_string((int)floor((std::fmod(local_blur, 1)*100)));
 			// Construct message
 			std::string msg;
 			msg = "Shutter: ";
 			msg += std::to_string(*val_ptr.SHUTTER_VALaddr);
 			msg += "\nISO: ";
 			msg += std::to_string(*val_ptr.ISO_VALaddr);
-// 			msg += "\nFOCUS: ";
-// 			msg += mod_blur;
-			if (local_bright) {
-// 				msg += "\n";
-// 			} else {
-// 				msg += "\nTOO BRIGHT!";
-// 			}
 			gtk_label_set_text(GTK_LABEL(gtk_class::text_status), msg.c_str());
 		} else {
 			std::string msg;
@@ -631,13 +598,11 @@ void activate(GtkApplication *app, gpointer local_val_ptr) {
 	gtk_css_preview();
 	
 	// Create timeout to refresh
-	g_timeout_add(100, G_SOURCE_FUNC(refresh_text_boxes), NULL);
+	g_timeout_add(500, G_SOURCE_FUNC(refresh_text_boxes), NULL);
 	g_timeout_add(50, G_SOURCE_FUNC(abort_check), NULL);
 	g_timeout_add(60, G_SOURCE_FUNC(cb_subsequent), app);
-	g_timeout_add(700, G_SOURCE_FUNC(bb_runner), NULL);
 	
 	//Activate!
-	//~ refresh_text_boxes(NULL);
 	gtk_widget_grab_focus(gtk_class::fakebutton);
 	gtk_widget_show_all(gtk_class::window);
 }
@@ -727,9 +692,6 @@ gboolean key_event_preview(GtkWidget *widget, GdkEventKey *event) {
  * @return gboolean status
  */
 gboolean key_event_running(GtkWidget *widget, GdkEventKey *event) {
-	//g_printerr("%s\n", gdk_keyval_name (event->keyval));
-	
-	
 	gchar* val = gdk_keyval_name (event->keyval);
 
 	if (strcmp(val, KV_QUIT.c_str()) == 0) {
@@ -796,16 +758,6 @@ gboolean abort_check(GtkWidget* data) {
  */
 void first_record_killer(GtkWidget* data) {
 	sem_wait(&LOCK);
-	
-	//~ GList   *listrunner;
-	//~ gint    *value;
-	
-	//~ listrunner = g_list_first(gtk_style_context_list_classes (gtk_widget_get_style_context(gtk_class::button_up)));
-	//~ while (listrunner) {
-		//~ value = (gint *)listrunner->data;
-		//~ printf("first %d\n", *value);
-		//~ listrunner = g_list_next(listrunner);
-	//~ }
 	
 	gtk_style_context_remove_class(gtk_widget_get_style_context(gtk_class::button_up), "activebutton");
 	gtk_style_context_add_class(gtk_widget_get_style_context(gtk_class::button_up), "fakebutton");
@@ -877,8 +829,6 @@ gboolean cb_subsequent(GtkWidget* data) {
 		sem_wait(&LOCK);
 		*val_ptr.SUBSaddr = 0;
 		sem_post(&LOCK);
-	//~ } else {
-		//~ std::cout << "No subs" << std::endl;
 	}
 	return TRUE;
 }
