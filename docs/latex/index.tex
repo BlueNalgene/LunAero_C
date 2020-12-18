@@ -182,6 +182,18 @@ sudo raspi-config
 \end{DoxyCode}
 
 
+\subsubsection*{Focus Helper}
+
+On small screens, similar to the ones recommended by the Lun\+Aero hardware specs, it may be difficult to see how \char`\"{}good\char`\"{} your video looks using only {\ttfamily Lun\+Aero\+\_\+\+Moontracker}. This is because the preview window in {\ttfamily Lun\+Aero\+\_\+\+Moontracker} is only 1/4 the size of the display! For your convenience, we have added a small Python script which shows a much larger preview window. In your terminal, execute\+:
+
+
+\begin{DoxyCode}
+python3 /path/to/LunAero\_C/focus.py
+\end{DoxyCode}
+
+
+The first screen displays instructions for how to use this script. You are able to use directional keys to adjust the scope position, {\ttfamily space} to stop the movement, {\ttfamily i} to cycle the I\+SO setting of the camera, and the keys {\ttfamily g} and {\ttfamily b} to increase and decrease the shutter speed, respectively. Press {\ttfamily q} at any time to exit the script. Use the large preview window which the script shows to adjust your scope for zoom and focus. The image should be as sharp as possible, and the moon should not be larger than the preview window. A red border is present on the preview to assist you in finding the edge of the screen, useful when you are comparing a night sky to the black background of the screen.
+
 \subsubsection*{Manual Adjustment Mode}
 
 Once you have confirmed the time is correct, run the program. Upon startup, you will enter \char`\"{}manual mode\char`\"{}. In this mode, you are able to adjust the direction your scope is pointing and a few camera settings. In \char`\"{}manual mode\char`\"{}, the bottom center of the screen includes a preview window overlayed on the G\+UI which shows what the camera sees like a viewfinder.

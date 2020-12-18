@@ -21,12 +21,12 @@
 gboolean bb_runner(gpointer data) {
 	if (*val_ptr.ABORTaddr == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
-			if (blur_bright()) {
-				std::cerr << "ERROR: Encountered error running blur_bright" << std::endl;
-				sem_wait(&LOCK);
-				*val_ptr.ABORTaddr = 1;
-				sem_post(&LOCK);
-			}
+// 			if (blur_bright()) {
+// 				std::cerr << "ERROR: Encountered error running blur_bright" << std::endl;
+// 				sem_wait(&LOCK);
+// 				*val_ptr.ABORTaddr = 1;
+// 				sem_post(&LOCK);
+// 			}
 		}
 	}
 	return TRUE;
@@ -45,31 +45,31 @@ gboolean bb_runner(gpointer data) {
 gboolean refresh_text_boxes(gpointer data) {
 	if (*val_ptr.ABORTaddr == 0) {
 		if (*val_ptr.RUN_MODEaddr == 0) {
-			// Capture blur and brightness float and bool, respectively.
-			float local_blur;
-			bool local_bright;
-			sem_wait(&LOCK);
-			local_blur = *val_ptr.BLURaddr;
-			local_bright = *val_ptr.BRIGHTaddr;
-			sem_post(&LOCK);
-			// Remove extraneous decimal points from float
-			std::string mod_blur;
-			mod_blur = std::to_string((int)floor(local_blur));
-			mod_blur += ".";
-			mod_blur += std::to_string((int)floor((std::fmod(local_blur, 1)*100)));
+// 			// Capture blur and brightness float and bool, respectively.
+// 			float local_blur;
+// 			bool local_bright;
+// 			sem_wait(&LOCK);
+// 			local_blur = *val_ptr.BLURaddr;
+// 			local_bright = *val_ptr.BRIGHTaddr;
+// 			sem_post(&LOCK);
+// 			// Remove extraneous decimal points from float
+// 			std::string mod_blur;
+// 			mod_blur = std::to_string((int)floor(local_blur));
+// 			mod_blur += ".";
+// 			mod_blur += std::to_string((int)floor((std::fmod(local_blur, 1)*100)));
 			// Construct message
 			std::string msg;
 			msg = "Shutter: ";
 			msg += std::to_string(*val_ptr.SHUTTER_VALaddr);
 			msg += "\nISO: ";
 			msg += std::to_string(*val_ptr.ISO_VALaddr);
-			msg += "\nFOCUS: ";
-			msg += mod_blur;
+// 			msg += "\nFOCUS: ";
+// 			msg += mod_blur;
 			if (local_bright) {
-				msg += "\n";
-			} else {
-				msg += "\nTOO BRIGHT!";
-			}
+// 				msg += "\n";
+// 			} else {
+// 				msg += "\nTOO BRIGHT!";
+// 			}
 			gtk_label_set_text(GTK_LABEL(gtk_class::text_status), msg.c_str());
 		} else {
 			std::string msg;
