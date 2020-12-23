@@ -123,7 +123,7 @@ with a default Raspbian configuration):
 sudo apt update
 sudo apt -y install git libc6-dev libgcc-8-dev libraspberrypi0 wiringpi \
 libstdc++-8-dev libgtk-3-dev libpango1.0-dev libatk1.0-dev libcairo2-dev \
-libgdk-pixbuf2.0-dev libglib2.0-dev libopencv-shape-dev \
+libgdk-pixbuf2.0-dev libglib2.0-dev libopencv-shape-dev libopencv-dev \
 libopencv-stitching-dev libopencv-superres-dev libopencv-videostab-dev \
 libopencv-contrib-dev libopencv-video-dev libopencv-viz-dev \
 libopencv-calib3d-dev libopencv-features2d-dev libopencv-flann-dev \
@@ -163,6 +163,15 @@ liburiparser1 libkmlconvenience1 libldap-2.4-2 libsqlite3-0 \
 libnghttp2-14 librtmp1 libssh2-1 libpsl5 libkrb5-3 libk5crypto3 \
 libcom-err2 liblz4-1 libgpg-error0 libkrb5support0 libkeyutils1 \
 libgfortran5 libsasl2-2 libblas3 
+```
+
+Then, enable the Raspberry Pi camera in Raspbian.  This can be done using
+the interactive config tool `raspi-config`, or by using the following
+one-liner in the terminal to change the setting without using interactive
+mode.  You may need to restart your Raspberry Pi after this step.
+
+```
+sudo raspi-config nonint do_camera 0
 ```
 
 Next, use `git` to pull this repository.  I recommend saving it to a
