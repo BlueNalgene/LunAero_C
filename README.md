@@ -224,12 +224,8 @@ ready to run the program, you can type the command:
 ```sh
 /path/to/LunAero_C/LunAero_Moontracker
 ```
-and the program will run.  Alternatively, you can create a desktop icon
-by copying the file `execution_script/C_LunAero_Moontracker` from this
-`git` repository to your desktop.  Note that this script assumes you
-pulled this `git` repository to the Documents folder, so you will need
-to edit the link in the file if you installed things in another location.
-We recommend the following steps to run the program well:
+and the program will run.  We recommend the following steps to run the
+program well:
 
 ### Edit the Settings
 
